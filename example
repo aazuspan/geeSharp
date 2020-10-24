@@ -1,13 +1,21 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var extent = 
+    /* color: #ffc82d */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[-122.94882031557573, 47.040315914950874],
+          [-122.94882031557573, 46.98249431744871],
+          [-122.84496518251909, 46.98249431744871],
+          [-122.84496518251909, 47.040315914950874]]], null, false);
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
 var sharpening = require('users/aazuspan/geeSharpening:sharpening');
 
 var l8 = ee.ImageCollection("LANDSAT/LC08/C01/T1_TOA");
-
-var extent =
-    ee.Geometry.Polygon(
-        [[[-120.21072699139526, 40.250178133772714],
-        [-120.21072699139526, 40.13478482269844],
-        [-120.05554510662964, 40.13478482269844],
-        [-120.05554510662964, 40.250178133772714]]], null, false);
 
 var img = l8
   .filterBounds(extent)
