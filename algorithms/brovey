@@ -20,14 +20,14 @@ exports.sharpen = function(img, redBand, greenBand, blueBand, nirBand, pBand, wR
   var panProj = p.projection();
   
   // If any weights are missing, use equal weights
-  if ([wRed, wGreen, wBlue].some(isMissing)) {
+  if ([wRed, wGreen, wBlue].some(utils.isMissing)) {
     wRed = 1/3;
     wGreen = 1/3;
     wBlue = 1/3;
   }
   
   // Calculate intensity band as sum of the weighted visible bands
-  var intensity = calculateWeightedIntensity(img, redBand, greenBand, blueBand, wRed, wGreen, wBlue);
+  var intensity = utils.calculateWeightedIntensity(img, redBand, greenBand, blueBand, wRed, wGreen, wBlue);
   // Resample the intensity band
   var intensitySharp = intensity.resample().reproject(panProj);
   
