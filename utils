@@ -1,4 +1,36 @@
 /**
+ * Create a constant image where each band represents the reduced value of the
+ * corresponding band of the input image.
+ * @param {ee.Image} img The input image to calculate reduced values for.
+ * @param {ee.Reducer} reducer The reducer to apply to the image, such as ee.Reducer.min()
+ * @return {ee.Image} An image with the same number of bands as the input
+ *  image, where each band is a constant value of the reduced value of the 
+ *  corresponding band of the input image.
+*/
+exports.reduceImage = function(img, reducer) {
+  // Calculate the reduced image value(s)
+  var imgReducedVal = img.reduceRegion({
+    reducer: reducer,
+    geometry: img.geometry(),
+    scale: img.projection().nominalScale(),
+    maxPixels: 1e9
+  });
+  
+  var imgReduced = ee.Image.constant(imgReducedVal.values(img.bandNames()));
+  return imgReduced;
+}
+
+
+// Return a constant image representing the range (max - min) of the bands of an input image
+exports.getImageRange = function(img) {
+  var imgMax = reduceImage(img, ee.Reducer.max());
+  var imgMin = reduceImage(img, ee.Reducer.min());
+  var imgRange = imgMax.subtract(imgMin);
+  return imgRange;
+}
+
+
+/**
  * Rescale an image band to be more similar to a target band. Adapted from
  * SAGA GIS source code.
  * https://github.com/saga-gis/saga-gis/blob/master/saga-gis/src/tools/imagery/imagery_tools/pansharpening.cpp
@@ -31,6 +63,7 @@ exports.rescaleBand = function(targetBand, referenceBand, match) {
   return rescaledTarget;
 }
 
+
 /**
  * Check if an object has a value. Helpful for finding missing arguments.
  * @param {object} x Any object 
@@ -42,39 +75,6 @@ exports.isMissing = function(x) {
   }
   return false;
 }
-
-
-/**
- * Create a constant image where each band represents the reduced value of the
- * corresponding band of the input image.
- * @param {ee.Image} img The input image to calculate reduced values for.
- * @param {ee.Reducer} reducer The reducer to apply to the image, such as ee.Reducer.min()
- * @return {ee.Image} An image with the same number of bands as the input
- *  image, where each band is a constant value of the reduced value of the 
- *  corresponding band of the input image.
-*/
-exports.reduceImage = function(img, reducer) {
-  // Calculate the reduced image value(s)
-  var imgReducedVal = img.reduceRegion({
-    reducer: reducer,
-    geometry: img.geometry(),
-    scale: img.projection().nominalScale(),
-    maxPixels: 1e9
-  });
-  
-  var imgReduced = ee.Image.constant(imgReducedVal.values(img.bandNames()));
-  return imgReduced;
-}
-
-
-// Return a constant image representing the range (max - min) of the bands of an input image
-exports.getImageRange = function(img) {
-  var imgMax = reduceImage(img, ee.Reducer.max());
-  var imgMin = reduceImage(img, ee.Reducer.min());
-  var imgRange = imgMax.subtract(imgMin);
-  return imgRange;
-}
-
 
 
 /**
