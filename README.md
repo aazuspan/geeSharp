@@ -2,6 +2,7 @@
 Pan-sharpening functions implemented in Google Earth Engine
 
 ### Currently implemented:
+- PCA
 - Brovey (weighted)
 - IHS
 - Simple mean
