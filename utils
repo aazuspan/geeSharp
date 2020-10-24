@@ -7,26 +7,33 @@
  *  image, where each band is a constant value of the reduced value of the 
  *  corresponding band of the input image.
 */
-exports.reduceImage = function(img, reducer) {
-  // Calculate the reduced image value(s)
-  var imgReducedVal = img.reduceRegion({
-    reducer: reducer,
-    geometry: img.geometry(),
-    scale: img.projection().nominalScale(),
-    maxPixels: 1e9
-  });
-  
-  var imgReduced = ee.Image.constant(imgReducedVal.values(img.bandNames()));
-  return imgReduced;
+exports.reduceImage = function (img, reducer) {
+    // Calculate the reduced image value(s)
+    var imgReducedVal = img.reduceRegion({
+        reducer: reducer,
+        geometry: img.geometry(),
+        scale: img.projection().nominalScale(),
+        maxPixels: 1e9
+    });
+
+    var imgReduced = ee.Image.constant(imgReducedVal.values(img.bandNames()));
+    return imgReduced;
 }
 
 
-// Return a constant image representing the range (max - min) of the bands of an input image
-exports.getImageRange = function(img) {
-  var imgMax = exports.reduceImage(img, ee.Reducer.max());
-  var imgMin = exports.reduceImage(img, ee.Reducer.min());
-  var imgRange = imgMax.subtract(imgMin);
-  return imgRange;
+/**
+ * Create a constant image where each band represents the range value of the
+ * corresponding band of the input image.
+ * @param {ee.Image} img The input image to calculate range values for.
+ * @return {ee.Image} An image with the same number of bands as the input
+ *  image, where each band is a constant value of the range value of the 
+ *  corresponding band of the input image.
+*/
+exports.getImageRange = function (img) {
+    var imgMax = exports.reduceImage(img, ee.Reducer.max());
+    var imgMin = exports.reduceImage(img, ee.Reducer.min());
+    var imgRange = imgMax.subtract(imgMin);
+    return imgRange;
 }
 
 
@@ -41,26 +48,26 @@ exports.getImageRange = function(img) {
  *  will be matched.
  * @return {ee.Image} A rescaled version of inputBand.
 */
-exports.rescaleBand = function(targetBand, referenceBand, match) {
-  var offsetTarget,
-      offset,
-      scale;
-  
-  if (match === false) {
-    offsetTarget = exports.reduceImage(targetBand, ee.Reducer.min());
-    offset = exports.reduceImage(referenceBand, ee.Reducer.min());
-    scale = exports.getImageRange(referenceBand).divide(exports.getImageRange(targetBand));
-  }
-  
-  else {
-    offsetTarget = exports.reduceImage(targetBand, ee.Reducer.mean());
-    offset = exports.reduceImage(referenceBand, ee.Reducer.mean());
-    scale = exports.reduceImage(referenceBand, ee.Reducer.stdDev())
-                  .divide(exports.reduceImage(targetBand, ee.Reducer.stdDev()));
-  }
-  
-  var rescaledTarget = targetBand.subtract(offsetTarget).multiply(scale).add(offset);
-  return rescaledTarget;
+exports.rescaleBand = function (targetBand, referenceBand, match) {
+    var offsetTarget,
+        offset,
+        scale;
+
+    if (match === false) {
+        offsetTarget = exports.reduceImage(targetBand, ee.Reducer.min());
+        offset = exports.reduceImage(referenceBand, ee.Reducer.min());
+        scale = exports.getImageRange(referenceBand).divide(exports.getImageRange(targetBand));
+    }
+
+    else {
+        offsetTarget = exports.reduceImage(targetBand, ee.Reducer.mean());
+        offset = exports.reduceImage(referenceBand, ee.Reducer.mean());
+        scale = exports.reduceImage(referenceBand, ee.Reducer.stdDev())
+            .divide(exports.reduceImage(targetBand, ee.Reducer.stdDev()));
+    }
+
+    var rescaledTarget = targetBand.subtract(offsetTarget).multiply(scale).add(offset);
+    return rescaledTarget;
 }
 
 
@@ -69,11 +76,11 @@ exports.rescaleBand = function(targetBand, referenceBand, match) {
  * @param {object} x Any object 
  * @return {boolean} True if the object is missing, false if it is not.
 */
-exports.isMissing = function(x) {
-  if (x === undefined || x === null) {
-    return true;
-  }
-  return false;
+exports.isMissing = function (x) {
+    if (x === undefined || x === null) {
+        return true;
+    }
+    return false;
 }
 
 
@@ -88,14 +95,14 @@ exports.isMissing = function(x) {
  * @param {number=} wBlue The proportional weight of the blue band.
  * @return {ee.Image} A single band image representing the weighted intensity of the original image.
 */
-exports.calculateWeightedIntensity = function(img, redBand, greenBand, blueBand, wRed, wGreen, wBlue) {
-  // Calculate weighted bands
-  var r = img.select(redBand).multiply(wRed);
-  var g = img.select(greenBand).multiply(wGreen);
-  var b = img.select(blueBand).multiply(wBlue);
+exports.calculateWeightedIntensity = function (img, redBand, greenBand, blueBand, wRed, wGreen, wBlue) {
+    // Calculate weighted bands
+    var r = img.select(redBand).multiply(wRed);
+    var g = img.select(greenBand).multiply(wGreen);
+    var b = img.select(blueBand).multiply(wBlue);
 
-  // Calculate intensity as sum of the weighted visible bands
-  var intensity = r.add(g).add(b);
-  
-  return intensity;
+    // Calculate intensity as sum of the weighted visible bands
+    var intensity = r.add(g).add(b);
+
+    return intensity;
 }
