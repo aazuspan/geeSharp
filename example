@@ -7,6 +7,7 @@ var img = l8
   .first()
   .clip(extent);
 
+
 // var brov = sharpenBrovey(img, "B4", "B3", "B2", "B5", "B8", 0.52, 0.25, 0.23);
 var simpleMean = sharpening.simpleMean.sharpen(img, "B4", "B3", "B2", "B8");
 // var ihs = sharpenIHS(img, "B4", "B3", "B2", "B8");
