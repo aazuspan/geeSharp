@@ -1,4 +1,4 @@
-var simpleMean = require('users/aazuspan/geeSharpening:simpleMean')
+var sharpening = require('users/aazuspan/geeSharpening:sharpening')
 
 
 var img = l8
@@ -8,7 +8,7 @@ var img = l8
   .clip(extent);
 
 // var brov = sharpenBrovey(img, "B4", "B3", "B2", "B5", "B8", 0.52, 0.25, 0.23);
-var simpleMean = sharpenSimpleMean(img, "B4", "B3", "B2", "B8");
+var simpleMean = sharpening.simpleMean.sharpenSimpleMean(img, "B4", "B3", "B2", "B8");
 // var ihs = sharpenIHS(img, "B4", "B3", "B2", "B8");
 // var pca = sharpenPCA(img.select(["B2", "B3", "B4"]), img.select(["B8"]), 1, true);
 
