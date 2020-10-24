@@ -13,4 +13,4 @@ var extent =
           [-122.73789073778471, 47.09859799284589]]], null, false),
     l8 = ee.ImageCollection("LANDSAT/LC08/C01/T1_TOA");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
-export.simpleMean = require('users/aazuspan/geeSharpening:simpleMean')
+exports.simpleMean = require('users/aazuspan/geeSharpening:simpleMean')
