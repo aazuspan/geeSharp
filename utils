@@ -23,8 +23,8 @@ exports.reduceImage = function(img, reducer) {
 
 // Return a constant image representing the range (max - min) of the bands of an input image
 exports.getImageRange = function(img) {
-  var imgMax = utils.reduceImage(img, ee.Reducer.max());
-  var imgMin = utils.reduceImage(img, ee.Reducer.min());
+  var imgMax = exports.reduceImage(img, ee.Reducer.max());
+  var imgMin = exports.reduceImage(img, ee.Reducer.min());
   var imgRange = imgMax.subtract(imgMin);
   return imgRange;
 }
@@ -47,16 +47,16 @@ exports.rescaleBand = function(targetBand, referenceBand, match) {
       scale;
   
   if (match === false) {
-    offsetTarget = utils.reduceImage(targetBand, ee.Reducer.min());
-    offset = utils.reduceImage(referenceBand, ee.Reducer.min());
-    scale = utils.getImageRange(referenceBand).divide(utils.getImageRange(targetBand));
+    offsetTarget = exports.reduceImage(targetBand, ee.Reducer.min());
+    offset = exports.reduceImage(referenceBand, ee.Reducer.min());
+    scale = exports.getImageRange(referenceBand).divide(exports.getImageRange(targetBand));
   }
   
   else {
-    offsetTarget = utils.reduceImage(targetBand, ee.Reducer.mean());
-    offset = utils.reduceImage(referenceBand, ee.Reducer.mean());
-    scale = utils.reduceImage(referenceBand, ee.Reducer.stdDev())
-                  .divide(utils.reduceImage(targetBand, ee.Reducer.stdDev()));
+    offsetTarget = exports.reduceImage(targetBand, ee.Reducer.mean());
+    offset = exports.reduceImage(referenceBand, ee.Reducer.mean());
+    scale = exports.reduceImage(referenceBand, ee.Reducer.stdDev())
+                  .divide(exports.reduceImage(targetBand, ee.Reducer.stdDev()));
   }
   
   var rescaledTarget = targetBand.subtract(offsetTarget).multiply(scale).add(offset);
