@@ -1,4 +1,4 @@
-exports.sharpenSimpleMean = function(img, redBand, greenBand, blueBand, pBand) {
+exports.sharpen = function(img, redBand, greenBand, blueBand, pBand) {
   var p = img.select(pBand);
   var panProj = p.projection();
    
