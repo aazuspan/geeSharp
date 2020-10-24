@@ -2,6 +2,7 @@
 var l8 = ee.ImageCollection("LANDSAT/LC08/C01/T1_TOA"),
     extent = 
     /* color: #0b4a8b */
+    /* shown: false */
     /* displayProperties: [
       {
         "type": "rectangle"
