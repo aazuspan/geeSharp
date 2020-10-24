@@ -1,3 +1,6 @@
+var utils = require('users/aazuspan/geeSharpening:utils');
+
+
 /**
  * Sharpen the R, G, B, and NIR bands of an image using Brovey sharpening following Zhang & Roy 2016
  * @param {ee.Image} img An image to sharpen.
