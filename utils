@@ -1,5 +1,3 @@
-var utils = require('users/aazuspan/geeSharpening:utils');
-
 /**
  * Create a constant image where each band represents the reduced value of the
  * corresponding band of the input image.
