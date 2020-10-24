@@ -1,27 +1,14 @@
-/**** Start of imports. If edited, may not auto-convert in the playground. ****/
-var extent = 
-    /* color: #ffc82d */
-    /* shown: false */
-    /* displayProperties: [
-      {
-        "type": "rectangle"
-      }
-    ] */
-    ee.Geometry.Polygon(
-        [[[-122.94882031557573, 47.040315914950874],
-          [-122.94882031557573, 46.98249431744871],
-          [-122.84496518251909, 46.98249431744871],
-          [-122.84496518251909, 47.040315914950874]]], null, false);
-/***** End of imports. If edited, may not auto-convert in the playground. *****/
 var sharpening = require('users/aazuspan/geeSharpening:sharpening');
 
-var l8 = ee.ImageCollection("LANDSAT/LC08/C01/T1_TOA");
+var extent = 
+    ee.Geometry.Polygon(
+        [[[-122.54129620668901, 47.33965367791073],
+          [-122.54129620668901, 47.16837678723401],
+          [-122.28912564394487, 47.16837678723401],
+          [-122.28912564394487, 47.33965367791073]]], null, false);
 
-var img = l8
-  .filterBounds(extent)
-  .sort("CLOUD_COVER")
-  .first()
-  .clip(extent);
+var img = ee.Image("LANDSAT/LC08/C01/T1_TOA/LC08_047027_20160819")
+            .clip(extent);
 
 
 var brov = sharpening.brovey.sharpen(img, "B4", "B3", "B2", "B5", "B8", 0.52, 0.25, 0.23);
