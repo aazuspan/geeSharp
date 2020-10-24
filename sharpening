@@ -2,3 +2,4 @@
 
 exports.simpleMean = require('users/aazuspan/geeSharpening:algorithms/simpleMean');
 exports.brovey = require('users/aazuspan/geeSharpening:algorithms/brovey');
+exports.PCA = require('users/aazuspan/geeSharpening:algorithms/PCA');
