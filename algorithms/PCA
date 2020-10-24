@@ -21,11 +21,11 @@ var utils = require('users/aazuspan/geeSharpening:utils');
 */ 
 exports.sharpen = function(img, pan, substitutePC, matchPan) {
   // Default to substituting the first PC
-  if (isMissing(substitutePC)) {
+  if (utils.isMissing(substitutePC)) {
     substitutePC = 1;
   }
   // Default to matching mean and standared deviation of the pan band
-  if (isMissing(matchPan)) {
+  if (utils.isMissing(matchPan)) {
     matchPan = true;
   }
   
@@ -38,7 +38,7 @@ exports.sharpen = function(img, pan, substitutePC, matchPan) {
   var panBand = pan.bandNames().get(0);
   
   // Mean-center the images to allow efficient covariance calculation
-  var imgMean = reduceImage(img, ee.Reducer.mean());
+  var imgMean = utils.reduceImage(img, ee.Reducer.mean());
   
   var imgCentered = img.subtract(imgMean);
   
@@ -86,7 +86,7 @@ exports.sharpen = function(img, pan, substitutePC, matchPan) {
   pan = pan.multiply(-1)
   
   // Rescale the pan band to more closely match the substituted PC
-  pan = rescaleBand(pan, principalComponents.select(substitutePC - 1), matchPan);
+  pan = utils.rescaleBand(pan, principalComponents.select(substitutePC - 1), matchPan);
 
   // Build the band list, swapping the pan band for the appropriate PC
   var sharpenBands = pcNames.set(substitutePC - 1, panBand);
