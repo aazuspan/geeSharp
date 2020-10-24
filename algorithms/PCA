@@ -1,3 +1,6 @@
+var utils = require('users/aazuspan/geeSharpening:utils');
+
+
 /**
  * Sharpen all bands of an image by converting it to principal components,
  * rescaling a panchromatic band to match the first principal component,
