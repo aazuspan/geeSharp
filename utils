@@ -1,3 +1,5 @@
+var utils = require('users/aazuspan/geeSharpening:utils');
+
 /**
  * Create a constant image where each band represents the reduced value of the
  * corresponding band of the input image.
@@ -23,8 +25,8 @@ exports.reduceImage = function(img, reducer) {
 
 // Return a constant image representing the range (max - min) of the bands of an input image
 exports.getImageRange = function(img) {
-  var imgMax = reduceImage(img, ee.Reducer.max());
-  var imgMin = reduceImage(img, ee.Reducer.min());
+  var imgMax = utils.reduceImage(img, ee.Reducer.max());
+  var imgMin = utils.reduceImage(img, ee.Reducer.min());
   var imgRange = imgMax.subtract(imgMin);
   return imgRange;
 }
