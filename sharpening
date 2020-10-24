@@ -1,16 +1,1 @@
-/**** Start of imports. If edited, may not auto-convert in the playground. ****/
-var extent = 
-    /* color: #d63000 */
-    /* displayProperties: [
-      {
-        "type": "rectangle"
-      }
-    ] */
-    ee.Geometry.Polygon(
-        [[[-122.95006419969877, 47.09859799284589],
-          [-122.95006419969877, 46.96990060084616],
-          [-122.73789073778471, 46.96990060084616],
-          [-122.73789073778471, 47.09859799284589]]], null, false),
-    l8 = ee.ImageCollection("LANDSAT/LC08/C01/T1_TOA");
-/***** End of imports. If edited, may not auto-convert in the playground. *****/
 exports.simpleMean = require('users/aazuspan/geeSharpening:simpleMean')
