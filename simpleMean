@@ -1,0 +1,19 @@
+exports.sharpenSimpleMean = function(img, redBand, greenBand, blueBand, pBand) {
+  var p = img.select(pBand);
+  var panProj = p.projection();
+   
+  var bands = [redBand, greenBand, blueBand];
+  var sharpBands= [];
+  
+  for (var i = 0; i < bands.length; i++) {
+    var band = img.select(bands[i]);
+    
+    var sharpBand = band.resample().reproject(panProj);
+    sharpBand = sharpBand.add(p).multiply(0.5);
+    
+    sharpBands.push(sharpBand);
+  }
+  
+
+  return ee.Image(sharpBands).rename(["Rs", "Gs", "Bs"]);
+}
