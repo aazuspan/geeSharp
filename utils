@@ -49,16 +49,16 @@ exports.rescaleBand = function(targetBand, referenceBand, match) {
       scale;
   
   if (match === false) {
-    offsetTarget = reduceImage(targetBand, ee.Reducer.min());
-    offset = reduceImage(referenceBand, ee.Reducer.min());
-    scale = getImageRange(referenceBand).divide(getImageRange(targetBand));
+    offsetTarget = utils.reduceImage(targetBand, ee.Reducer.min());
+    offset = utils.reduceImage(referenceBand, ee.Reducer.min());
+    scale = utils.getImageRange(referenceBand).divide(utils.getImageRange(targetBand));
   }
   
   else {
-    offsetTarget = reduceImage(targetBand, ee.Reducer.mean());
-    offset = reduceImage(referenceBand, ee.Reducer.mean());
-    scale = reduceImage(referenceBand, ee.Reducer.stdDev())
-                  .divide(reduceImage(targetBand, ee.Reducer.stdDev()));
+    offsetTarget = utils.reduceImage(targetBand, ee.Reducer.mean());
+    offset = utils.reduceImage(referenceBand, ee.Reducer.mean());
+    scale = utils.reduceImage(referenceBand, ee.Reducer.stdDev())
+                  .divide(utils.reduceImage(targetBand, ee.Reducer.stdDev()));
   }
   
   var rescaledTarget = targetBand.subtract(offsetTarget).multiply(scale).add(offset);
