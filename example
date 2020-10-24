@@ -14,7 +14,7 @@ var l8 = ee.ImageCollection("LANDSAT/LC08/C01/T1_TOA"),
           [-122.77428294969877, 46.92724511253449],
           [-122.77428294969877, 47.069141996609716]]], null, false);
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
-var sharpening = require('users/aazuspan/geeSharpening:sharpening')
+var sharpening = require('users/aazuspan/geeSharpening:sharpening');
 
 
 var img = l8
