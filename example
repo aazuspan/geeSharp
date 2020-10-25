@@ -14,7 +14,7 @@ var img = ee.Image("LANDSAT/LC08/C01/T1_TOA/LC08_047027_20160819")
     .clip(extent);
 
 // Sharpen with Brovey using fixed band weights (optional)
-var brov = sharpening.brovey.sharpen(img, "B4", "B3", "B2", "B5", "B8", 0.52, 0.25, 0.23);
+var brov = sharpening.brovey.sharpen(img.select(["B2", "B3", "B4"]), img.select(["B8"]), [0.52, 0.25, 0.23]);
 // Sharpen with simple mean
 // var simpleMean = sharpening.simpleMean.sharpen(img, "B4", "B3", "B2", "B8");
 var simpleMean = sharpening.simpleMean.sharpen(img.select(["B4", "B3", "B2"]), img.select(["B8"]));
