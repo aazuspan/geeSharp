@@ -87,19 +87,6 @@ exports.calculateWeightedIntensity = function (img, weights) {
     var weightedImg = img.multiply(weights);
     
     var intensity = weightedImg.reduce(ee.Reducer.sum());
-    print(intensity)
-    /*
-    // Calculate weighted bands
-    var r = img.select(redBand).multiply(wRed);
-    var g = img.select(greenBand).multiply(wGreen);
-    var b = img.select(blueBand).multiply(wBlue);
-
-    // Calculate intensity as sum of the weighted visible bands
-    var intensity = r.add(g).add(b);
 
     return intensity;
-    */
 }
-
-var img = ee.Image("LANDSAT/LC08/C01/T1_TOA/LC08_047027_20160819")
-exports.calculateWeightedIntensity(img.select(["B4", "B3", "B2"]), [1, 1, 1])
