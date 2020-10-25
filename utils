@@ -76,14 +76,6 @@ exports.isMissing = function (x) {
  *  the original image.
 */
 exports.calculateWeightedIntensity = function (img, weights) {
-    // Get the number of weights and bands, and make sure they match
-    var weightsLength = ee.Number(ee.List(weights).length());
-    var bandsLength = ee.Number(img.bandNames().length());
-
-    if (weightsLength.eq(bandsLength) === false) {
-      throw "ERROR: Number of bands must match number of weights.";
-    }
-    
     var weightedImg = img.multiply(weights);
     
     var intensity = weightedImg.reduce(ee.Reducer.sum());
