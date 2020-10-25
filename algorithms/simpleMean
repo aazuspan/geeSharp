@@ -2,11 +2,11 @@
  * Sharpen the R, G, and B bands of an image using a simple mean.
  * @param {ee.Image} img An image to sharpen. All bands should spectrally overlap
  *  the panchromatic band to avoid spectral distortion.
- * @param {ee.Image} pBand An single-band panchromatic image.
+ * @param {ee.Image} pan An single-band panchromatic image.
  * @return {ee.Image} The input image with all bands sharpened to the spatial 
  *  resolution of the panchromatic band.
 */
-exports.sharpen = function (img, pBand) {
+exports.sharpen = function (img, pan) {
     var panProj = pBand.projection();
 
     // Resample all bands to the panchromatic resolution
