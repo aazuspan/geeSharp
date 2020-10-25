@@ -38,35 +38,18 @@ exports.getImageRange = function (img) {
 
 
 /**
- * Rescale an image band to be more similar to a target band. Adapted from
- * SAGA GIS source code.
- * https://github.com/saga-gis/saga-gis/blob/master/saga-gis/src/tools/imagery/imagery_tools/pansharpening.cpp
- * @param {ee.Image} targetBand A single-band image to rescale.
- * @param {ee.Image} referenceBand A single-band image to rescale the targetBand towards.
- * @param {boolean} match If true, the mean and standard deviation of the 
- *  targetBand will be matched to the reference band. If false, the range
- *  will be matched.
- * @return {ee.Image} A rescaled version of inputBand.
+ * Rescale the mean and standard deviation of a target image to match a reference image.
+ * @param {ee.Image} targetImage An image to rescale.
+ * @param {ee.Image} referenceImage An image to rescale towards. 
+ * @return {ee.Image} A rescaled version of targetImage.
 */
-exports.rescaleBand = function (targetBand, referenceBand, match) {
-    var offsetTarget,
-        offset,
-        scale;
+exports.linearHistogramMatch = function (targetImage, referenceImage) {
+    var offsetTarget = exports.reduceImage(targetImage, ee.Reducer.mean());
+    var offset = exports.reduceImage(referenceImage, ee.Reducer.mean());
+    var scale = exports.reduceImage(referenceImage, ee.Reducer.stdDev())
+        .divide(exports.reduceImage(targetImage, ee.Reducer.stdDev()));
 
-    if (match === false) {
-        offsetTarget = exports.reduceImage(targetBand, ee.Reducer.min());
-        offset = exports.reduceImage(referenceBand, ee.Reducer.min());
-        scale = exports.getImageRange(referenceBand).divide(exports.getImageRange(targetBand));
-    }
-
-    else {
-        offsetTarget = exports.reduceImage(targetBand, ee.Reducer.mean());
-        offset = exports.reduceImage(referenceBand, ee.Reducer.mean());
-        scale = exports.reduceImage(referenceBand, ee.Reducer.stdDev())
-            .divide(exports.reduceImage(targetBand, ee.Reducer.stdDev()));
-    }
-
-    var rescaledTarget = targetBand.subtract(offsetTarget).multiply(scale).add(offset);
+    var rescaledTarget = targetImage.subtract(offsetTarget).multiply(scale).add(offset);
     return rescaledTarget;
 }
 
