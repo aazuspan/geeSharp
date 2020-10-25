@@ -30,21 +30,21 @@ exports.sharpen = function (img, pan, weights) {
     // Resample the intensity band
     var intensitySharp = intensity.resample().reproject(panProj);
 
-    var bands = [redBand, greenBand, blueBand, nirBand];
-    var sharpBands = [];
+    var imgBrovey = img.resample('bilinear').reproject(panProj);
+    imgBrovey = imgBrovey.divide(intensitySharp).multiply(pan);
+    
+    // var bands = [redBand, greenBand, blueBand, nirBand];
+    // var sharpBands = [];
 
-    // Resample each band and inject pan spatial data
-    for (var i = 0; i < bands.length; i++) {
-        var band = img.select(bands[i]);
-        var sharpBand = band.resample().reproject(panProj);
-        sharpBand = sharpBand.divide(intensitySharp).multiply(p);
+    // // Resample each band and inject pan spatial data
+    // for (var i = 0; i < bands.length; i++) {
+    //     var band = img.select(bands[i]);
+    //     var sharpBand = band.resample().reproject(panProj);
+    //     sharpBand = sharpBand.divide(intensitySharp).multiply(p);
 
-        sharpBands.push(sharpBand);
-    }
+    //     sharpBands.push(sharpBand);
+    // }
 
-    return ee.Image(sharpBands).rename(["Rs", "Gs", "Bs", "NIRs"]);
-    */
+    // return ee.Image(sharpBands).rename(["Rs", "Gs", "Bs", "NIRs"]);
+    return imgBrovey;
 }
-
-var img = ee.Image("LANDSAT/LC08/C01/T1_TOA/LC08_047027_20160819");
-exports.sharpen(img.select(["B4", "B3", "B2"]), img.select(["B8"]))
