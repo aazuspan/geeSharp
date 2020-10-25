@@ -102,4 +102,4 @@ exports.calculateWeightedIntensity = function (img, weights) {
 }
 
 var img = ee.Image("LANDSAT/LC08/C01/T1_TOA/LC08_047027_20160819")
-exports.calculateWeightedIntensity(img.select(["B4", "B3", "B2"]), [1, 1])
+exports.calculateWeightedIntensity(img.select(["B4", "B3", "B2"]), [1, 1, 1])
