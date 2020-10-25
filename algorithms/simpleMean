@@ -9,7 +9,7 @@
 exports.sharpen = function (img, pBand) {
     var panProj = pBand.projection();
     
-    imgSharp = img.resample('bilinear').reproject(panProj);
+    var imgSharp = img.resample('bilinear').reproject(panProj);
     imgSharp = img.add(pBand).multiply(0.5);
 
     return imgSharp;
