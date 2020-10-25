@@ -86,7 +86,7 @@ exports.sharpen = function (img, pan, substitutePC, matchPan) {
     pan = pan.multiply(-1)
 
     // Rescale the pan band to more closely match the substituted PC
-    pan = utils.rescaleBand(pan, principalComponents.select(substitutePC - 1), matchPan);
+    pan = utils.linearHistogramMatch(pan, principalComponents.select(substitutePC - 1), matchPan);
 
     // Build the band list, swapping the pan band for the appropriate PC
     var sharpenBands = pcNames.set(substitutePC - 1, panBand);
