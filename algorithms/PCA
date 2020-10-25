@@ -20,10 +20,6 @@ exports.sharpen = function (img, pan, substitutePC) {
     if (utils.isMissing(substitutePC)) {
         substitutePC = 1;
     }
-    // Default to matching mean and standared deviation of the pan band
-    if (utils.isMissing(matchPan)) {
-        matchPan = true;
-    }
 
     // Resample the image to the panchromatic resolution
     img = img.resample("bilinear")
