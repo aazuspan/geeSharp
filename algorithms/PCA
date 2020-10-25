@@ -12,14 +12,10 @@ var utils = require('users/aazuspan/geeSharpening:utils');
  * @param {number} substitutePC The number of the principal component to
  *  replace with the pan band. Defaults to 1. Must be in range 1 - n,
  *  where n is the number of bands in the input image.
- * @param {boolean} matchPan If true, the mean and standard deviation of
- *  the pan band will be matched to the mean and standard deviation of the
- *  substituted PC. If false, the range will be matched instead. Defaults
- *  to true.
  * @return {ee.Image} An image sharpened to the spatial resolution of the 
  * panchromatic image.
 */
-exports.sharpen = function (img, pan, substitutePC, matchPan) {
+exports.sharpen = function (img, pan, substitutePC) {
     // Default to substituting the first PC
     if (utils.isMissing(substitutePC)) {
         substitutePC = 1;
@@ -86,7 +82,7 @@ exports.sharpen = function (img, pan, substitutePC, matchPan) {
     pan = pan.multiply(-1)
 
     // Rescale the pan band to more closely match the substituted PC
-    pan = utils.linearHistogramMatch(pan, principalComponents.select(substitutePC - 1), matchPan);
+    pan = utils.linearHistogramMatch(pan, principalComponents.select(substitutePC - 1));
 
     // Build the band list, swapping the pan band for the appropriate PC
     var sharpenBands = pcNames.set(substitutePC - 1, panBand);
