@@ -1,14 +1,13 @@
 /**
- * Sharpen the R, G, and B bands of an image using IHS.
+ * Sharpen all bands of an image using IHS, where RGB bands are
+ * converted to IHS and the intensity data is swapped for the
+ * panchromatic band.
  * @param {ee.Image} img An image to sharpen.
- * @param {string} redBand The label of the red band.
- * @param {string} greenBand The label of the green band.
- * @param {string} blueBand The label of the blue band.
- * @param {string} pBand The label of the panchromatic band.
- * @return {ee.Image} An image with R, G, and B bands sharpened to the spatial 
- * resolution of the original panchromatic band.
+ * @param {ee.Image} pan An single-band panchromatic image.
+ * @return {ee.Image} The input image with all bands sharpened to the spatial 
+ *  resolution of the panchromatic band.
 */
-exports.sharpen = function (img, redBand, greenBand, blueBand, pBand) {
+exports.sharpen = function (img, pan) {
     var p = img.select(pBand);
     var imgHsv = img.select([redBand, greenBand, blueBand]).rgbToHsv();
 
