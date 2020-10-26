@@ -8,13 +8,15 @@
  *  resolution of the panchromatic band.
 */
 exports.sharpen = function (img, pan) {
-    var p = img.select(pBand);
-    var imgHsv = img.select([redBand, greenBand, blueBand]).rgbToHsv();
+    var panProj = pan.projection();
+    img = img.resample('bilinear').reproject(panProj);
+    
+    var imgHsv = img.rgbToHsv();
 
     // Replace the value band with the pan band and convert back to RGB
     var imgRgb = imgHsv
-        .addBands([p])
-        .select(["hue", "saturation", pBand])
+        .addBands([pan])
+        .select(["hue", "saturation", pan])
         .hsvToRgb();
 
     return imgRgb;
