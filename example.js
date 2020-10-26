@@ -34,7 +34,3 @@ Map.addLayer(brov, { min: 0, max: 0.4 }, "Brovey")
 Map.addLayer(simpleMean, { min: 0, max: 0.4 }, "SimpleMean")
 Map.addLayer(ihs, { min: 0, max: 0.4 }, "IHS")
 Map.addLayer(pca, { min: 0, max: 0.4 }, "PCA")
-
-
-// TODO: Mention in the docs that most functions will accept any number of image bands, but the user is responsible for making sure that the algorithm can accurately sharpen those bands.
-// The exception is IHS, which will throw an error if more than R G B are provided.
