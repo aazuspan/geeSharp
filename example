@@ -27,7 +27,7 @@ var pca = sharpening.PCA.sharpen(vis, pan);
 
 
 // Add layers to the map
-Map.addLayer(img, { min: 0, max: 0.4 }, "L8");
+Map.addLayer(vis, { min: 0, max: 0.4 }, "L8");
 Map.addLayer(brov, { min: 0, max: 0.4 }, "Brovey")
 Map.addLayer(simpleMean, { min: 0, max: 0.4 }, "SimpleMean")
 Map.addLayer(ihs, { min: 0, max: 0.4 }, "IHS")
