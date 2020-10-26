@@ -1,10 +1,10 @@
 /**
- * Sharpen an image using a simple mean, where each band is calculated as the mean
- * of the band and the panchromatic band.
- * @param {ee.Image} img An image to sharpen. All bands should spectrally overlap
- *  the panchromatic band to avoid spectral distortion.
+ * Sharpen an image using a simple mean, where each band is calculated as the
+ * mean of the band and the panchromatic band.
+ * @param {ee.Image} img An image to sharpen. All bands should spectrally
+ *  overlap the panchromatic band to avoid spectral distortion.
  * @param {ee.Image} pan An single-band panchromatic image.
- * @return {ee.Image} The input image with all bands sharpened to the spatial 
+ * @return {ee.Image} The input image with all bands sharpened to the spatial
  *  resolution of the panchromatic band.
 */
 exports.sharpen = function (img, pan) {
