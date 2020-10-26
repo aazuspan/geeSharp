@@ -21,7 +21,7 @@ var brov = sharpening.brovey.sharpen(vis, pan, [0.52, 0.25, 0.23]);
 // Sharpen with simple mean
 var simpleMean = sharpening.simpleMean.sharpen(vis, pan);
 // Sharpen with IHS
-var ihs = sharpening.IHS.sharpen(img, "B4", "B3", "B2", "B8");
+var ihs = sharpening.IHS.sharpen(vis, pan);
 // Sharpen with PCA
 var pca = sharpening.PCA.sharpen(vis, pan);
 
