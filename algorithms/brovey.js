@@ -2,46 +2,33 @@ var utils = require('users/aazuspan/geeSharpening:utils');
 
 
 /**
- * Sharpen the R, G, B, and NIR bands of an image using Brovey sharpening following Zhang & Roy 2016
- * @param {ee.Image} img An image to sharpen.
- * @param {string} redBand The label of the red band.
- * @param {string} greenBand The label of the green band.
- * @param {string} blueBand The label of the blue band.
- * @param {string} nirBand The label of the NIR band.
- * @param {string} pBand The label of the panchromatic band.
- * @param {number=} wRed The proportional weight of the red band.
- * @param {number=} wGreen The proportional weight of the green band.
- * @param {number=} wBlue The proportional weight of the blue band.
- * @return {ee.Image} An image with R, G, B, and NIR bands sharpened to the spatial 
- * resolution of the original panchromatic band.
+ * Sharpen an image using Brovey sharpening, where each band is calculated 
+ * based on a weighted intensity band and the panchromatic band.
+ * @param {ee.Image} img An image to sharpen. All bands should spectrally
+ *  overlap the panchromatic band to avoid spectral distortion.
+ * @param {ee.Image} pan An single-band panchromatic image.
+ * @param {ee.List} weights A list of weights to apply to each band. If
+ *  missing, equal weights will be used.
+ * @return {ee.Image} The input image with all bands sharpened to the spatial
+ *  resolution of the panchromatic band.
 */
-exports.sharpen = function (img, redBand, greenBand, blueBand, nirBand, pBand, wRed, wGreen, wBlue) {
-    var p = img.select(pBand);
-    var panProj = p.projection();
+exports.sharpen = function (img, pan, weights) {
+    var panProj = pan.projection();
 
     // If any weights are missing, use equal weights
-    if ([wRed, wGreen, wBlue].some(utils.isMissing)) {
-        wRed = 1 / 3;
-        wGreen = 1 / 3;
-        wBlue = 1 / 3;
+    if (utils.isMissing(weights)) {
+        var bandNum = img.bandNames().length();
+        var bandWeight = ee.Number(1).divide(bandNum);
+        weights = ee.List.repeat(bandWeight, bandNum);
     }
 
     // Calculate intensity band as sum of the weighted visible bands
-    var intensity = utils.calculateWeightedIntensity(img, redBand, greenBand, blueBand, wRed, wGreen, wBlue);
+    var intensity = utils.calculateWeightedIntensity(img, weights);
     // Resample the intensity band
     var intensitySharp = intensity.resample().reproject(panProj);
 
-    var bands = [redBand, greenBand, blueBand, nirBand];
-    var sharpBands = [];
+    var imgBrovey = img.resample('bilinear').reproject(panProj);
+    imgBrovey = imgBrovey.divide(intensitySharp).multiply(pan);
 
-    // Resample each band and inject pan spatial data
-    for (var i = 0; i < bands.length; i++) {
-        var band = img.select(bands[i]);
-        var sharpBand = band.resample().reproject(panProj);
-        sharpBand = sharpBand.divide(intensitySharp).multiply(p);
-
-        sharpBands.push(sharpBand);
-    }
-
-    return ee.Image(sharpBands).rename(["Rs", "Gs", "Bs", "NIRs"]);
+    return imgBrovey;
 }

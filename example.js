@@ -9,23 +9,32 @@ var extent =
         [-122.28912564394487, 47.16837678723401],
         [-122.28912564394487, 47.33965367791073]]], null, false);
 
+Map.centerObject(extent);
+
 // Select an example Landsat 8 TOA image
 var img = ee.Image("LANDSAT/LC08/C01/T1_TOA/LC08_047027_20160819")
     .clip(extent);
 
+var vis = img.select(["B4", "B3", "B2"]);
+var pan = img.select(["B8"]);
+
 // Sharpen with Brovey using fixed band weights (optional)
-var brov = sharpening.brovey.sharpen(img, "B4", "B3", "B2", "B5", "B8", 0.52, 0.25, 0.23);
+var brov = sharpening.brovey.sharpen(vis, pan, [0.52, 0.25, 0.23]);
 // Sharpen with simple mean
-var simpleMean = sharpening.simpleMean.sharpen(img, "B4", "B3", "B2", "B8");
+var simpleMean = sharpening.simpleMean.sharpen(vis, pan);
 // Sharpen with IHS
-var ihs = sharpening.IHS.sharpen(img, "B4", "B3", "B2", "B8");
+var ihs = sharpening.IHS.sharpen(vis, pan);
 // Sharpen with PCA
-var pca = sharpening.PCA.sharpen(img.select(["B2", "B3", "B4"]), img.select(["B8"]));
+var pca = sharpening.PCA.sharpen(vis, pan);
 
 
 // Add layers to the map
-Map.addLayer(img, { bands: ["B4", "B3", "B2"], min: 0, max: 0.4 }, "L8");
+Map.addLayer(vis, { min: 0, max: 0.4 }, "L8");
 Map.addLayer(brov, { min: 0, max: 0.4 }, "Brovey")
 Map.addLayer(simpleMean, { min: 0, max: 0.4 }, "SimpleMean")
 Map.addLayer(ihs, { min: 0, max: 0.4 }, "IHS")
-Map.addLayer(pca, { bands: ["B4", "B3", "B2"], min: 0, max: 0.4 }, "PCA")
+Map.addLayer(pca, { min: 0, max: 0.4 }, "PCA")
+
+
+// TODO: Mention in the docs that most functions will accept any number of image bands, but the user is responsible for making sure that the algorithm can accurately sharpen those bands.
+// The exception is IHS, which will throw an error if more than R G B are provided.

@@ -1,29 +1,19 @@
 /**
- * Sharpen the R, G, and B bands of an image using a simple mean.
- * @param {ee.Image} img An image to sharpen.
- * @param {string} redBand The label of the red band.
- * @param {string} greenBand The label of the green band.
- * @param {string} blueBand The label of the blue band.
- * @param {string} pBand The label of the panchromatic band.
- * @return {ee.Image} An image with R, G, and B bands sharpened to the spatial 
- * resolution of the original panchromatic band.
+ * Sharpen an image using a simple mean, where each band is calculated as the
+ * mean of the band and the panchromatic band.
+ * @param {ee.Image} img An image to sharpen. All bands should spectrally
+ *  overlap the panchromatic band to avoid spectral distortion.
+ * @param {ee.Image} pan An single-band panchromatic image.
+ * @return {ee.Image} The input image with all bands sharpened to the spatial
+ *  resolution of the panchromatic band.
 */
-exports.sharpen = function (img, redBand, greenBand, blueBand, pBand) {
-    var p = img.select(pBand);
-    var panProj = p.projection();
+exports.sharpen = function (img, pan) {
+    var panProj = pan.projection();
 
-    var bands = [redBand, greenBand, blueBand];
-    var sharpBands = [];
+    // Resample all bands to the panchromatic resolution
+    var imgSharp = img.resample('bilinear').reproject(panProj);
+    // Replace each band with the mean of that band and the pan band
+    imgSharp = img.add(pan).multiply(0.5);
 
-    for (var i = 0; i < bands.length; i++) {
-        var band = img.select(bands[i]);
-
-        var sharpBand = band.resample().reproject(panProj);
-        sharpBand = sharpBand.add(p).multiply(0.5);
-
-        sharpBands.push(sharpBand);
-    }
-
-
-    return ee.Image(sharpBands).rename(["Rs", "Gs", "Bs"]);
+    return imgSharp;
 }

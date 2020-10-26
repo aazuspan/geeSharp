@@ -1,21 +1,24 @@
 /**
- * Sharpen the R, G, and B bands of an image using IHS.
- * @param {ee.Image} img An image to sharpen.
- * @param {string} redBand The label of the red band.
- * @param {string} greenBand The label of the green band.
- * @param {string} blueBand The label of the blue band.
- * @param {string} pBand The label of the panchromatic band.
- * @return {ee.Image} An image with R, G, and B bands sharpened to the spatial 
- * resolution of the original panchromatic band.
+ * Sharpen all bands of an image using IHS, where RGB bands are converted to 
+ * IHS and the intensity data is swapped for the panchromatic band.
+ * @param {ee.Image} img An image to sharpen. To work correctly, the image must
+ * have 3 bands: red, green, and blue.
+ * @param {ee.Image} pan An single-band panchromatic image.
+ * @return {ee.Image} The input image with all bands sharpened to the spatial 
+ *  resolution of the panchromatic band.
 */
-exports.sharpen = function (img, redBand, greenBand, blueBand, pBand) {
-    var p = img.select(pBand);
-    var imgHsv = img.select([redBand, greenBand, blueBand]).rgbToHsv();
+exports.sharpen = function (img, pan) {
+    var panProj = pan.projection();
+    // Store pan band name
+    var panBand = pan.bandNames().get(0);
+    img = img.resample('bilinear').reproject(panProj);
+
+    var imgHsv = img.rgbToHsv();
 
     // Replace the value band with the pan band and convert back to RGB
     var imgRgb = imgHsv
-        .addBands([p])
-        .select(["hue", "saturation", pBand])
+        .addBands([pan])
+        .select(["hue", "saturation", panBand])
         .hsvToRgb();
 
     return imgRgb;

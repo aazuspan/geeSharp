@@ -68,24 +68,17 @@ exports.isMissing = function (x) {
 
 
 /**
- * Calculate an intensity band from the R, G, and B bands of an image with fixed band weights.
- * @param {ee.Image} img An image to sharpen.
- * @param {string} redBand The label of the red band.
- * @param {string} greenBand The label of the green band.
- * @param {string} blueBand The label of the blue band.
- * @param {number=} wRed The proportional weight of the red band.
- * @param {number=} wGreen The proportional weight of the green band.
- * @param {number=} wBlue The proportional weight of the blue band.
- * @return {ee.Image} A single band image representing the weighted intensity of the original image.
+ * Calculate an intensity band from the bands of an image using fixed band weights.
+ * @param {ee.Image} img An image to calculate intensity from.
+ * @param {ee.List} weights A list of weights for each band. Length must equal the
+ *  number of bands in img.
+ * @return {ee.Image} A single band image representing the weighted intensity of 
+ *  the original image.
 */
-exports.calculateWeightedIntensity = function (img, redBand, greenBand, blueBand, wRed, wGreen, wBlue) {
-    // Calculate weighted bands
-    var r = img.select(redBand).multiply(wRed);
-    var g = img.select(greenBand).multiply(wGreen);
-    var b = img.select(blueBand).multiply(wBlue);
+exports.calculateWeightedIntensity = function (img, weights) {
+    var weightedImg = img.multiply(weights);
 
-    // Calculate intensity as sum of the weighted visible bands
-    var intensity = r.add(g).add(b);
+    var intensity = weightedImg.reduce(ee.Reducer.sum());
 
     return intensity;
 }
