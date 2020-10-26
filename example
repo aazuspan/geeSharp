@@ -9,6 +9,8 @@ var extent =
         [-122.28912564394487, 47.16837678723401],
         [-122.28912564394487, 47.33965367791073]]], null, false);
 
+Map.centerObject(extent);
+
 // Select an example Landsat 8 TOA image
 var img = ee.Image("LANDSAT/LC08/C01/T1_TOA/LC08_047027_20160819")
     .clip(extent);
