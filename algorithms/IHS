@@ -9,6 +9,8 @@
 */
 exports.sharpen = function (img, pan) {
     var panProj = pan.projection();
+    // Store pan band name
+    var panBand = pan.bandNames().get(0);
     img = img.resample('bilinear').reproject(panProj);
     
     var imgHsv = img.rgbToHsv();
@@ -16,7 +18,7 @@ exports.sharpen = function (img, pan) {
     // Replace the value band with the pan band and convert back to RGB
     var imgRgb = imgHsv
         .addBands([pan])
-        .select(["hue", "saturation", pan])
+        .select(["hue", "saturation", panBand])
         .hsvToRgb();
 
     return imgRgb;
