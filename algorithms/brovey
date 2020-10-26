@@ -2,14 +2,14 @@ var utils = require('users/aazuspan/geeSharpening:utils');
 
 
 /**
- * Sharpen an image using Brovey sharpening, where each band is calculated based
- * on a weighted intensity band and the panchromatic band.
- * @param {ee.Image} img An image to sharpen. All bands should spectrally overlap
- *  the panchromatic band to avoid spectral distortion.
+ * Sharpen an image using Brovey sharpening, where each band is calculated 
+ * based on a weighted intensity band and the panchromatic band.
+ * @param {ee.Image} img An image to sharpen. All bands should spectrally
+ *  overlap the panchromatic band to avoid spectral distortion.
  * @param {ee.Image} pan An single-band panchromatic image.
- * @param {ee.List} weights A list of weights to apply to each band. If missing,
- *  equal weights will be used.
- * @return {ee.Image} The input image with all bands sharpened to the spatial 
+ * @param {ee.List} weights A list of weights to apply to each band. If
+ *  missing, equal weights will be used.
+ * @return {ee.Image} The input image with all bands sharpened to the spatial
  *  resolution of the panchromatic band.
 */
 exports.sharpen = function (img, pan, weights) {
