@@ -1,16 +1,21 @@
 # geeSharpening
-A library for pan-sharpening multispectral imagery in Google Earth Engine
+Pan-sharpen multispectral imagery in GEE with two lines of code:
+```
+var sharpening = require("users/aazuspan/geeSharpening:sharpening");
+var panSharpened = sharpening.PCA.sharpen(img.select(["B4", "B3", "B2",]), img.select(["B8"]);
+```
  ![Example image](https://raw.githubusercontent.com/aazuspan/geeSharpening/main/sharpening_example.png)
  
 ## Installation
 - Visit https://code.earthengine.google.com/?accept_repo=users/aazuspan/geeSharpening. This will link the library to your GEE account, allowing you to import functions.
-- Import sharpening functions by including `var sharpening = require('users/aazuspan/geeSharpening:sharpening');` in your script.
+- Import sharpening functions by including `var sharpening = require("users/aazuspan/geeSharpening:sharpening");` in your script.
 
 ## Usage
 - To sharpen an image, call the appropriate sharpening function
   - `sharpening.PCA.sharpen(input, pan)`
   - `sharpening.brovey.sharpen(input, pan, weights?)`
   - `sharpening.IHS.sharpen(input, pan)`
+  - `sharpening.HPFA.sharpen(input, pan, kernelWidth?)`
   - `sharpening.simpleMean.sharpen(input, pan)`
 - Pass the appropriate arguments for your imagery. See source code documentation for more info about each function's parameters.
 
@@ -22,11 +27,11 @@ var sharpening = require('users/aazuspan/geeSharpening:sharpening');
 // Select an example Landsat 8 TOA image to sharpen
 var inputImg = ee.Image("LANDSAT/LC08/C01/T1_TOA/LC08_047027_20160819");
 
+// Select the 30 m spectral bands to sharpen
+var inputBands = inputImg.select(["B4", "B3", "B2"]);
+
 // Select the 15 m panchromatic band
 var panBand = inputImg.select(["B8"]);
-
-// Select the 30 m spectral bands to sharpen
-var inputBands = inputImg.select(["B2", "B3", "B4"]);
 
 // Pan-sharpen using PCA
 var sharpenedImg = sharpening.PCA.sharpen(inputBands, panBand);
