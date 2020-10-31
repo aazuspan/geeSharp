@@ -1,7 +1,6 @@
 # geeSharpening
-Pan-sharpen multispectral imagery in GEE with two lines of code:
+Pan-sharpen multispectral imagery in GEE with one line of code:
 ```
-var sharpening = require("users/aazuspan/geeSharpening:sharpening");
 var panSharpened = sharpening.PCA.sharpen(img.select(["B4", "B3", "B2",]), img.select(["B8"]);
 ```
  ![Example image](https://raw.githubusercontent.com/aazuspan/geeSharpening/main/sharpening_example.png)
