@@ -29,7 +29,7 @@ var ihs = sharpening.IHS.sharpen(vis, pan);
 // Sharpen with PCA
 var pca = sharpening.PCA.sharpen(vis, pan);
 // Sharpen with Gram-Schmidt
-var gs sharpening.GS.sharpen(vis, pan);
+var gs = sharpening.GS.sharpen(vis, pan);
 
 
 // Add layers to the map
