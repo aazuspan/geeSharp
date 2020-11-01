@@ -22,15 +22,21 @@ var pan = img.select(["B8"]);
 var brov = sharpening.brovey.sharpen(vis, pan, [0.52, 0.25, 0.23]);
 // Sharpen with simple mean
 var simpleMean = sharpening.simpleMean.sharpen(vis, pan);
+// Sharpen with additive high-pass filter
+var HPFA = sharpening.HPFA.sharpen(vis, pan);
 // Sharpen with IHS
 var ihs = sharpening.IHS.sharpen(vis, pan);
 // Sharpen with PCA
 var pca = sharpening.PCA.sharpen(vis, pan);
+// Sharpen with Gram-Schmidt
+var gs = sharpening.GS.sharpen(vis, pan);
 
 
 // Add layers to the map
 Map.addLayer(vis, { min: 0, max: 0.4 }, "L8");
 Map.addLayer(brov, { min: 0, max: 0.4 }, "Brovey")
 Map.addLayer(simpleMean, { min: 0, max: 0.4 }, "SimpleMean")
+Map.addLayer(HPFA, { min: 0, max: 0.4 }, "HPFA")
 Map.addLayer(ihs, { min: 0, max: 0.4 }, "IHS")
 Map.addLayer(pca, { min: 0, max: 0.4 }, "PCA")
+Map.addLayer(gs, { min: 0, max: 0.4 }, "Gram-Schmidt")

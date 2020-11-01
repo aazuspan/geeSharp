@@ -1,4 +1,17 @@
 /**
+ * Convert an n-band image into an image collection with n images
+ * @param {ee.Image} img A multiband image.
+ * @return {ee.ImageCollection} A collection where each image is a band of the 
+ *  input image.
+ */
+exports.multibandToCollection = function (img) {
+    return ee.ImageCollection(img.bandNames().map(function(name) {
+        return img.select([name])
+    }));
+}
+
+
+/**
  * Create a constant image where each band represents the reduced value of the
  * corresponding band of the input image.
  * @param {ee.Image} img The input image to calculate reduced values for.
