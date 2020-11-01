@@ -12,6 +12,7 @@ var panSharpened = sharpening.PCA.sharpen(img.select(["B4", "B3", "B2",]), img.s
 ## Usage
 - To sharpen an image, call the appropriate sharpening function
   - `sharpening.PCA.sharpen(input, pan)`
+  - `sharpening.GS.sharpen(input, pan)`
   - `sharpening.brovey.sharpen(input, pan, weights?)`
   - `sharpening.IHS.sharpen(input, pan)`
   - `sharpening.HPFA.sharpen(input, pan, kernelWidth?)`
@@ -43,3 +44,9 @@ var sharpenedImg = sharpening.PCA.sharpen(inputBands, panBand);
 
 ## Contributing
 - Pull requests and issues are welcome!
+
+## References
+* Gangkofner, U. G., Pradhan, P. S., & Holcomb, D. W. (2007). Optimizing the High-Pass Filter Addition Technique for Image Fusion. Photogrammetric Engineering & Remote Sensing, 73(9), 1107–1118. doi:10.14358/pers.73.9.1107 
+* Hallabia, H., Kallel, A., & Ben Hamida, A. (2014). Image pansharpening: Comparison of methods based on multiresolution analysis and component substitution. 2014 1st International Conference on Advanced Technologies for Signal and Image Processing (ATSIP). doi:10.1109/atsip.2014.6834602 
+
+
