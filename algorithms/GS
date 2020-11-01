@@ -1,3 +1,6 @@
+var utils = require('users/aazuspan/geeSharpening:utils');
+
+
 // Using an MS image and a list of previous GS images, calculate the next GS image. 
 // Step 2 of Hallabia et al 2014.
 function calculateGs(ms, gsList) {
