@@ -29,7 +29,7 @@ var ihs = sharpening.IHS.sharpen(vis, pan);
 // Sharpen with PCA
 var pca = sharpening.PCA.sharpen(vis, pan);
 // Sharpen with Gram-Schmidt
-var pca = sharpening.GS.sharpen(vis, pan);
+var gs sharpening.GS.sharpen(vis, pan);
 
 
 // Add layers to the map
@@ -39,3 +39,4 @@ Map.addLayer(simpleMean, { min: 0, max: 0.4 }, "SimpleMean")
 Map.addLayer(HPFA, { min: 0, max: 0.4 }, "HPFA")
 Map.addLayer(ihs, { min: 0, max: 0.4 }, "IHS")
 Map.addLayer(pca, { min: 0, max: 0.4 }, "PCA")
+Map.addLayer(gs, { min: 0, max: 0.4 }, "Gram-Schmidt")
