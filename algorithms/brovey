@@ -22,6 +22,7 @@ exports.sharpen = function (img, pan, weights) {
         weights = ee.List.repeat(bandWeight, bandNum);
     }
     
+    weights = ee.List(weights)
     print(weights)
 
     // Calculate intensity band as sum of the weighted visible bands
