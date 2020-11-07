@@ -1,6 +1,6 @@
 // This script is used only to collect and export sharpening functions.
 
-exports.simpleMean = require('users/aazuspan/geeSharpening:sharpening/simpleMean');
+exports.simpleMean = require('users/aazuspan/geeSharpening:sharpeningAlgorithms/simpleMean');
 exports.brovey = require('users/aazuspan/geeSharpening:sharpeningAlgorithms/brovey');
 exports.PCA = require('users/aazuspan/geeSharpening:sharpeningAlgorithms/PCA');
 exports.IHS = require('users/aazuspan/geeSharpening:sharpeningAlgorithms/IHS');
