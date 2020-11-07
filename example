@@ -1,7 +1,5 @@
 // Load the sharpening functions
 var sharpening = require('users/aazuspan/geeSharpening:sharpening');
-// Load the image quality functions
-var quality = require('users/aazuspan/geeSharpening:quality');
 
 // Select an example area
 var extent =
@@ -45,6 +43,11 @@ Map.addLayer(gs, { min: 0, max: 0.4 }, "Gram-Schmidt")
 
 
 
+// Load the image quality functions
+var quality = require('users/aazuspan/geeSharpening:quality');
 
-print(quality.MSE.calculate(vis, pca));
-print(quality.PSNR.calculate(vis, pca));
+// Calculate quality indexes to quantify distortion in the PCA sharpened image
+var pcaMSE = quality.MSE.calculate(vis, pca);
+var pcaPSNR = quality.PSNR.calculate(vis, pca);
+
+print(pcaMSE, pcaPSNR)
