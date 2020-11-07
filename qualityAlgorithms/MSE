@@ -19,5 +19,5 @@ exports.calculateBandMSE = function(referenceImage, assessmentImage) {
 exports.calculate = function(referenceImage, assessmentImage) {
   var bandMSE = exports.calculateBandMSE(referenceImage, assessmentImage);
   
-  return bandMSE.values().reduce(ee.Reducer.sum());
+  return ee.Number(bandMSE.values().reduce(ee.Reducer.sum()));
 }
