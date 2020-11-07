@@ -4,7 +4,7 @@ var mse = require("users/aazuspan/geeSharpening:qualityAlgorithms/MSE");
 // Calculating peak signal noise ratio (PSNR) in dB (Hagag et al 2013). Larger 
 // values mean there is less distortion from the reference image to the assessment image.
 // Unlike MSE, PSNR is not relative to image intensity.
-function calculatePSNR(referenceImage, assessmentImage) {
+function calculate(referenceImage, assessmentImage) {
   var maxVal = referenceImage.reduceRegion({reducer: ee.Reducer.max()});
   var bandMSEs = mse.calculateBandMSE(referenceImage, assessmentImage);
   
