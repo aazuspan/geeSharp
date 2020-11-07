@@ -49,4 +49,4 @@ var quality = require('users/aazuspan/geeSharpening:quality');
 var pcaMSE = quality.MSE.calculate(vis, pca);
 var pcaPSNR = quality.PSNR.calculate(vis, pca);
 
-print(pcaMSE, pcaPSNR)
+print(pcaMSE, pcaPSNR);
