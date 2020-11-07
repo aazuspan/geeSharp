@@ -42,7 +42,6 @@ Map.addLayer(pca, { min: 0, max: 0.4 }, "PCA")
 Map.addLayer(gs, { min: 0, max: 0.4 }, "Gram-Schmidt")
 
 
-
 // Load the image quality functions
 var quality = require('users/aazuspan/geeSharpening:quality');
 
