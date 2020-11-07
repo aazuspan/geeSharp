@@ -1,5 +1,7 @@
-// Load the sharpening library
+// Load the sharpening functions
 var sharpening = require('users/aazuspan/geeSharpening:sharpening');
+// Load the image quality functions
+var quality = require('users/aazuspan/geeSharpening:quality');
 
 // Select an example area
 var extent =
@@ -40,3 +42,9 @@ Map.addLayer(HPFA, { min: 0, max: 0.4 }, "HPFA")
 Map.addLayer(ihs, { min: 0, max: 0.4 }, "IHS")
 Map.addLayer(pca, { min: 0, max: 0.4 }, "PCA")
 Map.addLayer(gs, { min: 0, max: 0.4 }, "Gram-Schmidt")
+
+
+
+
+print(quality.MSE.calculate(vis, pca));
+print(quality.PSNR.calculate(vis, pca));
