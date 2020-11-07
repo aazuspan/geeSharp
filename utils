@@ -89,7 +89,11 @@ exports.isMissing = function (x) {
  *  the original image.
 */
 exports.calculateWeightedIntensity = function (img, weights) {
-    var weightedImg = img.multiply(weights);
+    // Convert the weights to a multiband constant image. This will allow weights
+    // to work whether it is an array or an ee.List
+    var weigthImg = ee.Image.constant(weights);
+    
+    var weightedImg = img.multiply(weigthImg);
 
     var intensity = weightedImg.reduce(ee.Reducer.sum());
 
