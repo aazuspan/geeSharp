@@ -17,7 +17,7 @@ exports.calculateBandMSE = function(referenceImage, assessmentImage) {
 // See Hagag et al 2013, equation 5. To get cumulative image MSE, sum the band MSEs.
 // Note: MSE is relative to image intensity.
 exports.calculate = function(referenceImage, assessmentImage) {
-  var bandMSE = calculateBandMSE(referenceImage, assessmentImage);
+  var bandMSE = exports.calculateBandMSE(referenceImage, assessmentImage);
   
   return bandMSE.values().reduce(ee.Reducer.sum());
 }
