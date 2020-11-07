@@ -26,7 +26,7 @@ exports.calculate = function(referenceImage, assessmentImage) {
   var xSum = xLog.reduce(ee.Reducer.sum());
   
   // 20 / number of bands
-  var coeff = ee.Number(20).divide(inputBands.bandNames().length());
+  var coeff = ee.Number(20).divide(referenceImage.bandNames().length());
   
   var psnr = coeff.multiply(xSum);
   
