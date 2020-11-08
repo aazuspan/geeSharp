@@ -3,9 +3,6 @@
 // See Hagag et al 2013.
 // Note: MSE is relative to image intensity.
 exports.calculateBandMSE = function(referenceImage, assessmentImage) {
-  // Resample the reference image to match the assessment image resolution and origin
-  // referenceImage = referenceImage.resample("bicubic").reproject(assessmentImage.projection());
-  
   var mse = referenceImage
               .subtract(assessmentImage)
               .pow(2)
