@@ -9,10 +9,8 @@
 */
 exports.sharpen = function (img, pan) {
     var panProj = pan.projection();
-    // Store band names
+    // Store pan band name
     var panBand = pan.bandNames().get(0);
-    var imgBands = img.bandNames();
-    
     img = img.resample('bilinear').reproject(panProj);
 
     var imgHsv = img.rgbToHsv();
@@ -21,10 +19,8 @@ exports.sharpen = function (img, pan) {
     var imgRgb = imgHsv
         .addBands([pan])
         .select(["hue", "saturation", panBand])
-        .hsvToRgb();
-    
-    // Keep the original band names
-    imgRgb = imgRgb.rename(imgBands);
-    
+        .hsvToRgb()
+        .rename(img.bandNames());
+
     return imgRgb;
 }
