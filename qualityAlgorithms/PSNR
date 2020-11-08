@@ -5,6 +5,9 @@ var mse = require("users/aazuspan/geeSharpening:qualityAlgorithms/MSE");
 // values mean there is less distortion from the reference image to the assessment image.
 // Unlike MSE, PSNR is not relative to image intensity.
 exports.calculate = function(referenceImage, assessmentImage) {
+  // Resample the reference image to match the assessment image resolution and origin
+  referenceImage = referenceImage.resample("bicubic").reproject(assessmentImage.projection());
+  
   var maxVal = referenceImage.reduceRegion({reducer: ee.Reducer.max()});
   var bandMSEs = mse.calculateBandMSE(referenceImage, assessmentImage);
   
