@@ -48,5 +48,6 @@ var quality = require('users/aazuspan/geeSharpening:quality');
 // Calculate quality indexes to quantify distortion in the PCA sharpened image
 var pcaMSE = quality.MSE.calculate(vis, pca);
 var pcaPSNR = quality.PSNR.calculate(vis, pca);
+var pcaQ = quality.Q.calculate(vis, pca);
 
-print(pcaMSE, pcaPSNR);
+print(pcaMSE, pcaPSNR, pcaQ);
