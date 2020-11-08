@@ -11,7 +11,7 @@ exports.sharpen = function (img, pan) {
     var panProj = pan.projection();
 
     // Resample all bands to the panchromatic resolution
-    var imgSharp = img.resample('bilinear').reproject(panProj);
+    var imgSharp = img.resample('bilinear').reproject({crs: panProj, scale: panProj.nominalScale()});
     // Replace each band with the mean of that band and the pan band
     imgSharp = img.add(pan).multiply(0.5);
 
