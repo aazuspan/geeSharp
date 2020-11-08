@@ -7,7 +7,7 @@ var panSharpened = sharpening.PCA.sharpen(img.select(["B4", "B3", "B2",]), img.s
 
 Generate image quality metrics to validate sharpening results:
 ```
-var imgPSNR = quality.PSNR.calculate(originalImage, panSharpened);
+var imgQ = quality.Q.calculate(originalImage, panSharpened);
 ```
 
 ## Installation
@@ -47,19 +47,33 @@ var sharpenedImg = sharpening.PCA.sharpen(inputBands, panBand);
 
 ### Image quality assessment
 - Image quality metrics measure the distortion between a reference image and an image that has been modified, such as a pan-sharpened or compressed image. 
-- To generate image quality metrics, call the appropriate quality calculation function using the original image (reference) and the modified image (assess).
-  - `quality.MSE.calculate(reference, assess)`
-  - `quality.PSNR.calculate(reference, assess)`
+- To generate image quality metrics, call the appropriate quality calculation function using the original image (reference) and the modified image (assessment).
+  - `quality.MSE.calculate(referenceImage, assessmentImage)`
+  - `quality.PSNR.calculate(referenceImage, assessmentImage)`
+  - `quality.Q.calculate(referenceImage, assessmentImage)`
 
 #### Example
 ```
 // Load the image quality functions
 var quality = require('users/aazuspan/geeSharpening:quality');
 
-// Calculate peak signal-noise ratio between an image and a pan-sharpened image.
-var pcaPSNR = quality.PSNR.calculate(originalImg, sharpenedImg);
+// Calculate universal image quality index between an image and a pan-sharpened image.
+var pcaQ = quality.Q.calculate(originalImg, sharpenedImg);
 ```
-  
+
+## Accuracy
+
+| Function   | Algorithm                    | MSE    | PSNR  | Q    |
+|------------|------------------------------|--------|-------|------|
+| GS         | Gram-Schmidt                 | 0.0004 | 36.42 | 0.96 |
+| PCA        | Principal Component Analysis | 0.0004 | 36.47 | 0.96 |
+| SimpleMean | Simple mean                  | 0.0002 | 38.25 | 0.95 |
+| brovey     | Brovey                       | 0.0009 | 32.60 | 0.94 |
+| HPFA       | High-Pass Filter (Additive)  | 0.0012 | 31.34 | 0.91 |
+| IHS        | Intensity-Hue-Saturation     | 0.0015 | 30.46 | 0.91 |
+
+*Accuracies were calculated by sharpening the RGB bands of Landsat 8 TOA data. Accuracy will change based on scene and band selection.
+
 ## Disclaimer
 - There is no guarantee of accuracy in this library. I would strongly recommend validating results against an established tool such as GDAL or SAGA GIS.
 - Functions are designed for and tested with Landsat 8 TOA data. They should be usable with other data sources, but may require modification.
