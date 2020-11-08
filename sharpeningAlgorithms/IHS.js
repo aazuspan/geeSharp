@@ -19,7 +19,8 @@ exports.sharpen = function (img, pan) {
     var imgRgb = imgHsv
         .addBands([pan])
         .select(["hue", "saturation", panBand])
-        .hsvToRgb();
+        .hsvToRgb()
+        .rename(img.bandNames());
 
     return imgRgb;
 }
