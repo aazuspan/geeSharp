@@ -8,7 +8,11 @@ function calculateCorrelation(referenceImage, assessmentImage) {
   var xCentered = referenceImage.subtract(ee.Image.constant(xbar));
   var yCentered = assessmentImage.subtract(ee.Image.constant(ybar));
   
-  var correlationNumerator = ee.Array(xCentered.multiply(yCentered).reduceRegion(ee.Reducer.sum()).values());
+  var correlationNumerator = ee.Array(xCentered.multiply(yCentered)
+                                               .reduceRegion({
+                                                 reducer: ee.Reducer.sum(),
+                                                 maxPixels: 1e11
+                                               }).values());
   
   var xSum = xCentered.pow(2).reduceRegion(ee.Reducer.sum()).values();
   var ySum = yCentered.pow(2).reduceRegion(ee.Reducer.sum()).values();
