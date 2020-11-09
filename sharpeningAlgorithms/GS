@@ -75,10 +75,10 @@ exports.sharpen = function(img, pan) {
     
     // Convert the multispectral bands to an image collection so that it can be iterated over
     var msCollection = utils.multibandToCollection(img);
-    print(msCollection);
+
     // Iterate over the MS collection, calculating GS bands
     var gsCollection = ee.ImageCollection(ee.List(msCollection.iterate(calculateGs, gsList)));
-
+    print(gsCollection)
     // Convert the GS collection to a multiband image
     var gsBands = gsCollection.toBands();
 
