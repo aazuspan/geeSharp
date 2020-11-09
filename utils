@@ -26,7 +26,7 @@ exports.reduceImage = function (img, reducer) {
         reducer: reducer,
         geometry: img.geometry(),
         scale: img.projection().nominalScale(),
-        maxPixels: 1e9
+        maxPixels: 1e11
     });
 
     var imgReduced = ee.Image.constant(imgReducedVal.values(img.bandNames()));
