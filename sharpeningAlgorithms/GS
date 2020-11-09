@@ -28,12 +28,9 @@ function calculateGs(ms, gsList) {
  */
 function calculateGsCoefficient(ms, gs) {
     var imgArray = ee.Image.cat(ms, gs).toArray();
-    
-    // var covarMatrix = utils.reduceImage(imgArray, ee.Reducer.covariance());
+
     var covarMatrix =  imgArray.reduceRegion({
                         reducer: ee.Reducer.covariance(),
-                        // geometry: ms.geometry(),
-                        // scale: ms.projection().nominalScale(),
                         maxPixels: 1e11
     });
 
@@ -65,24 +62,24 @@ exports.sharpen = function(img, pan) {
 
     // Calculate panSim as a mean of the MS bands
     var panSim = img.reduce({reducer: ee.Reducer.mean()}).clip(img.geometry());
-    
+
     // GS1 image is the panSim 
     var gsList = ee.List([
         panSim
     ]);
-    
+
     // Convert the multispectral bands to an image collection so that it can be iterated over
     var msCollection = utils.multibandToCollection(img);
 
     // Iterate over the MS collection, calculating GS bands
     var gsCollection = ee.ImageCollection(ee.List(msCollection.iterate(calculateGs, gsList)));
-    print(gsCollection)
+
     // Convert the GS collection to a multiband image
     var gsBands = gsCollection.toBands();
 
     // Histogram match the pan band to the simulated pan band
     var panMatch = utils.linearHistogramMatch(pan, panSim);
-    
+
     // Swap the matched pan band for the first GS band
     gsBands = ee.Image.cat(panMatch, gsBands.slice(1));
 
@@ -91,7 +88,7 @@ exports.sharpen = function(img, pan) {
 
     // Convert GS bands to an image collection so that it can be mapped over
     var gsBandImages = utils.multibandToCollection(gsBands);
-    
+
     // Calculate constant g coefficients for each gsBand
     var gCoefficients = gsBandImages.map(function(x) {return calculateGsCoefficient(x, panSim)});
 
