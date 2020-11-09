@@ -63,7 +63,7 @@ exports.sharpen = function (img, pan, substitutePC) {
         // Flatten unnecessary dimension
         .arrayProject([0])
         // Split into a multiband image
-        // .arrayFlatten([pcNames]);
+        .arrayFlatten([pcNames]);
         
     print(principalComponents)
 
