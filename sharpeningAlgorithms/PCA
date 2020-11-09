@@ -57,6 +57,8 @@ exports.sharpen = function (img, pan, substitutePC) {
     var pcNames = pcSeq.map(function (x) {
         return ee.String("PC").cat(ee.Number(x).int());
     });
+    
+    print(pcNames)
 
     var principalComponents = ee.Image(eigenVectors)
         .matrixMultiply(imgArray2d)
