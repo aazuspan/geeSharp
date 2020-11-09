@@ -62,9 +62,18 @@ function calculateContrast(referenceImage, assessmentImage) {
                                           reducer: ee.Reducer.stdDev(),
                                           maxPixels: 1e11 
                                         }).values());
-  var yStdDev = ee.Array(assessmentImage.reduceRegion(ee.Reducer.stdDev()).values());
-  var xVar = ee.Array(referenceImage.reduceRegion(ee.Reducer.variance()).values());
-  var yVar = ee.Array(assessmentImage.reduceRegion(ee.Reducer.variance()).values());
+  var yStdDev = ee.Array(assessmentImage.reduceRegion({
+                                          reducer: ee.Reducer.stdDev(),
+                                          maxPixels: 1e11 
+                                        }).values());
+  var xVar = ee.Array(referenceImage.reduceRegion({
+                                          reducer: ee.Reducer.variance(),
+                                          maxPixels: 1e11 
+                                        }).values());
+  var yVar = ee.Array(assessmentImage.reduceRegion({
+                                          reducer: ee.Reducer.variance(),
+                                          maxPixels: 1e11 
+                                        }).values());
   
   var contrastNumerator = xStdDev.multiply(yStdDev).multiply(2);
   var contrastDenominator = xVar.add(yVar);
