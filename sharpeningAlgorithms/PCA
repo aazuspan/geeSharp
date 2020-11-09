@@ -42,7 +42,7 @@ exports.sharpen = function (img, pan, substitutePC) {
         reducer: ee.Reducer.centeredCovariance(),
         // geometry: imgCentered.geometry(),
         // scale: imgCentered.projection().nominalScale(),
-        // maxPixels: 1e10
+        maxPixels: 1e11
     });
 
     // Pull out the covariance results as an array
