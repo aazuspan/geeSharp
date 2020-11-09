@@ -18,14 +18,7 @@ var imgQ = quality.Q.calculate(originalImage, panSharpened);
 ## Usage
 ### Pan-sharpening
 - Pan-sharpening can be used to sharpen the spatial resolution of spectral bands using a higher resolution image.
-- To sharpen an image, call the appropriate sharpening function
-  - `sharpening.PCA.sharpen(input, pan)`
-  - `sharpening.GS.sharpen(input, pan)`
-  - `sharpening.brovey.sharpen(input, pan, weights?)`
-  - `sharpening.IHS.sharpen(input, pan)`
-  - `sharpening.HPFA.sharpen(input, pan, kernelWidth?)`
-  - `sharpening.simpleMean.sharpen(input, pan)`
-- Pass the appropriate arguments for your imagery. See source code documentation for more info about each function's parameters.
+- See the [documentation](https://github.com/aazuspan/geeSharpening/wiki/Sharpening-Functions) for detailed descriptions of pan-sharpening functions. 
 
 #### Example
 ```
