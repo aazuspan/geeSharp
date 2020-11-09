@@ -57,6 +57,9 @@ exports.getImageRange = function (img) {
  * @return {ee.Image} A rescaled version of targetImage.
 */
 exports.linearHistogramMatch = function (targetImage, referenceImage) {
+    print(targetImage)
+    print(referenceImage)
+  
     var offsetTarget = exports.reduceImage(targetImage, ee.Reducer.mean());
     var offset = exports.reduceImage(referenceImage, ee.Reducer.mean());
     var scale = exports.reduceImage(referenceImage, ee.Reducer.stdDev())
