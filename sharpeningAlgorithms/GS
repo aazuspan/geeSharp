@@ -75,7 +75,7 @@ exports.sharpen = function(img, pan) {
     
     // Convert the multispectral bands to an image collection so that it can be iterated over
     var msCollection = utils.multibandToCollection(img);
-    print(msCollection)
+    print(msCollection);
     // Iterate over the MS collection, calculating GS bands
     var gsCollection = ee.ImageCollection(ee.List(msCollection.iterate(calculateGs, gsList)));
 
@@ -85,7 +85,7 @@ exports.sharpen = function(img, pan) {
     // Histogram match the pan band to the simulated pan band
     var panMatch = utils.linearHistogramMatch(pan, panSim);
     
-    print(panMatch)
+    print(panMatch);
 
     // Swap the matched pan band for the first GS band
     gsBands = ee.Image.cat(panMatch, gsBands.slice(1));
