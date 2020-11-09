@@ -42,7 +42,7 @@ exports.sharpen = function (img, pan, substitutePC) {
     // var covar = utils.reduceImage(imgArray, ee.Reducer.centeredCovariance());
     
     var covar = imgArray.reduceRegion({
-      reducer: ee.Reducer.centeredCovariance,
+      reducer: ee.Reducer.centeredCovariance(),
       maxPixels: 1e11
     })
 
