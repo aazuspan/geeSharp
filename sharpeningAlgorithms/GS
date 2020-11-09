@@ -67,9 +67,6 @@ exports.sharpen = function(img, pan) {
     // var panSim = img.reduce({reducer: ee.Reducer.mean()});
     
     var panSim = utils.multibandToCollection(img).mean().clip(img.geometry());
-    
-    print(img.geometry())
-    print(panSim.geometry().isUnbounded())
 
     // GS1 image is the panSim 
     var gsList = ee.List([
