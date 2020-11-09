@@ -29,15 +29,13 @@ function calculateGs(ms, gsList) {
 function calculateGsCoefficient(ms, gs) {
     var imgArray = ee.Image.cat(ms, gs).toArray();
     
-    print(imgArray)
-
-    var covarMatrix = utils.reduceImage(imgArray, ee.Reducer.covariance());
-    // var covarMatrix =  imgArray.reduceRegion({
-    //                     reducer: ee.Reducer.covariance(),
-    //                     geometry: ms.geometry(),
-    //                     scale: ms.projection().nominalScale(),
-    //                     maxPixels: 1e9
-    // });
+    // var covarMatrix = utils.reduceImage(imgArray, ee.Reducer.covariance());
+    var covarMatrix =  imgArray.reduceRegion({
+                        reducer: ee.Reducer.covariance(),
+                        geometry: ms.geometry(),
+                        scale: ms.projection().nominalScale(),
+                        maxPixels: 1e9
+    });
 
     var covarArray = ee.Array(covarMatrix.get("array"));
 
