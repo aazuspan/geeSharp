@@ -58,7 +58,10 @@ function calculateLuminance(referenceImage, assessmentImage) {
 
 // Calculate band-to-band contrast between a reference image and a modified image.
 function calculateContrast(referenceImage, assessmentImage) {
-  var xStdDev = ee.Array(referenceImage.reduceRegion(ee.Reducer.stdDev()).values());
+  var xStdDev = ee.Array(referenceImage.reduceRegion({
+                                          reducer: ee.Reducer.stdDev(),
+                                          maxPixels: 1e11 
+                                        }).values());
   var yStdDev = ee.Array(assessmentImage.reduceRegion(ee.Reducer.stdDev()).values());
   var xVar = ee.Array(referenceImage.reduceRegion(ee.Reducer.variance()).values());
   var yVar = ee.Array(assessmentImage.reduceRegion(ee.Reducer.variance()).values());
