@@ -37,6 +37,7 @@ exports.sharpen = function (img, pan, substitutePC) {
     // Convert image to 1D array
     var imgArray = imgCentered.toArray();
     print(imgArray)
+    
     // Calculate a covariance matrix between all bands
     // var covar = utils.reduceImage(imgArray, ee.Reducer.centeredCovariance());
     
@@ -47,6 +48,8 @@ exports.sharpen = function (img, pan, substitutePC) {
 
     // Pull out the covariance results as an array
     var covarArray = ee.Array(covar.get("array"));
+    
+    print(covarArray)
     
     // Calculate eigenvalues and eigenvectors
     var eigens = covarArray.eigen();
@@ -70,8 +73,6 @@ exports.sharpen = function (img, pan, substitutePC) {
         // Split into a multiband image
         .arrayFlatten([pcNames]);
         
-    print(principalComponents)
-
     // I'm not sure why this is required. I haven't seen anything about
     // inverting the pan band in the literature. But if this isn't done,
     // lighting is reversed. If you compare the first PC with the pan,
