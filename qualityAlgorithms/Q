@@ -24,7 +24,7 @@ function calculateCorrelation(referenceImage, assessmentImage) {
                                 reducer: ee.Reducer.sum(),
                                 maxPixels: 1e11
                               }).values();
-  var xSum = yCentered.pow(2).reduceRegion({
+  var ySum = yCentered.pow(2).reduceRegion({
                                 reducer: ee.Reducer.sum(),
                                 maxPixels: 1e11
                               }).values();
