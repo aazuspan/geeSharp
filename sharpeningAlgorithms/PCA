@@ -73,7 +73,7 @@ exports.sharpen = function (img, pan, substitutePC) {
   // lighting is reversed. If you compare the first PC with the pan,
   // you'll notice that their lighting looks reversed, which is the
   // only reason I tried this.
-  pan = pan.multiply(-1);
+  // pan = pan.multiply(-1);
 
   // Rescale the pan band to more closely match the substituted PC
   pan = utils.linearHistogramMatch(
