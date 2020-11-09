@@ -36,7 +36,7 @@ exports.sharpen = function (img, pan, substitutePC) {
 
     // Convert image to 1D array
     var imgArray = imgCentered.toArray();
-    
+    print(imgArray)
     // Calculate a covariance matrix between all bands
     // var covar = utils.reduceImage(imgArray, ee.Reducer.centeredCovariance());
     
