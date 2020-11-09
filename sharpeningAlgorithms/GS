@@ -93,7 +93,9 @@ exports.sharpen = function(img, pan) {
 
     // Convert GS bands to an image collection so that it can be mapped over
     var gsBandImages = utils.multibandToCollection(gsBands);
-
+    
+    print(gsBandImages)
+    
     // Calculate constant g coefficients for each gsBand
     var gCoefficients = gsBandImages.map(function(x) {return calculateGsCoefficient(x, panSim)});
 
