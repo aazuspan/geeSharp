@@ -58,6 +58,8 @@ exports.sharpen = function (img, pan, substitutePC) {
         return ee.String("PC").cat(ee.Number(x).int());
     });
     print(imgArray2d)
+    print(eigenVectors)
+    print(pcNames)
     var principalComponents = ee.Image(eigenVectors)
         .matrixMultiply(imgArray2d)
         // Flatten unnecessary dimension
