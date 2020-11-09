@@ -37,7 +37,10 @@ exports.sharpen = function (img, pan, substitutePC) {
   var imgArray = imgCentered.toArray();
 
   // Calculate a covariance matrix between all bands
-  var covar = utils.reduceImage(imgArray, ee.Reducer.centeredCovariance());
+  var covar = imgArray.reduceRegion({
+    reducer: ee.Reducer.centeredCovariance(),
+    maxPixels: 1e11,
+  });
 
   // Pull out the covariance results as an array
   var covarArray = ee.Array(covar.get("array"));
