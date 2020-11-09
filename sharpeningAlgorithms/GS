@@ -66,7 +66,7 @@ exports.sharpen = function(img, pan) {
     // Calculate panSim as a mean of the MS bands
     // var panSim = img.reduce({reducer: ee.Reducer.mean()});
     
-    var panSim = utils.multibandToCollection(img).mean();
+    var panSim = utils.multibandToCollection(img).mean().clip(img.geometry());
     
     print(img.geometry())
     print(panSim.geometry().isUnbounded())
