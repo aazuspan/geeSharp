@@ -29,6 +29,8 @@ function calculateGs(ms, gsList) {
 function calculateGsCoefficient(ms, gs) {
     var imgArray = ee.Image.cat(ms, gs).toArray();
     
+    print(ms.geometry())
+    
     // var covarMatrix = utils.reduceImage(imgArray, ee.Reducer.covariance());
     var covarMatrix =  imgArray.reduceRegion({
                         reducer: ee.Reducer.covariance(),
