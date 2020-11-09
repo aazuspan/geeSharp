@@ -34,7 +34,7 @@ function calculateGsCoefficient(ms, gs) {
                         reducer: ee.Reducer.covariance(),
                         geometry: ms.geometry(),
                         scale: ms.projection().nominalScale(),
-                        maxPixels: 1e9
+                        maxPixels: 1e11
     });
 
     var covarArray = ee.Array(covarMatrix.get("array"));
