@@ -36,14 +36,17 @@ exports.sharpen = function (img, pan, substitutePC) {
 
     // Convert image to 1D array
     var imgArray = imgCentered.toArray();
-
+    
     // Calculate a covariance matrix between all bands
-    var covar = imgArray.reduceRegion({
-        reducer: ee.Reducer.centeredCovariance(),
-        // geometry: imgCentered.geometry(),
-        // scale: imgCentered.projection().nominalScale(),
-        maxPixels: 1e11
-    });
+    var covar = utils.reduceImage(imgArray, ee.Reducer.centeredCovariance());
+    
+    // // Calculate a covariance matrix between all bands
+    // var covar = imgArray.reduceRegion({
+    //     reducer: ee.Reducer.centeredCovariance(),
+    //     // geometry: imgCentered.geometry(),
+    //     // scale: imgCentered.projection().nominalScale(),
+    //     maxPixels: 1e11
+    // });
 
     // Pull out the covariance results as an array
     var covarArray = ee.Array(covar.get("array"));
