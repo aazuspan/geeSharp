@@ -58,14 +58,14 @@ exports.sharpen = function (img, pan, substitutePC) {
         return ee.String("PC").cat(ee.Number(x).int());
     });
     
-    print(pcNames)
-
     var principalComponents = ee.Image(eigenVectors)
         .matrixMultiply(imgArray2d)
         // Flatten unnecessary dimension
         .arrayProject([0])
         // Split into a multiband image
         .arrayFlatten([pcNames]);
+        
+    print(principalComponents)
 
     // I'm not sure why this is required. I haven't seen anything about
     // inverting the pan band in the literature. But if this isn't done,
