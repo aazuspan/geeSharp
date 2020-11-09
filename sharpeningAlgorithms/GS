@@ -85,8 +85,6 @@ exports.sharpen = function(img, pan) {
     // Histogram match the pan band to the simulated pan band
     var panMatch = utils.linearHistogramMatch(pan, panSim);
     
-    print(panMatch);
-
     // Swap the matched pan band for the first GS band
     gsBands = ee.Image.cat(panMatch, gsBands.slice(1));
 
