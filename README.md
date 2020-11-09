@@ -40,7 +40,7 @@ var sharpenedImg = sharpening.PCA.sharpen(inputBands, panBand);
 
 ### Image quality assessment
 - Image quality metrics measure the distortion between a reference image and an image that has been modified, such as a pan-sharpened or compressed image. 
-- See the [documentation](https://github.com/aazuspan/geeSharpening/wiki/https://github.com/aazuspan/geeSharpening/wiki/Image-Quality-Assessment) for detailed descriptions of image quality assessment functions. 
+- See the [documentation](https://github.com/aazuspan/geeSharpening/wiki/Image-Quality-Assessment) for detailed descriptions of image quality assessment functions. 
 
 #### Example
 ```
