@@ -68,13 +68,6 @@ exports.sharpen = function (img, pan, substitutePC) {
     // Split into a multiband image
     .arrayFlatten([pcNames]);
 
-  // I'm not sure why this is required. I haven't seen anything about
-  // inverting the pan band in the literature. But if this isn't done,
-  // lighting is reversed. If you compare the first PC with the pan,
-  // you'll notice that their lighting looks reversed, which is the
-  // only reason I tried this.
-  // pan = pan.multiply(-1);
-
   // Rescale the pan band to more closely match the substituted PC
   pan = utils.linearHistogramMatch(
     pan,
