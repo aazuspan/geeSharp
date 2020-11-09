@@ -1,8 +1,14 @@
 // Calculate band-to-band Pearson's correlation between a reference image and a modified image.
 function calculateCorrelation(referenceImage, assessmentImage) {
   // List of mean band values
-  var xbar = referenceImage.reduceRegion(ee.Reducer.mean()).values();
-  var ybar = assessmentImage.reduceRegion(ee.Reducer.mean()).values();
+  var xbar = referenceImage.reduceRegion({
+                              reducer: ee.Reducer.mean(), 
+                              maxPixels: 1e11})
+                            .values();
+  var ybar = assessmentImage.reduceRegion({
+                              reducer: ee.Reducer.mean(), 
+                              maxPixels: 1e11})
+                            .values();
   
   // Pearson's correlation (1st component)
   var xCentered = referenceImage.subtract(ee.Image.constant(xbar));
@@ -34,8 +40,14 @@ function calculateCorrelation(referenceImage, assessmentImage) {
 // Calculate band-to-band luminance between a reference image and a modified image.
 function calculateLuminance(referenceImage, assessmentImage) {
     // List of mean band values
-  var xbar = referenceImage.reduceRegion(ee.Reducer.mean()).values();
-  var ybar = assessmentImage.reduceRegion(ee.Reducer.mean()).values();
+  var xbar = referenceImage.reduceRegion({
+                              reducer: ee.Reducer.mean(), 
+                              maxPixels: 1e11})
+                            .values();
+  var ybar = assessmentImage.reduceRegion({
+                              reducer: ee.Reducer.mean(), 
+                              maxPixels: 1e11})
+                            .values();
   
   var luminanceNumerator = ee.Array(xbar).multiply(ybar).multiply(2);
   var luminanceDenominator = ee.Array(xbar).pow(2).add(ee.Array(ybar).pow(2));
