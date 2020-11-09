@@ -1,5 +1,4 @@
-var utils = require('users/aazuspan/geeSharpening:utils');
-
+var utils = require("users/aazuspan/geeSharpening:utils");
 
 /**
  * Sharpen all bands of an image by converting it to principal components,
@@ -12,88 +11,91 @@ var utils = require('users/aazuspan/geeSharpening:utils');
  * @param {number} substitutePC The number of the principal component to
  *  replace with the pan band. Defaults to 1. Must be in range 1 - n,
  *  where n is the number of bands in the input image.
- * @return {ee.Image} The input image with all bands sharpened to the spatial 
+ * @return {ee.Image} The input image with all bands sharpened to the spatial
  *  resolution of the panchromatic band.
-*/
+ */
 exports.sharpen = function (img, pan, substitutePC) {
-    // Default to substituting the first PC
-    if (utils.isMissing(substitutePC)) {
-        substitutePC = 1;
-    }
+  // Default to substituting the first PC
+  if (utils.isMissing(substitutePC)) {
+    substitutePC = 1;
+  }
 
-    // Resample the image to the panchromatic resolution
-    img = img.resample("bilinear")
-    img = img.reproject(pan.projection())
+  // Resample the image to the panchromatic resolution
+  img = img.resample("bilinear");
+  img = img.reproject(pan.projection());
 
-    // Store band names for future use
-    var bandNames = img.bandNames();
-    var panBand = pan.bandNames().get(0);
+  // Store band names for future use
+  var bandNames = img.bandNames();
+  var panBand = pan.bandNames().get(0);
 
-    // Mean-center the images to allow efficient covariance calculation
-    var imgMean = utils.reduceImage(img, ee.Reducer.mean());
+  // Mean-center the images to allow efficient covariance calculation
+  var imgMean = utils.reduceImage(img, ee.Reducer.mean());
 
-    var imgCentered = img.subtract(imgMean);
+  var imgCentered = img.subtract(imgMean);
 
-    // Convert image to 1D array
-    var imgArray = imgCentered.toArray();
-    
-    // Calculate a covariance matrix between all bands
-    // var covar = utils.reduceImage(imgArray, ee.Reducer.centeredCovariance());
-    
-    var covar = imgArray.reduceRegion({
-      reducer: ee.Reducer.centeredCovariance(),
-      maxPixels: 1e11
-    })
+  // Convert image to 1D array
+  var imgArray = imgCentered.toArray();
 
-    // Pull out the covariance results as an array
-    var covarArray = ee.Array(covar.get("array"));
-    
-    // Calculate eigenvalues and eigenvectors
-    var eigens = covarArray.eigen();
+  // Calculate a covariance matrix between all bands
+  var covar = imgArray.reduceRegion({
+    reducer: ee.Reducer.centeredCovariance(),
+    maxPixels: 1e11
+  })
 
-    // Pull out eigenvectors (elements after eigenvalues in each list) [7x7]
-    var eigenVectors = eigens.slice(1, 1);
+  // Pull out the covariance results as an array
+  var covarArray = ee.Array(covar.get("array"));
 
-    // Convert image to 2D array
-    var imgArray2d = imgArray.toArray(1);
+  // Calculate eigenvalues and eigenvectors
+  var eigens = covarArray.eigen();
 
-    // Build the names of the principal component bands  
-    var pcSeq = ee.List.sequence(1, bandNames.length());
-    var pcNames = pcSeq.map(function (x) {
-        return ee.String("PC").cat(ee.Number(x).int());
-    });
+  // Pull out eigenvectors (elements after eigenvalues in each list) [7x7]
+  var eigenVectors = eigens.slice(1, 1);
 
-    var principalComponents = ee.Image(eigenVectors)
-        .matrixMultiply(imgArray2d)
-        // Flatten unnecessary dimension
-        .arrayProject([0])
-        // Split into a multiband image
-        .arrayFlatten([pcNames]);
-        
-    // I'm not sure why this is required. I haven't seen anything about
-    // inverting the pan band in the literature. But if this isn't done,
-    // lighting is reversed. If you compare the first PC with the pan,
-    // you'll notice that their lighting looks reversed, which is the
-    // only reason I tried this.
-    pan = pan.multiply(-1)
+  // Convert image to 2D array
+  var imgArray2d = imgArray.toArray(1);
 
-    // Rescale the pan band to more closely match the substituted PC
-    pan = utils.linearHistogramMatch(pan, principalComponents.select(substitutePC - 1));
+  // Build the names of the principal component bands
+  var pcSeq = ee.List.sequence(1, bandNames.length());
+  var pcNames = pcSeq.map(function (x) {
+    return ee.String("PC").cat(ee.Number(x).int());
+  });
 
-    // Build the band list, swapping the pan band for the appropriate PC
-    var sharpenBands = pcNames.set(substitutePC - 1, panBand);
+  var principalComponents = ee
+    .Image(eigenVectors)
+    .matrixMultiply(imgArray2d)
+    // Flatten unnecessary dimension
+    .arrayProject([0])
+    // Split into a multiband image
+    .arrayFlatten([pcNames]);
 
-    principalComponents = principalComponents.addBands(pan);
-    principalComponents = principalComponents.select(sharpenBands);
+  // I'm not sure why this is required. I haven't seen anything about
+  // inverting the pan band in the literature. But if this isn't done,
+  // lighting is reversed. If you compare the first PC with the pan,
+  // you'll notice that their lighting looks reversed, which is the
+  // only reason I tried this.
+  pan = pan.multiply(-1);
 
-    // Undo the PC transformation
-    var reconstructedCentered = ee.Image(eigenVectors)
-        .matrixSolve(principalComponents.toArray().toArray(1))
-        .arrayProject([0])
-        .arrayFlatten([bandNames])
+  // Rescale the pan band to more closely match the substituted PC
+  pan = utils.linearHistogramMatch(
+    pan,
+    principalComponents.select(substitutePC - 1)
+  );
 
-    // Undo the mean-centering
-    var reconstructed = reconstructedCentered.add(imgMean);
+  // Build the band list, swapping the pan band for the appropriate PC
+  var sharpenBands = pcNames.set(substitutePC - 1, panBand);
 
-    return reconstructed;
-}
+  principalComponents = principalComponents.addBands(pan);
+  principalComponents = principalComponents.select(sharpenBands);
+
+  // Undo the PC transformation
+  var reconstructedCentered = ee
+    .Image(eigenVectors)
+    .matrixSolve(principalComponents.toArray().toArray(1))
+    .arrayProject([0])
+    .arrayFlatten([bandNames]);
+
+  // Undo the mean-centering
+  var reconstructed = reconstructedCentered.add(imgMean);
+
+  return reconstructed;
+};
