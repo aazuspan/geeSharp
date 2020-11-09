@@ -1,19 +1,24 @@
 // Load the sharpening functions
-var sharpening = require('users/aazuspan/geeSharpening:sharpening');
+var sharpening = require("users/aazuspan/geeSharpening:sharpening");
 
 // Select an example area
-var extent =
-    ee.Geometry.Polygon(
-        [[[-122.54129620668901, 47.33965367791073],
-        [-122.54129620668901, 47.16837678723401],
-        [-122.28912564394487, 47.16837678723401],
-        [-122.28912564394487, 47.33965367791073]]], null, false);
+var extent = ee.Geometry.Polygon(
+  [
+    [
+      [-122.54129620668901, 47.33965367791073],
+      [-122.54129620668901, 47.16837678723401],
+      [-122.28912564394487, 47.16837678723401],
+      [-122.28912564394487, 47.33965367791073],
+    ],
+  ],
+  null,
+  false
+);
 
 Map.centerObject(extent);
 
 // Select an example Landsat 8 TOA image
-var img = ee.Image("LANDSAT/LC08/C01/T1_TOA/LC08_047027_20160819")
-    .clip(extent);
+var img = ee.Image("LANDSAT/LC08/C01/T1_TOA/LC08_047027_20160819").clip(extent);
 
 var vis = img.select(["B4", "B3", "B2"]);
 var pan = img.select(["B8"]);
@@ -31,19 +36,17 @@ var pca = sharpening.PCA.sharpen(vis, pan);
 // Sharpen with Gram-Schmidt
 var gs = sharpening.GS.sharpen(vis, pan);
 
-
 // Add layers to the map
 Map.addLayer(vis, { min: 0, max: 0.4 }, "L8");
-Map.addLayer(brov, { min: 0, max: 0.4 }, "Brovey")
-Map.addLayer(simpleMean, { min: 0, max: 0.4 }, "SimpleMean")
-Map.addLayer(HPFA, { min: 0, max: 0.4 }, "HPFA")
-Map.addLayer(ihs, { min: 0, max: 0.4 }, "IHS")
-Map.addLayer(pca, { min: 0, max: 0.4 }, "PCA")
-Map.addLayer(gs, { min: 0, max: 0.4 }, "Gram-Schmidt")
-
+Map.addLayer(brov, { min: 0, max: 0.4 }, "Brovey");
+Map.addLayer(simpleMean, { min: 0, max: 0.4 }, "SimpleMean");
+Map.addLayer(HPFA, { min: 0, max: 0.4 }, "HPFA");
+Map.addLayer(ihs, { min: 0, max: 0.4 }, "IHS");
+Map.addLayer(pca, { min: 0, max: 0.4 }, "PCA");
+Map.addLayer(gs, { min: 0, max: 0.4 }, "Gram-Schmidt");
 
 // Load the image quality functions
-var quality = require('users/aazuspan/geeSharpening:quality');
+var quality = require("users/aazuspan/geeSharpening:quality");
 
 // Calculate quality indexes to quantify distortion in the PCA sharpened image
 var pcaMSE = quality.MSE.calculate(vis, pca);
