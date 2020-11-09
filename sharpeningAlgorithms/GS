@@ -68,7 +68,8 @@ exports.sharpen = function(img, pan) {
     
     var panSim = utils.multibandToCollection(img).mean();
     
-    print(panSim)
+    print(img.geometry())
+    print(panSim.geometry())
 
     // GS1 image is the panSim 
     var gsList = ee.List([
