@@ -1,6 +1,6 @@
 var utils = require("users/aazuspan/geeSharpening:utils");
 
-// Calculate band-to-band Pearson's correlation between a reference image and a modified image.
+// Calculate per-band Pearson's correlation between a reference image and a modified image.
 function calculateCorrelation(referenceImage, assessmentImage) {
   // List of mean band values
   var xbar = referenceImage
@@ -16,7 +16,6 @@ function calculateCorrelation(referenceImage, assessmentImage) {
     })
     .values();
 
-  // Pearson's correlation (1st component)
   var xCentered = referenceImage.subtract(ee.Image.constant(xbar));
   var yCentered = assessmentImage.subtract(ee.Image.constant(ybar));
 
@@ -52,7 +51,7 @@ function calculateCorrelation(referenceImage, assessmentImage) {
   return correlation;
 }
 
-// Calculate band-to-band luminance between a reference image and a modified image.
+// Calculate per-band luminance between a reference image and a modified image.
 function calculateLuminance(referenceImage, assessmentImage) {
   // List of mean band values
   var xbar = referenceImage
@@ -75,7 +74,7 @@ function calculateLuminance(referenceImage, assessmentImage) {
   return luminance;
 }
 
-// Calculate band-to-band contrast between a reference image and a modified image.
+// Calculate per-band contrast between a reference image and a modified image.
 function calculateContrast(referenceImage, assessmentImage) {
   var xStdDev = ee.Array(
     referenceImage
