@@ -28,16 +28,17 @@ exports.calculate = function(referenceImage, assessmentImage, perBand) {
   var xLog = x.map(function(y) {return ee.Number(y).log10()});
   
   // Sum the band values
-  var xSum = xLog.reduce(ee.Reducer.sum());
+  // var xSum = xLog.reduce(ee.Reducer.sum());
   
   // 20 / number of bands
-  var coeff = ee.Number(20).divide(referenceImage.bandNames().length());
-  
-  var psnr = coeff.multiply(xSum);
+  // var coeff = ee.Number(20).divide(referenceImage.bandNames().length());
+  print(xLog)
+  var psnr = xLog.multiply(20)
+  print(psnr)
   
   // If not per band, average all bands
   if (perBand === false) {
-    DIV = ee.Number(DIV.reduce(ee.Reducer.mean()));
+    psnr = ee.Number(DIV.reduce(ee.Reducer.mean()));
   }
   
   return psnr;
