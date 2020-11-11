@@ -26,7 +26,7 @@ exports.calculate = function(referenceImage, assessmentImage, perBand) {
   })
   
   // Take the log10 of all band values
-  var xLog = x.map(function(y) {return ee.Number(y).log10()});
+  var xLog = ee.Array(x.map(function(y) {return ee.Number(y).log10()}));
   
   // Sum the band values
   // var xSum = xLog.reduce(ee.Reducer.sum());
