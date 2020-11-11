@@ -9,7 +9,7 @@ exports.calculate = function(referenceImage, assessmentImage) {
   var bandMSEs = mse.calculate(referenceImage, assessmentImage, true);
   
   // Zip the gfs and MSEk values to get a list of lists
-  var bandVals = maxVal.values().zip(bandMSEs.values());
+  var bandVals = maxVal.values().zip(bandMSEs);
 
   // Map over each band list
   var x = bandVals.map(function(band) {
