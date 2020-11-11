@@ -17,7 +17,7 @@ exports.calculate = function (referenceImage, assessmentImage, perBand) {
 
   // If not per band, average all bands
   if (perBand === false) {
-    rmse = ee.Number(mseBands.reduce(ee.Reducer.mean()));
+    rmse = ee.Number(rmse.reduce(ee.Reducer.mean()));
   }
 
   return rmse;
