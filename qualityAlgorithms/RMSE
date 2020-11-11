@@ -1,3 +1,4 @@
+var mse = require("users/aazuspan/geeSharpening:qualityAlgorithms/MSE");
 var utils = require("users/aazuspan/geeSharpening:utils");
 
 // Calculate the cumulative MSE between an assesment image and a reference image.
@@ -10,7 +11,9 @@ exports.calculate = function (referenceImage, assessmentImage, perBand) {
     perBand = false;
   }
 
-  var mse = mse.
+  var mse = mse.calculate(referenceImage, assessmentImage, true);
+  
+  var rmse = ee.Array(mse).sqrt().toList();
 
   // If not per band, average all bands
   if (perBand === false) {
