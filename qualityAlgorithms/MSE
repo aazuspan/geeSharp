@@ -1,14 +1,3 @@
-// Calculate the MSE between the bands of an assesment image and a reference image. 
-// Images should have same number of bands, same resolution, and same extent. 
-// See Hagag et al 2013.
-// Note: MSE is relative to image intensity.
-exports.calculateBandMSE = function(referenceImage, assessmentImage) {
-
-  
-  return mse;
-}
-
-
 // Calculate the cumulative MSE between an assesment image and a reference image. 
 // Images should have same number of bands, same resolution, and same extent. 
 // See Hagag et al 2013, equation 5. To get cumulative image MSE, sum the band MSEs.
