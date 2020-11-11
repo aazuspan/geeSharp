@@ -1,5 +1,7 @@
 var mse = require("users/aazuspan/geeSharpening:qualityAlgorithms/MSE");
+print(mse)
 var utils = require("users/aazuspan/geeSharpening:utils");
+print(utils)
 
 // Calculate the cumulative MSE between an assesment image and a reference image.
 // Images should have same number of bands, same resolution, and same extent.
