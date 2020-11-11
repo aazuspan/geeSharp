@@ -34,10 +34,10 @@ var gs = sharpening.GS.sharpen(vis, pan);
 
 // Add layers to the map
 Map.addLayer(vis, { min: 0, max: 0.4 }, "L8");
-// Map.addLayer(brov, { min: 0, max: 0.4 }, "Brovey")
-// Map.addLayer(simpleMean, { min: 0, max: 0.4 }, "SimpleMean")
-// Map.addLayer(HPFA, { min: 0, max: 0.4 }, "HPFA")
-// Map.addLayer(ihs, { min: 0, max: 0.4 }, "IHS")
+Map.addLayer(brov, { min: 0, max: 0.4 }, "Brovey")
+Map.addLayer(simpleMean, { min: 0, max: 0.4 }, "SimpleMean")
+Map.addLayer(HPFA, { min: 0, max: 0.4 }, "HPFA")
+Map.addLayer(ihs, { min: 0, max: 0.4 }, "IHS")
 Map.addLayer(pca, { min: 0, max: 0.4 }, "PCA")
 Map.addLayer(gs, { min: 0, max: 0.4 }, "Gram-Schmidt")
 
@@ -45,10 +45,10 @@ Map.addLayer(gs, { min: 0, max: 0.4 }, "Gram-Schmidt")
 // Load the image quality functions
 var quality = require('users/aazuspan/geeSharpening:quality');
 
-// Calculate quality indexes to quantify distortion in the PCA sharpened image
-var pcaMSE = quality.MSE.calculate(vis, pca);
-var pcaPSNR = quality.PSNR.calculate(vis, pca);
-var pcaQ = quality.Q.calculate(vis, pca);
-var pcaRASE = quality.RASE.calculate(vis, pca);
+// Calculate quality indexes to quantify distortion in the GS sharpened image
+var gsMSE = quality.MSE.calculate(vis, gs);
+var gsPSNR = quality.PSNR.calculate(vis, gs);
+var gsQ = quality.Q.calculate(vis, gs);
+var gsRASE = quality.RASE.calculate(vis, gs);
 
-print(pcaMSE, pcaPSNR, pcaQ);
+print(gsMSE, gsPSNR, gsQ, gsRASE);
