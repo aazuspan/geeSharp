@@ -20,5 +20,5 @@ exports.calculate = function (referenceImage, assessmentImage, perBand) {
     mseBands = ee.Number(mseBands.reduce(ee.Reducer.mean()));
   }
 
-  return mse;
+  return rmse;
 };
