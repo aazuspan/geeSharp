@@ -13,7 +13,7 @@ exports.calculate = function (referenceImage, assessmentImage, perBand) {
   }
 
   var mseBands = mse.calculate(referenceImage, assessmentImage, true);
-  
+
   var rmse = ee.Array(mseBands).sqrt().toList();
 
   // If not per band, average all bands
