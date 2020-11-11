@@ -108,7 +108,7 @@ exports.calculate = function(referenceImage, assessmentImage, perBand) {
   
   // If not per band, average all bands
   if (perBand === false) {
-    bias = ee.Number(qBands.reduce(ee.Reducer.mean()));
+    q = ee.Number(q.reduce(ee.Reducer.mean()));
   }
   
   return q;
