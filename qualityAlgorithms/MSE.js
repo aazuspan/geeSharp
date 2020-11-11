@@ -1,8 +1,9 @@
 var utils = require("users/aazuspan/geeSharpening:utils");
 
-// Calculate the cumulative MSE between an assesment image and a reference image.
+// Calculate the MSE between an assesment image and a reference image.
 // Images should have same number of bands, same resolution, and same extent.
-// See Hagag et al 2013, equation 5. To get cumulative image MSE, sum the band MSEs.
+// See Hagag et al 2013, equation 5. If not perBand, the mean MSE of all bands
+// is returned.
 // Note: MSE is relative to image intensity.
 exports.calculate = function (referenceImage, assessmentImage, perBand) {
   // Default to returning image average
