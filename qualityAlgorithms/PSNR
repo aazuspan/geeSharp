@@ -32,7 +32,7 @@ exports.calculate = function(referenceImage, assessmentImage, perBand) {
   
   // If not per band, average all bands
   if (perBand === false) {
-    psnr = ee.Number(DIV.reduce(ee.Reducer.mean()));
+    psnr = ee.Number(psnr.reduce(ee.Reducer.mean()));
   }
   
   return psnr;
