@@ -1,4 +1,6 @@
-// Calculate band-to-band Pearson's correlation between a reference image and a modified image.
+var utils = require("users/aazuspan/geeSharpening:utils");
+
+// Calculate per-band Pearson's correlation between a reference image and a modified image.
 function calculateCorrelation(referenceImage, assessmentImage) {
   // List of mean band values
   var xbar = referenceImage
@@ -14,7 +16,6 @@ function calculateCorrelation(referenceImage, assessmentImage) {
     })
     .values();
 
-  // Pearson's correlation (1st component)
   var xCentered = referenceImage.subtract(ee.Image.constant(xbar));
   var yCentered = assessmentImage.subtract(ee.Image.constant(ybar));
 
@@ -50,7 +51,7 @@ function calculateCorrelation(referenceImage, assessmentImage) {
   return correlation;
 }
 
-// Calculate band-to-band luminance between a reference image and a modified image.
+// Calculate per-band luminance between a reference image and a modified image.
 function calculateLuminance(referenceImage, assessmentImage) {
   // List of mean band values
   var xbar = referenceImage
@@ -73,7 +74,7 @@ function calculateLuminance(referenceImage, assessmentImage) {
   return luminance;
 }
 
-// Calculate band-to-band contrast between a reference image and a modified image.
+// Calculate per-band contrast between a reference image and a modified image.
 function calculateContrast(referenceImage, assessmentImage) {
   var xStdDev = ee.Array(
     referenceImage
@@ -116,7 +117,12 @@ function calculateContrast(referenceImage, assessmentImage) {
 }
 
 // Calculating Q index. See Wang and Bovik 2002.
-exports.calculate = function (referenceImage, assessmentImage) {
+exports.calculate = function (referenceImage, assessmentImage, perBand) {
+  // Default to returning image average
+  if (utils.isMissing(perBand)) {
+    perBand = false;
+  }
+
   // Resample the reference image to match the assessment image resolution and origin
   referenceImage = referenceImage
     .resample("bicubic")
@@ -131,10 +137,12 @@ exports.calculate = function (referenceImage, assessmentImage) {
   // Contrast (3rd component)
   var contrast = calculateContrast(referenceImage, assessmentImage);
 
-  var qBands = correlation.multiply(luminance).multiply(contrast);
+  var q = correlation.multiply(luminance).multiply(contrast).toList();
 
-  // Average the band q values to get a cumulative q value
-  var q = ee.Number(qBands.toList().reduce(ee.Reducer.mean()));
+  // If not per band, average all bands
+  if (perBand === false) {
+    q = ee.Number(q.reduce(ee.Reducer.mean()));
+  }
 
   return q;
 };
