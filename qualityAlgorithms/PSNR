@@ -6,7 +6,7 @@ var mse = require("users/aazuspan/geeSharpening:qualityAlgorithms/MSE");
 // Unlike MSE, PSNR is not relative to image intensity.
 exports.calculate = function(referenceImage, assessmentImage) {
   var maxVal = referenceImage.reduceRegion({reducer: ee.Reducer.max()});
-  var bandMSEs = mse.calculateBandMSE(referenceImage, assessmentImage);
+  var bandMSEs = mse.calculate(referenceImage, assessmentImage, true);
   
   // Zip the gfs and MSEk values to get a list of lists
   var bandVals = maxVal.values().zip(bandMSEs.values());
