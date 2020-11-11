@@ -84,7 +84,12 @@ function calculateContrast(referenceImage, assessmentImage) {
 
 
 // Calculating Q index. See Wang and Bovik 2002.
-exports.calculate = function(referenceImage, assessmentImage) {
+exports.calculate = function(referenceImage, assessmentImage, perBand) {
+    // Default to returning image average
+  if (utils.isMissing(perBand)) {
+    perBand = false;
+  }
+  
   // Resample the reference image to match the assessment image resolution and origin
   referenceImage = referenceImage.resample("bicubic").reproject(assessmentImage.projection());
 
@@ -97,10 +102,12 @@ exports.calculate = function(referenceImage, assessmentImage) {
   // Contrast (3rd component)
   var contrast = calculateContrast(referenceImage, assessmentImage);
   
-  var qBands = correlation.multiply(luminance).multiply(contrast);
-
-  // Average the band q values to get a cumulative q value
-  var q = ee.Number(qBands.toList().reduce(ee.Reducer.mean()));
+  var q = correlation.multiply(luminance).multiply(contrast).toList();
+  
+  // If not per band, average all bands
+  if (perBand === false) {
+    bias = ee.Number(qBands.reduce(ee.Reducer.mean()));
+  }
   
   return q;
 }
