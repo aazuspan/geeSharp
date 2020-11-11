@@ -1,3 +1,5 @@
+var utils = require("users/aazuspan/geeSharpening:utils");
+
 // Calculate band-to-band Pearson's correlation between a reference image and a modified image.
 function calculateCorrelation(referenceImage, assessmentImage) {
   // List of mean band values
