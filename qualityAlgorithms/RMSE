@@ -1,8 +1,9 @@
 var mse = require("users/aazuspan/geeSharpening:qualityAlgorithms/MSE");
 var utils = require("users/aazuspan/geeSharpening:utils");
 
-// Calculate the cumulative RMSE between an assesment image and a reference image.
+// Calculate the RMSE between an assesment image and a reference image.
 // Images should have same number of bands, same resolution, and same extent.
+// If not perBand, the mean RMSE of all bands is returned, not the sum of all RMSE.
 // See Hagag et al 2013, equation 5.
 // Note: MSE is relative to image intensity.
 exports.calculate = function (referenceImage, assessmentImage, perBand) {
