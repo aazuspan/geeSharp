@@ -8,7 +8,7 @@ exports.calculate = function(referenceImage, assessmentImage, perBand) {
     perBand = false;
   }
   
-  var mseBands = ee.Array(quality.MSE.calculate(referenceImage, assessmentImage, true));
+  var mseBands = ee.Array(mse.calculate(referenceImage, assessmentImage, true));
   var xbar = ee.Array(referenceImage.reduceRegion(ee.Reducer.mean()).values());
   var bandVals = mseBands.divide(xbar.pow(2)).sqrt();
   
