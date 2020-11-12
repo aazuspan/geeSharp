@@ -53,14 +53,14 @@ var pcaQ = quality.Q.calculate(originalImg, sharpenedImg);
 
 ## Accuracy
 
-| Function   | Algorithm                    | MSE    | PSNR  | Q    | RASE   |
-|:-----------|:-----------------------------|-------:|------:|-----:|-------:|
-| GS         | Gram-Schmidt                 | 0.0001 | 36.42 | 0.96 | 11.69  |
-| PCA        | Principal Component Analysis | 0.0001 | 36.47 | 0.96 | 11.64  |
-| SimpleMean | Simple mean                  | 0.0001 | 38.25 | 0.95 |  9.79  |
-| brovey     | Brovey                       | 0.0003 | 32.60 | 0.94 | 18.01  |
-| HPFA       | High-Pass Filter (Additive)  | 0.0004 | 31.34 | 0.91 | 20.78  |
-| IHS        | Intensity-Hue-Saturation     | 0.0005 | 30.46 | 0.91 | 23.25  |
+| Function   | Algorithm                    | MSE    | PSNR  | Q    | RASE   | ERGAS |
+|:-----------|:-----------------------------|-------:|------:|-----:|-------:|------:|
+| GS         | Gram-Schmidt                 | 0.0001 | 36.42 | 0.96 | 11.69  | 6.02  |
+| PCA        | Principal Component Analysis | 0.0001 | 36.47 | 0.96 | 11.64  | 6.00  |
+| SimpleMean | Simple mean                  | 0.0001 | 38.25 | 0.95 |  9.79  | 4.82  |
+| brovey     | Brovey                       | 0.0003 | 32.60 | 0.94 | 18.01  | 11.50 |
+| HPFA       | High-Pass Filter (Additive)  | 0.0004 | 31.34 | 0.91 | 20.78  | 16.96 |
+| IHS        | Intensity-Hue-Saturation     | 0.0005 | 30.46 | 0.91 | 23.25  | 22.32 |
 
 *Accuracies were calculated by sharpening the RGB bands of Landsat 8 TOA data, and represent the mean distortion for all bands. Accuracy will change based on scene and band selection.
 
