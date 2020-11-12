@@ -32,7 +32,10 @@ var HPFA = sharpening.HPFA.sharpen(vis, pan);
 // Sharpen with IHS
 var ihs = sharpening.IHS.sharpen(vis, pan);
 // Sharpen with PCA
-var pca = sharpening.PCA.sharpen(vis, pan);
+var pca = sharpening.PCA.sharpen(
+  img.select(["B4", "B3", "B2"]),
+  pan.multiply(-1)
+);
 // Sharpen with Gram-Schmidt
 var gs = sharpening.GS.sharpen(vis, pan);
 
@@ -48,9 +51,9 @@ Map.addLayer(gs, { min: 0, max: 0.4 }, "Gram-Schmidt");
 // Load the image quality functions
 var quality = require("users/aazuspan/geeSharpening:quality");
 
-// Calculate quality indexes to quantify distortion in the PCA sharpened image
-var pcaMSE = quality.MSE.calculate(vis, pca);
-var pcaPSNR = quality.PSNR.calculate(vis, pca);
-var pcaQ = quality.Q.calculate(vis, pca);
+// Calculate quality indexes to quantify distortion in the GS sharpened image
+var gsQ = quality.Q.calculate(vis, gs);
+var gsRASE = quality.RASE.calculate(vis, gs);
+var gsERGAS = quality.ERGAS.calculate(vis, gs);
 
-print(pcaMSE, pcaPSNR, pcaQ);
+print(gsQ, gsRASE, gsERGAS);
