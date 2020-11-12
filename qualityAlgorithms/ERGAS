@@ -1,28 +1,28 @@
 var mse = require("users/aazuspan/geeSharpening:qualityAlgorithms/MSE");
 var utils = require("users/aazuspan/geeSharpening:utils");
 
-// 
-exports.calculate = function(referenceImage, assessmentImage, perBand) {
+//
+exports.calculate = function (referenceImage, assessmentImage, perBand) {
   // Default to returning image average
   if (utils.isMissing(perBand)) {
     perBand = false;
   }
-  
+
   var mseBands = ee.Array(mse.calculate(referenceImage, assessmentImage, true));
   var xbar = ee.Array(referenceImage.reduceRegion(ee.Reducer.mean()).values());
   var bandVals = mseBands.divide(xbar.pow(2)).sqrt();
-  
+
   var h = assessmentImage.projection().nominalScale();
   var l = referenceImage.projection().nominalScale();
-  
+
   var coeff = h.divide(l).multiply(100);
-  
+
   var ergas = bandVals.multiply(coeff).toList();
-  
-    // If not per band, average all bands
+
+  // If not per band, average all bands
   if (perBand === false) {
     ergas = ee.Number(ergas.reduce(ee.Reducer.mean()));
   }
-  
+
   return ergas;
-}
+};
