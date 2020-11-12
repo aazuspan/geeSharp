@@ -7,3 +7,4 @@ exports.Q = require("users/aazuspan/geeSharpening:qualityAlgorithms/Q");
 exports.bias = require("users/aazuspan/geeSharpening:qualityAlgorithms/bias");
 exports.DIV = require("users/aazuspan/geeSharpening:qualityAlgorithms/DIV");
 exports.RASE = require("users/aazuspan/geeSharpening:qualityAlgorithms/RASE");
+exports.ERGAS = require("users/aazuspan/geeSharpening:qualityAlgorithms/ERGAS");
