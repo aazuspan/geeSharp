@@ -12,7 +12,7 @@ exports.calculate = function(referenceImage, assessmentImage, perBand) {
   var xbar = ee.Array(referenceImage.reduceRegion(ee.Reducer.mean()).values());
   var bandVals = mseBands.divide(xbar.pow(2)).sqrt();
   
-  var h = sharpenedImg.projection().nominalScale();
+  var h = assessmentImage.projection().nominalScale();
   var l = referenceImage.projection().nominalScale();
   
   var coeff = h.divide(l).multiply(100);
