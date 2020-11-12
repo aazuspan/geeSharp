@@ -4,7 +4,7 @@ var utils = require("users/aazuspan/geeSharpening:utils");
 // Dimensionless Global Relative Error of Synthesis (ERGAS) measures spectral distortion
 // relative to the sharpening ratio. This compensates for the fact that larger increases in
 // spatial resolution will typically result in greater spectral distortion. Values near to
-// zero relative to image intensity indiciate low distortion.
+// zero indiciate low distortion.
 exports.calculate = function (referenceImage, assessmentImage, perBand) {
   // Default to returning image average
   if (utils.isMissing(perBand)) {
