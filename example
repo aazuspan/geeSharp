@@ -46,9 +46,8 @@ Map.addLayer(gs, { min: 0, max: 0.4 }, "Gram-Schmidt")
 var quality = require('users/aazuspan/geeSharpening:quality');
 
 // Calculate quality indexes to quantify distortion in the GS sharpened image
-var gsMSE = quality.MSE.calculate(vis, gs);
 var gsPSNR = quality.PSNR.calculate(vis, gs);
-var gsQ = quality.Q.calculate(vis, gs);
 var gsRASE = quality.RASE.calculate(vis, gs);
+var gsERGAS = quality.ERGAS.calculate(vis, gs);
 
-print(gsMSE, gsPSNR, gsQ, gsRASE);
+print(gsQ, gsRASE, gsERGAS);
