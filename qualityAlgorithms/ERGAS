@@ -1,3 +1,6 @@
+var mse = require("users/aazuspan/geeSharpening:qualityAlgorithms/MSE");
+var utils = require("users/aazuspan/geeSharpening:utils");
+
 // 
 exports.ERGAS = function(referenceImage, assessmentImage, perBand) {
   // Default to returning image average
