@@ -14,7 +14,7 @@ exports.calculate = function (referenceImage, assessmentImage, perBand) {
   var mse = referenceImage
     .subtract(assessmentImage)
     .pow(2)
-    .reduceRegion({ reducer: ee.Reducer.mean() })
+    .reduceRegion({ reducer: ee.Reducer.mean(), maxPixels: 1e11 })
     .values();
 
   // If not per band, average all bands
