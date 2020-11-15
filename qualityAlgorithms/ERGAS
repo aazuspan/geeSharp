@@ -14,7 +14,7 @@ exports.calculate = function (referenceImage, assessmentImage, perBand) {
   var mseBands = ee.Array(mse.calculate(referenceImage, assessmentImage, true));
   var xbar = ee.Array(referenceImage.reduceRegion({
     reducer: ee.Reducer.mean(), 
-    maxPixels: 1e2}).values());
+    maxPixels: 1e12}).values());
   var bandVals = mseBands.divide(xbar.pow(2)).sqrt();
 
   var h = assessmentImage.projection().nominalScale();
