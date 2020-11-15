@@ -14,9 +14,9 @@ exports.calculate = function (referenceImage, assessmentImage, perBand) {
 
   // Calculate the mean of each band, then the mean of the means
   var xbar = referenceImage
-    .reduceRegion(ee.Reducer.mean())
+    .reduceRegion({reducer: ee.Reducer.mean(), maxPixels: 1e11})
     .values()
-    .reduce(ee.Reducer.mean());
+    .reduce({reducer: ee.Reducer.mean(), maxPixels: 1e11});
 
   var rase = mseBands.multiply(100).divide(xbar).toList();
 
