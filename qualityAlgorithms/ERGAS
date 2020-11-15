@@ -26,9 +26,7 @@ exports.calculate = function (referenceImage, assessmentImage, perBand) {
 
   // If not per band, average all bands
   if (perBand === false) {
-    ergas = ee.Number(ergas.reduce({
-      reducer: ee.Reducer.mean(), 
-      maxPixels: 1e11}));
+    ergas = ee.Number(ergas.reduce(ee.Reducer.mean()));
   }
 
   return ergas;
