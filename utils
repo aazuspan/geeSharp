@@ -21,7 +21,7 @@ exports.multibandToCollection = function(img) {
  *  corresponding band of the input image.
 */
 exports.reduceImage = function (img, reducer, geometry) {
-    if (isMissing(geometry)) {
+    if (exports.isMissing(geometry)) {
       geometry = img.geometry();
     }
   
