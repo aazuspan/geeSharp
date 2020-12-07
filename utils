@@ -26,14 +26,14 @@ exports.reduceImage = function (img, reducer, geometry, scale) {
     }
     
     if (exports.isMissing(scale)) {
-      geometry = img.projection().nominalScale();
+      scale = img.projection().nominalScale();
     }
   
     // Calculate the reduced image value(s)
     var imgReducedVal = img.reduceRegion({
         reducer: reducer,
         geometry: geometry,
-        scale: img.projection().nominalScale(),
+        scale: scale,
         maxPixels: 1e11
     });
 
