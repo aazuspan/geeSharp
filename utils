@@ -50,9 +50,9 @@ exports.reduceImage = function (img, reducer, geometry, scale) {
  *  image, where each band is a constant value of the range value of the 
  *  corresponding band of the input image.
 */
-exports.getImageRange = function (img) {
-    var imgMax = exports.reduceImage(img, ee.Reducer.max());
-    var imgMin = exports.reduceImage(img, ee.Reducer.min());
+exports.getImageRange = function (img, geometry, scale) {
+    var imgMax = exports.reduceImage(img, ee.Reducer.max(), geometry, scale);
+    var imgMin = exports.reduceImage(img, ee.Reducer.min(), geometry, scale);
     var imgRange = imgMax.subtract(imgMin);
     return imgRange;
 }
