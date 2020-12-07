@@ -67,10 +67,10 @@ exports.getImageRange = function (img) {
 exports.linearHistogramMatch = function (targetImage, referenceImage, geometry, scale) {
     var offsetTarget = exports.reduceImage(targetImage, ee.Reducer.mean(), geometry, scale);
     var offset = exports.reduceImage(referenceImage, ee.Reducer.mean(), geometry, scale);
-    var scale = exports.reduceImage(referenceImage, ee.Reducer.stdDev(), geometry, scale)
+    var rescale = exports.reduceImage(referenceImage, ee.Reducer.stdDev(), geometry, scale)
         .divide(exports.reduceImage(targetImage, ee.Reducer.stdDev(), geometry, scale));
 
-    var rescaledTarget = targetImage.subtract(offsetTarget).multiply(scale).add(offset);
+    var rescaledTarget = targetImage.subtract(offsetTarget).multiply(rescale).add(offset);
     return rescaledTarget;
 }
 
