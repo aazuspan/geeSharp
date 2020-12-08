@@ -43,7 +43,8 @@ exports.reduceImage = function (img, reducer, geometry, scale) {
     maxPixels: 1e11,
   });
 
-  var imgReduced = ee.Image.constant(imgReducedVal.values(img.bandNames()));
+  // var imgReduced = ee.Image.constant(imgReducedVal.values(img.bandNames()));
+  var imgReduced = imgReducedVal.toImage(img.bandNames());
   return imgReduced;
 };
 
