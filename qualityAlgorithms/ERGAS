@@ -55,14 +55,16 @@ exports.calculate = function (
   );
 
   // Calculate the mean of each band
-  var xbar = ee.Array(referenceImage
-    .reduceRegion({
-      reducer: ee.Reducer.mean(),
-      geometry: geometry,
-      scale: scale,
-      maxPixels: maxPixels,
-    })
-    .values());
+  var xbar = ee.Array(
+    referenceImage
+      .reduceRegion({
+        reducer: ee.Reducer.mean(),
+        geometry: geometry,
+        scale: scale,
+        maxPixels: maxPixels,
+      })
+      .values()
+  );
 
   var bandVals = mseBands.divide(xbar.pow(2)).sqrt();
 
