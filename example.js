@@ -31,11 +31,9 @@ var simpleMean = sharpening.simpleMean.sharpen(vis, pan);
 var HPFA = sharpening.HPFA.sharpen(vis, pan);
 // Sharpen with IHS
 var ihs = sharpening.IHS.sharpen(vis, pan);
-// Sharpen with PCA
-var pca = sharpening.PCA.sharpen(
-  img.select(["B4", "B3", "B2"]),
-  pan.multiply(-1)
-);
+// Sharpen with PCA. Note that the pan band may need to be inverted
+// based on the order of the input bands when using PCA.
+var pca = sharpening.PCA.sharpen(vis, pan.multiply(-1));
 // Sharpen with Gram-Schmidt
 var gs = sharpening.GS.sharpen(vis, pan);
 
