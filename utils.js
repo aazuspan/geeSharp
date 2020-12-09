@@ -22,11 +22,13 @@ exports.multibandToCollection = function (img) {
  *  Defaults to the geometry of the input image.
  * @param {ee.Number} scale The scale to generate image statistics at. Defaults
  *  to the nominal scale of the input image.
+ * @param {ee.Number} maxPixels Maximum number of pixels used to calculate
+ *  statistics.
  * @return {ee.Image} An image with the same number of bands as the input
  *  image, where each band is a constant value of the reduced value of the
  *  corresponding band of the input image.
  */
-exports.reduceImage = function (img, reducer, geometry, scale) {
+exports.reduceImage = function (img, reducer, geometry, scale, maxPixels) {
   if (exports.isMissing(geometry)) {
     geometry = img.geometry();
   }
@@ -35,12 +37,16 @@ exports.reduceImage = function (img, reducer, geometry, scale) {
     scale = img.projection().nominalScale();
   }
 
+  if (exports.isMissing(maxPixels)) {
+    maxPixels = 1e12;
+  }
+
   // Calculate the reduced image value(s)
   var imgReducedVal = img.reduceRegion({
     reducer: reducer,
     geometry: geometry,
     scale: scale,
-    maxPixels: 1e11,
+    maxPixels: maxPixels,
   });
 
   var imgReduced = imgReducedVal.toImage(img.bandNames());
@@ -53,13 +59,27 @@ exports.reduceImage = function (img, reducer, geometry, scale) {
  * @param {ee.Image} img The input image to calculate range values for.
  * @param {ee.Geometry} geometry The region to generate image statistics over.
  * @param {ee.Number} scale The scale to generate image statistics at.
+ * @param {ee.Number} maxPixels Maximum number of pixels used to calculate
+ *  statistics.
  * @return {ee.Image} An image with the same number of bands as the input
  *  image, where each band is a constant value of the range value of the
  *  corresponding band of the input image.
  */
-exports.getImageRange = function (img, geometry, scale) {
-  var imgMax = exports.reduceImage(img, ee.Reducer.max(), geometry, scale);
-  var imgMin = exports.reduceImage(img, ee.Reducer.min(), geometry, scale);
+exports.getImageRange = function (img, geometry, scale, maxPixels) {
+  var imgMax = exports.reduceImage(
+    img,
+    ee.Reducer.max(),
+    geometry,
+    scale,
+    maxPixels
+  );
+  var imgMin = exports.reduceImage(
+    img,
+    ee.Reducer.min(),
+    geometry,
+    scale,
+    maxPixels
+  );
   var imgRange = imgMax.subtract(imgMin);
   return imgRange;
 };
@@ -71,30 +91,47 @@ exports.getImageRange = function (img, geometry, scale) {
  * @param {ee.Image} referenceImage An image to rescale towards.
  * @param {ee.Geometry} geometry The region to generate image statistics over.
  * @param {ee.Number} scale The scale to generate image statistics at.
+ * @param {ee.Number} maxPixels Maximum number of pixels used to calculate
+ *  statistics.
  * @return {ee.Image} A rescaled version of targetImage.
  */
 exports.linearHistogramMatch = function (
   targetImage,
   referenceImage,
   geometry,
-  scale
+  scale,
+  maxPixels
 ) {
   var offsetTarget = exports.reduceImage(
     targetImage,
     ee.Reducer.mean(),
     geometry,
-    scale
+    scale,
+    maxPixels
   );
   var offset = exports.reduceImage(
     referenceImage,
     ee.Reducer.mean(),
     geometry,
-    scale
+    scale,
+    maxPixels
   );
   var rescale = exports
-    .reduceImage(referenceImage, ee.Reducer.stdDev(), geometry, scale)
+    .reduceImage(
+      referenceImage,
+      ee.Reducer.stdDev(),
+      geometry,
+      scale,
+      maxPixels
+    )
     .divide(
-      exports.reduceImage(targetImage, ee.Reducer.stdDev(), geometry, scale)
+      exports.reduceImage(
+        targetImage,
+        ee.Reducer.stdDev(),
+        geometry,
+        scale,
+        maxPixels
+      )
     );
 
   var rescaledTarget = targetImage
