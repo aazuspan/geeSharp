@@ -1,20 +1,44 @@
 var utils = require("users/aazuspan/geeSharpening:utils");
 
-// Calculate the MSE between an assesment image and a reference image.
-// Images should have same number of bands, same resolution, and same extent.
-// See Hagag et al 2013, equation 5. If not perBand, the mean MSE of all bands
-// is returned.
-// Note: MSE is relative to image intensity.
+/**
+ * Calculate mean square error (MSE) between a reference image and a modified
+ * image. Values near 0 represent high similarity between images. MSE is
+ * relative to image intensity.
+ * @param {ee.Image} referenceImage An unmodified image.
+ * @param {ee.Image} assessmentImage A version of the reference image that has
+ *  been modified, such as through compression or pan-sharpening. MSE will be
+ *  calculated between this image and the reference image.
+ * @param {boolean, default false} perBand If true, MSE will be calculated
+ *  band-wise and returned as a list. If false, the average MSE of all bands
+ *  will be calculated and returned as a number.
+ * @param {ee.Geometry, default null} geometry The region to calculate MSE
+ *  for.
+ * @param {ee.Number, default null} scale The scale, in projection units, to
+ *  calculate MSE at.
+ * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
+ *  pixels to sample.
+ * @return {ee.Number | ee.List} Band average or per-band MSE for the image,
+ *  depending on perBand.
+ */
 exports.calculate = function (referenceImage, assessmentImage, perBand) {
   // Default to returning image average
   if (utils.isMissing(perBand)) {
     perBand = false;
   }
 
+  if (utils.isMissing(maxPixels)) {
+    maxPixels = 1e12;
+  }
+
   var mse = referenceImage
     .subtract(assessmentImage)
     .pow(2)
-    .reduceRegion({ reducer: ee.Reducer.mean(), maxPixels: 1e11 })
+    .reduceRegion({
+      reducer: ee.Reducer.mean(),
+      geometry: geometry,
+      scale: scale,
+      maxPixels: maxPixels,
+    })
     .values();
 
   // If not per band, average all bands
