@@ -9,18 +9,18 @@ var utils = require("users/aazuspan/geeSharpening:utils");
  * See Hagag et. al., 2013.
  * @param {ee.Image} referenceImage An unmodified image.
  * @param {ee.Image} assessmentImage A version of the reference image that has
- *  been modified, such as through compression or pan-sharpening. DIV will be
+ *  been modified, such as through compression or pan-sharpening. PSNR will be
  *  calculated between this image and the reference image.
- * @param {boolean, default false} perBand If true, DIV will be calculated
- *  band-wise and returned as a list. If false, the average DIV of all bands
+ * @param {boolean, default false} perBand If true, PSNR will be calculated
+ *  band-wise and returned as a list. If false, the average PSNR of all bands
  *  will be calculated and returned as a number.
- * @param {ee.Geometry, default null} geometry The region to calculate DIV
+ * @param {ee.Geometry, default null} geometry The region to calculate PSNR
  *  for.
  * @param {ee.Number, default null} scale The scale, in projection units, to
- *  calculate DIV at.
+ *  calculate PSNR at.
  * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
  *  pixels to sample.
- * @return {ee.Number | ee.List} Band average or per-band DIV for the image,
+ * @return {ee.Number | ee.List} Band average or per-band PSNR for the image,
  *  depending on perBand.
  */
 exports.calculate = function (
