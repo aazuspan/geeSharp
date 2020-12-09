@@ -94,18 +94,32 @@ exports.linearHistogramMatch = function (
     targetImage,
     ee.Reducer.mean(),
     geometry,
-    scale
+    scale,
+    maxPixels
   );
   var offset = exports.reduceImage(
     referenceImage,
     ee.Reducer.mean(),
     geometry,
-    scale
+    scale,
+    maxPixels
   );
   var rescale = exports
-    .reduceImage(referenceImage, ee.Reducer.stdDev(), geometry, scale)
+    .reduceImage(
+      referenceImage,
+      ee.Reducer.stdDev(),
+      geometry,
+      scale,
+      maxPixels
+    )
     .divide(
-      exports.reduceImage(targetImage, ee.Reducer.stdDev(), geometry, scale)
+      exports.reduceImage(
+        targetImage,
+        ee.Reducer.stdDev(),
+        geometry,
+        scale,
+        maxPixels
+      )
     );
 
   var rescaledTarget = targetImage
