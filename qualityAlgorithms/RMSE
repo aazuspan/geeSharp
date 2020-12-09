@@ -1,12 +1,6 @@
 var mse = require("users/aazuspan/geeSharpening:qualityAlgorithms/MSE");
 var utils = require("users/aazuspan/geeSharpening:utils");
 
-// Calculate the RMSE between an assesment image and a reference image.
-// Images should have same number of bands, same resolution, and same extent.
-// If not perBand, the mean RMSE of all bands is returned, not the sum of all RMSE.
-// See Hagag et al 2013, equation 5.
-// Note: MSE is relative to image intensity.
-
 /**
  * Calculate root mean square error (RMSE) between a reference image and a
  * modified image. Values near 0 represent high similarity between images. RMSE
