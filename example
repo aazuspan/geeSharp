@@ -70,6 +70,6 @@ var gsERGAS = quality.ERGAS.calculate(vis, gs);
 
 print(gsQ, gsRASE, gsERGAS);
 
-print(quality.bias.calculate(vis, gs));
-print(quality.bias.calculate(vis, gs, false, testGeom, 10, 1e13));
-print(quality.bias.calculate(vis, gs, true, 6, "yes", "0"));
+print(quality.DIV.calculate(vis, gs));
+print(quality.DIV.calculate(vis, gs, false, testGeom, 10, 1e13));
+print(quality.DIV.calculate(vis, gs, true, 6, "yes", "0"));
