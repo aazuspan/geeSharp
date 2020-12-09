@@ -111,6 +111,7 @@ function calculateContrast(
   var xStdDev = ee.Array(
     referenceImage
       .reduceRegion({
+        reducer: ee.Reducer.stdDev(),
         geometry: geometry,
         scale: scale,
         maxPixels: maxPixels,
@@ -120,6 +121,7 @@ function calculateContrast(
   var yStdDev = ee.Array(
     assessmentImage
       .reduceRegion({
+        reducer: ee.Reducer.stdDev(),
         geometry: geometry,
         scale: scale,
         maxPixels: maxPixels,
@@ -129,6 +131,7 @@ function calculateContrast(
   var xVar = ee.Array(
     referenceImage
       .reduceRegion({
+        reducer: ee.Reducer.variance(),
         geometry: geometry,
         scale: scale,
         maxPixels: maxPixels,
@@ -138,6 +141,7 @@ function calculateContrast(
   var yVar = ee.Array(
     assessmentImage
       .reduceRegion({
+        reducer: ee.Reducer.variance(),
         geometry: geometry,
         scale: scale,
         maxPixels: maxPixels,
