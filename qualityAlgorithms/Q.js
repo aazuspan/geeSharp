@@ -1,18 +1,28 @@
 var utils = require("users/aazuspan/geeSharpening:utils");
 
 // Calculate per-band Pearson's correlation between a reference image and a modified image.
-function calculateCorrelation(referenceImage, assessmentImage) {
+function calculateCorrelation(
+  referenceImage,
+  assessmentImage,
+  geometry,
+  scale,
+  maxPixels
+) {
   // List of mean band values
   var xbar = referenceImage
     .reduceRegion({
       reducer: ee.Reducer.mean(),
-      maxPixels: 1e11,
+      geometry: geometry,
+      scale: scale,
+      maxPixels: maxPixels,
     })
     .values();
   var ybar = assessmentImage
     .reduceRegion({
       reducer: ee.Reducer.mean(),
-      maxPixels: 1e11,
+      geometry: geometry,
+      scale: scale,
+      maxPixels: maxPixels,
     })
     .values();
 
@@ -24,7 +34,9 @@ function calculateCorrelation(referenceImage, assessmentImage) {
       .multiply(yCentered)
       .reduceRegion({
         reducer: ee.Reducer.sum(),
-        maxPixels: 1e11,
+        geometry: geometry,
+        scale: scale,
+        maxPixels: maxPixels,
       })
       .values()
   );
@@ -33,14 +45,18 @@ function calculateCorrelation(referenceImage, assessmentImage) {
     .pow(2)
     .reduceRegion({
       reducer: ee.Reducer.sum(),
-      maxPixels: 1e11,
+      geometry: geometry,
+      scale: scale,
+      maxPixels: maxPixels,
     })
     .values();
   var ySum = yCentered
     .pow(2)
     .reduceRegion({
       reducer: ee.Reducer.sum(),
-      maxPixels: 1e11,
+      geometry: geometry,
+      scale: scale,
+      maxPixels: maxPixels,
     })
     .values();
 
@@ -52,18 +68,28 @@ function calculateCorrelation(referenceImage, assessmentImage) {
 }
 
 // Calculate per-band luminance between a reference image and a modified image.
-function calculateLuminance(referenceImage, assessmentImage) {
+function calculateLuminance(
+  referenceImage,
+  assessmentImage,
+  geometry,
+  scale,
+  maxPixels
+) {
   // List of mean band values
   var xbar = referenceImage
     .reduceRegion({
       reducer: ee.Reducer.mean(),
-      maxPixels: 1e11,
+      geometry: geometry,
+      scale: scale,
+      maxPixels: maxPixels,
     })
     .values();
   var ybar = assessmentImage
     .reduceRegion({
       reducer: ee.Reducer.mean(),
-      maxPixels: 1e11,
+      geometry: geometry,
+      scale: scale,
+      maxPixels: maxPixels,
     })
     .values();
 
@@ -75,12 +101,20 @@ function calculateLuminance(referenceImage, assessmentImage) {
 }
 
 // Calculate per-band contrast between a reference image and a modified image.
-function calculateContrast(referenceImage, assessmentImage) {
+function calculateContrast(
+  referenceImage,
+  assessmentImage,
+  geometry,
+  scale,
+  maxPixels
+) {
   var xStdDev = ee.Array(
     referenceImage
       .reduceRegion({
         reducer: ee.Reducer.stdDev(),
-        maxPixels: 1e11,
+        geometry: geometry,
+        scale: scale,
+        maxPixels: maxPixels,
       })
       .values()
   );
@@ -88,7 +122,9 @@ function calculateContrast(referenceImage, assessmentImage) {
     assessmentImage
       .reduceRegion({
         reducer: ee.Reducer.stdDev(),
-        maxPixels: 1e11,
+        geometry: geometry,
+        scale: scale,
+        maxPixels: maxPixels,
       })
       .values()
   );
@@ -96,7 +132,9 @@ function calculateContrast(referenceImage, assessmentImage) {
     referenceImage
       .reduceRegion({
         reducer: ee.Reducer.variance(),
-        maxPixels: 1e11,
+        geometry: geometry,
+        scale: scale,
+        maxPixels: maxPixels,
       })
       .values()
   );
@@ -104,7 +142,9 @@ function calculateContrast(referenceImage, assessmentImage) {
     assessmentImage
       .reduceRegion({
         reducer: ee.Reducer.variance(),
-        maxPixels: 1e11,
+        geometry: geometry,
+        scale: scale,
+        maxPixels: maxPixels,
       })
       .values()
   );
@@ -116,11 +156,42 @@ function calculateContrast(referenceImage, assessmentImage) {
   return contrast;
 }
 
-// Calculating Q index. See Wang and Bovik 2002.
-exports.calculate = function (referenceImage, assessmentImage, perBand) {
+/**
+ * Calculate Q between a reference image and a modified image. Values near 1
+ * represent low distortion.
+ *
+ * See Wang & Bovik, 2002.
+ * @param {ee.Image} referenceImage An unmodified image.
+ * @param {ee.Image} assessmentImage A version of the reference image that has
+ *  been modified, such as through compression or pan-sharpening. Q will be
+ *  calculated between this image and the reference image.
+ * @param {boolean, default false} perBand If true, Q will be calculated
+ *  band-wise and returned as a list. If false, the average Q of all bands
+ *  will be calculated and returned as a number.
+ * @param {ee.Geometry, default null} geometry The region to calculate Q
+ *  for.
+ * @param {ee.Number, default null} scale The scale, in projection units, to
+ *  calculate Q at.
+ * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
+ *  pixels to sample.
+ * @return {ee.Number | ee.List} Band average or per-band Q for the image,
+ *  depending on perBand.
+ */
+exports.calculate = function (
+  referenceImage,
+  assessmentImage,
+  perBand,
+  geometry,
+  scale,
+  maxPixels
+) {
   // Default to returning image average
   if (utils.isMissing(perBand)) {
     perBand = false;
+  }
+
+  if (utils.isMissing(maxPixels)) {
+    maxPixels = 1e12;
   }
 
   // Resample the reference image to match the assessment image resolution and origin
@@ -129,13 +200,31 @@ exports.calculate = function (referenceImage, assessmentImage, perBand) {
     .reproject(assessmentImage.projection());
 
   // Correlation (1st component)
-  var correlation = calculateCorrelation(referenceImage, assessmentImage);
+  var correlation = calculateCorrelation(
+    referenceImage,
+    assessmentImage,
+    geometry,
+    scale,
+    maxPixels
+  );
 
   // Luminance (2nd component)
-  var luminance = calculateLuminance(referenceImage, assessmentImage);
+  var luminance = calculateLuminance(
+    referenceImage,
+    assessmentImage,
+    geometry,
+    scale,
+    maxPixels
+  );
 
   // Contrast (3rd component)
-  var contrast = calculateContrast(referenceImage, assessmentImage);
+  var contrast = calculateContrast(
+    referenceImage,
+    assessmentImage,
+    geometry,
+    scale,
+    maxPixels
+  );
 
   var q = correlation.multiply(luminance).multiply(contrast).toList();
 
