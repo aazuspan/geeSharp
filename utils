@@ -26,7 +26,7 @@ exports.multibandToCollection = function (img) {
  *  image, where each band is a constant value of the reduced value of the
  *  corresponding band of the input image.
  */
-exports.reduceImage = function (img, reducer, geometry, scale) {
+exports.reduceImage = function (img, reducer, geometry, scale, maxPixels) {
   if (exports.isMissing(geometry)) {
     geometry = img.geometry();
   }
@@ -35,12 +35,16 @@ exports.reduceImage = function (img, reducer, geometry, scale) {
     scale = img.projection().nominalScale();
   }
 
+  if (exports.isMissing(maxPixels)) {
+    maxPixels = 1e12;
+  }
+
   // Calculate the reduced image value(s)
   var imgReducedVal = img.reduceRegion({
     reducer: reducer,
     geometry: geometry,
     scale: scale,
-    maxPixels: 1e11,
+    maxPixels: maxPixels,
   });
 
   var imgReduced = imgReducedVal.toImage(img.bandNames());
