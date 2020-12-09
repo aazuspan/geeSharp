@@ -14,14 +14,6 @@ exports.calculate = function (
     perBand = false;
   }
 
-  // if (utils.isMissing(geometry)) {
-  //   geometry = referenceImage;
-  // }
-
-  // if (utils.isMissing(scale)) {
-  //   scale = null
-  // }
-
   if (utils.isMissing(maxPixels)) {
     maxPixels = 1e12;
   }
