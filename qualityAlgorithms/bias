@@ -1,17 +1,38 @@
 var utils = require("users/aazuspan/geeSharpening:utils");
 
 // Calculate bias, which measures similartiy between images. Values near 0 are good. Vaiopoulos 2011.
-exports.calculate = function (referenceImage, assessmentImage, perBand) {
+exports.calculate = function (
+  referenceImage,
+  assessmentImage,
+  perBand,
+  geometry,
+  scale,
+  maxPixels
+) {
   // Default to returning image average
   if (utils.isMissing(perBand)) {
     perBand = false;
+  }
+
+  // if (utils.isMissing(geometry)) {
+  //   geometry = referenceImage;
+  // }
+
+  // if (utils.isMissing(scale)) {
+  //   scale = null
+  // }
+
+  if (utils.isMissing(maxPixels)) {
+    maxPixels = 1e12;
   }
 
   var xbar = ee.Array(
     referenceImage
       .reduceRegion({
         reducer: ee.Reducer.mean(),
-        maxPixels: 1e11,
+        geometry: geometry,
+        scale: scale,
+        maxPixels: maxPixels,
       })
       .values()
   );
@@ -19,7 +40,9 @@ exports.calculate = function (referenceImage, assessmentImage, perBand) {
     assessmentImage
       .reduceRegion({
         reducer: ee.Reducer.mean(),
-        maxPixels: 1e11,
+        geometry: geometry,
+        scale: scale,
+        maxPixels: maxPixels,
       })
       .values()
   );
