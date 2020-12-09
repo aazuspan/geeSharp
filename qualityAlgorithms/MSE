@@ -20,7 +20,14 @@ var utils = require("users/aazuspan/geeSharpening:utils");
  * @return {ee.Number | ee.List} Band average or per-band MSE for the image,
  *  depending on perBand.
  */
-exports.calculate = function (referenceImage, assessmentImage, perBand) {
+exports.calculate = function (
+  referenceImage,
+  assessmentImage,
+  perBand,
+  geometry,
+  scale,
+  maxPixels
+) {
   // Default to returning image average
   if (utils.isMissing(perBand)) {
     perBand = false;
