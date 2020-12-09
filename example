@@ -72,3 +72,4 @@ print(gsQ, gsRASE, gsERGAS);
 
 print(quality.DIV.calculate(vis, gs));
 print(quality.DIV.calculate(vis, gs, true, testGeom, 10, 1e13));
+print(quality.DIV.calculate(vis, gs, true, 6, "yes", "0"));
