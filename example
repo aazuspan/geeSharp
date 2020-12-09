@@ -55,3 +55,6 @@ var gsRASE = quality.RASE.calculate(vis, gs);
 var gsERGAS = quality.ERGAS.calculate(vis, gs);
 
 print(gsQ, gsRASE, gsERGAS);
+
+
+var gsBias = quality.bias.calculate(vis, gs, true, null, null, 1e13);
