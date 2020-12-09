@@ -157,7 +157,8 @@ function calculateContrast(
 }
 
 /**
- * Calculate Q between a reference image and a modified image.
+ * Calculate Q between a reference image and a modified image. Values near 1
+ * represent low distortion.
  *
  * See Wang & Bovik, 2002.
  * @param {ee.Image} referenceImage An unmodified image.
