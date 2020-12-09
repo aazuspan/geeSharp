@@ -1,17 +1,60 @@
 var mse = require("users/aazuspan/geeSharpening:qualityAlgorithms/MSE");
 var utils = require("users/aazuspan/geeSharpening:utils");
 
-// Calculating peak signal noise ratio (PSNR) in dB (Hagag et al 2013). Larger
-// values mean there is less distortion from the reference image to the assessment image.
-// Unlike MSE, PSNR is not relative to image intensity.
-exports.calculate = function (referenceImage, assessmentImage, perBand) {
+/**
+ * Calculate peak signal noise ratio (PSNR) between a reference image and a
+ * modified image. Larger values mean there is less distortion from the
+ * reference image to the assessment image.
+ *
+ * See Hagag et. al., 2013.
+ * @param {ee.Image} referenceImage An unmodified image.
+ * @param {ee.Image} assessmentImage A version of the reference image that has
+ *  been modified, such as through compression or pan-sharpening. DIV will be
+ *  calculated between this image and the reference image.
+ * @param {boolean, default false} perBand If true, DIV will be calculated
+ *  band-wise and returned as a list. If false, the average DIV of all bands
+ *  will be calculated and returned as a number.
+ * @param {ee.Geometry, default null} geometry The region to calculate DIV
+ *  for.
+ * @param {ee.Number, default null} scale The scale, in projection units, to
+ *  calculate DIV at.
+ * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
+ *  pixels to sample.
+ * @return {ee.Number | ee.List} Band average or per-band DIV for the image,
+ *  depending on perBand.
+ */
+exports.calculate = function (
+  referenceImage,
+  assessmentImage,
+  perBand,
+  geometry,
+  scale,
+  maxPixels
+) {
   // Default to returning image average
   if (utils.isMissing(perBand)) {
     perBand = false;
   }
 
-  var maxVal = referenceImage.reduceRegion({ reducer: ee.Reducer.max() });
-  var bandMSEs = mse.calculate(referenceImage, assessmentImage, true);
+  if (utils.isMissing(maxPixels)) {
+    maxPixels = 1e12;
+  }
+
+  var maxVal = referenceImage.reduceRegion({
+    reducer: ee.Reducer.max(),
+    geometry: geometry,
+    scale: scale,
+    maxPixels: maxPixels,
+  });
+
+  var bandMSEs = mse.calculate(
+    referenceImage,
+    assessmentImage,
+    true,
+    geometry,
+    scale,
+    maxPixels
+  );
 
   // Zip the gfs and MSEk values to get a list of lists
   var bandVals = maxVal.values().zip(bandMSEs);
