@@ -1,7 +1,5 @@
 var utils = require("users/aazuspan/geeSharpening:utils");
 
-// Difference in variance (DIV) measures change in variance. Values near 0 are good.  Vaiopoulos 2011.
-
 /**
  * Calculate difference in variance (DIV) between a reference image and a
  * modified image. Values near 0 represent high similarity between images.
