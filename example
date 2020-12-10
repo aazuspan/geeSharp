@@ -1,17 +1,16 @@
 /**** Start of imports. If edited, may not auto-convert in the playground. ****/
 var geometry = 
-    /* color: #d63000 */
-    /* shown: false */
+    /* color: #0b4a8b */
     /* displayProperties: [
       {
         "type": "rectangle"
       }
     ] */
     ee.Geometry.Polygon(
-        [[[-122.49898167727007, 47.28646581001502],
-          [-122.49898167727007, 47.24592790819244],
-          [-122.44130345461382, 47.24592790819244],
-          [-122.44130345461382, 47.28646581001502]]], null, false);
+        [[[-122.43257948581787, 47.289675709119265],
+          [-122.43257948581787, 47.28816201226587],
+          [-122.43034788791748, 47.28816201226587],
+          [-122.43034788791748, 47.289675709119265]]], null, false);
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 // Load the sharpening functions
 var sharpening = require("users/aazuspan/geeSharpening:sharpening");
