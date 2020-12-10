@@ -95,7 +95,7 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
 
   // GS1 image is the panSim. Including the reduction parameters here is awful,
   // but the only way to pass them to calculateGs via iterate.
-  var gsList = ee.List([panSim]);
+  var gsList = ee.List([1, panSim]);
 
   // Convert the multispectral bands to an image collection so that it can be
   // iterated over
