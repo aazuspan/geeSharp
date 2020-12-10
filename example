@@ -1,3 +1,17 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var geometry = 
+    /* color: #d63000 */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[-122.49898167727007, 47.28646581001502],
+          [-122.49898167727007, 47.24592790819244],
+          [-122.44130345461382, 47.24592790819244],
+          [-122.44130345461382, 47.28646581001502]]], null, false);
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
 // Load the sharpening functions
 var sharpening = require("users/aazuspan/geeSharpening:sharpening");
 
@@ -55,3 +69,7 @@ var gsRASE = quality.RASE.calculate(vis, gs);
 var gsERGAS = quality.ERGAS.calculate(vis, gs);
 
 print(gsQ, gsRASE, gsERGAS);
+
+
+var pca2 = sharpening.PCA.sharpen(vis, pan.multiply(-1), geometry, 100, 1e13);
+Map.addLayer(pca2, { min: 0, max: 0.4 }, "PCA2");
