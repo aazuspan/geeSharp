@@ -8,9 +8,9 @@ var geometry =
     ] */
     ee.Geometry.Polygon(
         [[[-122.43257948581787, 47.289675709119265],
-          [-122.43257948581787, 47.28816201226587],
-          [-122.43034788791748, 47.28816201226587],
-          [-122.43034788791748, 47.289675709119265]]], null, false);
+          [-122.43257948581787, 47.26999427098155],
+          [-122.38846251194092, 47.26999427098155],
+          [-122.38846251194092, 47.289675709119265]]], null, false);
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 // Load the sharpening functions
 var sharpening = require("users/aazuspan/geeSharpening:sharpening");
@@ -70,7 +70,7 @@ var gsERGAS = quality.ERGAS.calculate(vis, gs);
 
 print(gsQ, gsRASE, gsERGAS);
 
-var gs2 = sharpening.GS.sharpen(vis, pan, geometry, 5000, null);
+var gs2 = sharpening.GS.sharpen(vis, pan, vis.geometry(), 5000, null);
 Map.addLayer(gs2, { min: 0, max: 0.4 }, "GS2");
 
 var gs2 = sharpening.GS.sharpen(vis, pan, null, 5000, null);
