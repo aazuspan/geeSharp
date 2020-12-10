@@ -8,16 +8,33 @@ var utils = require("users/aazuspan/geeSharpening:utils");
  * multispectral image.
  * @param {ee.Image} img An image to sharpen.
  * @param {ee.Image} pan An single-band panchromatic image.
- * @param {number} substitutePC The number of the principal component to
- *  replace with the pan band. Defaults to 1. Must be in range 1 - n,
- *  where n is the number of bands in the input image.
+ * @param {number, default 1} substitutePC The number of the principal
+ * component to replace with the pan band. Must be in range 1 - n, where n is
+ * the number of bands in the input image.
+ * @param {ee.Geometry, default null} geometry The region to calculate image
+ *  statistics for. Sharpening will only be accurate within this region.
+ * @param {ee.Number, default null} scale The scale, in projection units, to
+ *  calculate image statistics at.
+ * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
+ *  pixels to sample when calculating image statistics
  * @return {ee.Image} The input image with all bands sharpened to the spatial
  *  resolution of the panchromatic band.
  */
-exports.sharpen = function (img, pan, substitutePC) {
+exports.sharpen = function (
+  img,
+  pan,
+  substitutePC,
+  geometry,
+  scale,
+  maxPixels
+) {
   // Default to substituting the first PC
   if (utils.isMissing(substitutePC)) {
     substitutePC = 1;
+  }
+
+  if (utils.isMissing(maxPixels)) {
+    maxPixels = 1e12;
   }
 
   // Resample the image to the panchromatic resolution
@@ -29,7 +46,13 @@ exports.sharpen = function (img, pan, substitutePC) {
   var panBand = pan.bandNames().get(0);
 
   // Mean-center the images to allow efficient covariance calculation
-  var imgMean = utils.reduceImage(img, ee.Reducer.mean());
+  var imgMean = utils.reduceImage(
+    img,
+    ee.Reducer.mean(),
+    geometry,
+    scale,
+    maxPixels
+  );
 
   var imgCentered = img.subtract(imgMean);
 
@@ -39,7 +62,9 @@ exports.sharpen = function (img, pan, substitutePC) {
   // Calculate a covariance matrix between all bands
   var covar = imgArray.reduceRegion({
     reducer: ee.Reducer.centeredCovariance(),
-    maxPixels: 1e11,
+    geometry: geometry,
+    scale: scale,
+    maxPixels: maxPixels,
   });
 
   // Pull out the covariance results as an array
@@ -71,7 +96,10 @@ exports.sharpen = function (img, pan, substitutePC) {
   // Rescale the pan band to more closely match the substituted PC
   pan = utils.linearHistogramMatch(
     pan,
-    principalComponents.select(substitutePC - 1)
+    principalComponents.select(substitutePC - 1),
+    geometry,
+    scale,
+    maxPixels
   );
 
   // Build the band list, swapping the pan band for the appropriate PC
