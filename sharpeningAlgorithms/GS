@@ -1,17 +1,3 @@
-/**** Start of imports. If edited, may not auto-convert in the playground. ****/
-var testGeom = 
-    /* color: #d63000 */
-    /* displayProperties: [
-      {
-        "type": "rectangle"
-      }
-    ] */
-    ee.Geometry.Polygon(
-        [[[-122.4344687860557, 47.27857071736279],
-          [-122.4344687860557, 47.251078782950756],
-          [-122.3960166376182, 47.251078782950756],
-          [-122.3960166376182, 47.27857071736279]]], null, false);
-/***** End of imports. If edited, may not auto-convert in the playground. *****/
 var utils = require("users/aazuspan/geeSharpening:utils");
 
 /**
