@@ -91,7 +91,7 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
   // The reduction parameters to be passed to calculateGs
   var reductionParameters = [geometry, scale, maxPixels];
 
-  reductionParameters = [1, 1000, 1e13];
+  reductionParameters = [1, 1000, maxPixels];
 
   // GS1 image is the panSim. Including the reduction parameters here is awful,
   // but the only way to pass them to calculateGs via iterate.
