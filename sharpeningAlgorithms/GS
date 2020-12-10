@@ -8,7 +8,7 @@ var utils = require("users/aazuspan/geeSharpening:utils");
  */
 function calculateGs(ms, gsList) {
   // Get the reduction parameters which are passed through the gsList
-  var reductionParameters = ee.List(gsList.get(0));
+  var reductionParameters = ee.List(ee.List(gsList).get(0));
 
   // Unpack the parameters
   var geometry = reductionParameters.get(0);
