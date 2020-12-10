@@ -71,5 +71,9 @@ var gsERGAS = quality.ERGAS.calculate(vis, gs);
 print(gsQ, gsRASE, gsERGAS);
 
 
-var gs2 = sharpening.GS.sharpen(vis, pan, null, 100, 1e12);
+var gs2 = sharpening.GS.sharpen(vis, pan, null, null, 1e12);
 Map.addLayer(gs2, { min: 0, max: 0.4 }, "GS2");
+
+var gs2 = sharpening.GS.sharpen(vis, pan, null, 5000, 1e12);
+Map.addLayer(gs2, { min: 0, max: 0.4 }, "GS2");
+
