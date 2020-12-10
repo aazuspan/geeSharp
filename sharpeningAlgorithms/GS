@@ -19,7 +19,7 @@ function calculateGs(ms, gsList) {
 
   var geometry = null;
   var scale = 10;
-  var maxPixels = reductionParameters;
+  var maxPixels = ee.List(reductionParameters).get(2);
 
   // Get the previous GS as the last element
   var previous = ee.Image(ee.List(gsList).get(-1));
@@ -96,9 +96,11 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
   // The reduction parameters to be passed to calculateGs
   var reductionParameters = [geometry, scale, maxPixels];
 
+  reductionParameters = [1, 1, 1e3];
+
   // GS1 image is the panSim. Including the reduction parameters here is awful,
   // but the only way to pass them to calculateGs via iterate.
-  var gsList = ee.List([1e3, panSim]);
+  var gsList = ee.List([reductionParameters, panSim]);
 
   // Convert the multispectral bands to an image collection so that it can be
   // iterated over
