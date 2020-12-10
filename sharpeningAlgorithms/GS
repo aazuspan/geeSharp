@@ -75,6 +75,12 @@ function calculateGsCoefficient(ms, gs, geometry, scale, maxPixels) {
  *  resolution of the panchromatic band.
  */
 exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
+  // Params passed through iterate need to be explicitly set to null or else
+  // GEE serialization will fail
+  if (utils.isMissing(geometry)) {
+    geometry = null;
+  }
+
   if (utils.isMissing(scale)) {
     scale = null;
   }
@@ -95,7 +101,7 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
   // The reduction parameters to be passed to calculateGs
   var reductionParameters = [geometry, scale, maxPixels];
 
-  reductionParameters = [1, scale, maxPixels];
+  reductionParameters = [geometry, scale, maxPixels];
 
   // GS1 image is the panSim. Including the reduction parameters here is awful,
   // but the only way to pass them to calculateGs via iterate.
