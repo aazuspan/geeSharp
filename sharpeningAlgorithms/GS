@@ -12,13 +12,13 @@ function calculateGs(ms, gsList) {
 
   // // Unpack the parameters
   // var geometry = reductionParameters.get(0);
-  // var scale = reductionParameters.get(1);
+  //
   // var maxPixels = reductionParameters.get(2);
 
   // print(reductionParameters);
 
   var geometry = null;
-  var scale = 10;
+  var scale = ee.List(reductionParameters).get(1);
   var maxPixels = ee.List(reductionParameters).get(2);
 
   // Get the previous GS as the last element
@@ -96,7 +96,7 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
   // The reduction parameters to be passed to calculateGs
   var reductionParameters = [geometry, scale, maxPixels];
 
-  reductionParameters = [1, 1, 1e3];
+  reductionParameters = [1, 1000, 1e12];
 
   // GS1 image is the panSim. Including the reduction parameters here is awful,
   // but the only way to pass them to calculateGs via iterate.
