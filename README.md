@@ -34,8 +34,8 @@ var inputBands = inputImg.select(["B4", "B3", "B2"]);
 // Select the 15 m panchromatic band
 var panBand = inputImg.select(["B8"]);
 
-// Pan-sharpen using PCA
-var sharpenedImg = sharpening.PCA.sharpen(inputBands, panBand);
+// Pan-sharpen using Gram-Schmidt
+var sharpenedImg = sharpening.GS.sharpen(inputBands, panBand);
 ```
 
 ### Image quality assessment
