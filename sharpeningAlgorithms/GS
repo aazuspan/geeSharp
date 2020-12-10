@@ -11,7 +11,7 @@ function calculateGs(ms, gsList) {
   var reductionParameters = ee.List(gsList).get(0);
 
   // Unpack the parameters
-  var geometry = ee.Geometry(ee.List(reductionParameters).get(0));
+  var geometry = ee.List(reductionParameters).get(0);
   var scale = ee.List(reductionParameters).get(1);
   var maxPixels = ee.List(reductionParameters).get(2);
 
