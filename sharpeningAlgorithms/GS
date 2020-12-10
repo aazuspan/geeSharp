@@ -8,12 +8,12 @@ var utils = require("users/aazuspan/geeSharpening:utils");
  */
 function calculateGs(ms, gsList) {
   // Get the reduction parameters which are passed through the gsList
-  var reductionParameters = ee.List(gsList).get(0);
+  var reductionParameters = ee.List(ee.List(gsList).get(0));
 
   // Unpack the parameters
-  var geometry = ee.List(reductionParameters).get(0);
-  var scale = ee.List(reductionParameters).get(1);
-  var maxPixels = ee.List(reductionParameters).get(2);
+  var geometry = reductionParameters.get(0);
+  var scale = reductionParameters.get(1);
+  var maxPixels = reductionParameters.get(2);
 
   // Get the previous GS as the last element
   var previous = ee.Image(ee.List(gsList).get(-1));
