@@ -1,6 +1,7 @@
 /**** Start of imports. If edited, may not auto-convert in the playground. ****/
 var geometry = 
     /* color: #d63000 */
+    /* shown: false */
     /* displayProperties: [
       {
         "type": "rectangle"
@@ -71,5 +72,5 @@ var gsERGAS = quality.ERGAS.calculate(vis, gs);
 print(gsQ, gsRASE, gsERGAS);
 
 
-var pca2 = sharpening.PCA.sharpen(vis, pan.multiply(-1), geometry, 100, 1e13);
+var pca2 = sharpening.PCA.sharpen(vis, pan.multiply(-1), 1, geometry, 100, 1e13);
 Map.addLayer(pca2, { min: 0, max: 0.4 }, "PCA2");
