@@ -25,7 +25,7 @@ function calculateGs(ms, gsList) {
   var reductionParameters = ee.List(gsList).get(0);
 
   // // Unpack the parameters
-  var geometry = ee.List(reductionParameters).get(0);
+  // var geometry = ee.List(reductionParameters).get(0);
   geometry = testGeom;
 
   var scale = ee.List(reductionParameters).get(1);
