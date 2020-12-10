@@ -31,9 +31,9 @@ function calculateGs(ms, gsList) {
  * 2014.
  * @param {ee.Image} ms A multispectral image.
  * @param {ee.Image} gs A Gram-Schmidt transformed image.
- * @param {ee.Geometry, default null} geometry The region to calculate image
+ * @param {ee.Geometry} geometry The region to calculate image
  *  statistics for. Sharpening will only be accurate within this region.
- * @param {ee.Number, default null} scale The scale, in projection units, to
+ * @param {ee.Number} scale The scale, in projection units, to
  *  calculate image statistics at.
  * @param {ee.Number} maxPixels The maximum number of pixels to sample when
  *  calculating image statistics
