@@ -7,13 +7,16 @@ var utils = require("users/aazuspan/geeSharpening:utils");
  * @param {ee.List} gsList A list of Gram-Schmidt transformed images.
  */
 function calculateGs(ms, gsList) {
-  // Get the reduction parameters which are passed through the gsList
-  var reductionParameters = ee.List(ee.List(gsList).get(0));
+  // // Get the reduction parameters which are passed through the gsList
+  // var reductionParameters = ee.List(ee.List(gsList).get(0));
 
-  // Unpack the parameters
-  var geometry = reductionParameters.get(0);
-  var scale = reductionParameters.get(1);
-  var maxPixels = reductionParameters.get(2);
+  // // Unpack the parameters
+  // var geometry = reductionParameters.get(0);
+  // var scale = reductionParameters.get(1);
+  // var maxPixels = reductionParameters.get(2);
+  var geometry = null;
+  var scale = 10;
+  var maxPixels = 1e13;
 
   // Get the previous GS as the last element
   var previous = ee.Image(ee.List(gsList).get(-1));
