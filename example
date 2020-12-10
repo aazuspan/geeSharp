@@ -1,5 +1,5 @@
 /**** Start of imports. If edited, may not auto-convert in the playground. ****/
-var geometry = 
+var geom = 
     /* color: #0b4a8b */
     /* displayProperties: [
       {
@@ -7,10 +7,10 @@ var geometry =
       }
     ] */
     ee.Geometry.Polygon(
-        [[[-122.43257948581787, 47.289675709119265],
-          [-122.43257948581787, 47.26999427098155],
-          [-122.38846251194092, 47.26999427098155],
-          [-122.38846251194092, 47.289675709119265]]], null, false);
+        [[[-122.43601271335693, 47.28501804191921],
+          [-122.43601271335693, 47.23783606153244],
+          [-122.3658032101831, 47.23783606153244],
+          [-122.3658032101831, 47.28501804191921]]], null, false);
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 // Load the sharpening functions
 var sharpening = require("users/aazuspan/geeSharpening:sharpening");
