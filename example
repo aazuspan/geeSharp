@@ -12,67 +12,154 @@ var geometry =
           [-122.43034788791748, 47.28816201226587],
           [-122.43034788791748, 47.289675709119265]]], null, false);
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
-// Load the sharpening functions
-var sharpening = require("users/aazuspan/geeSharpening:sharpening");
+var utils = require("users/aazuspan/geeSharpening:utils");
 
-// Select an example area
-var extent = ee.Geometry.Polygon(
-  [
-    [
-      [-122.54129620668901, 47.33965367791073],
-      [-122.54129620668901, 47.16837678723401],
-      [-122.28912564394487, 47.16837678723401],
-      [-122.28912564394487, 47.33965367791073],
-    ],
-  ],
-  null,
-  false
-);
+/**
+ * Calculate the next Gram-Schmidt transformed image given a list of previous
+ * Gram-Schmidt transformed images. See Equation 1 of Hallabia et al 2014.
+ * @param {ee.Image} ms A multispectral image.
+ * @param {ee.List} gsList A list of Gram-Schmidt transformed images.
+ */
+function calculateGs(ms, gsList) {
+  // Get the reduction parameters which are passed through the gsList
+  var reductionParameters = ee.List(gsList).get(0);
 
-Map.centerObject(extent);
+  // // Unpack the parameters
+  var geometry = ee.List(reductionParameters).get(0);
+  geometry = ee.Geometry.BBox(90, 90, 90.1, 90.1);
 
-// Select an example Landsat 8 TOA image
-var img = ee.Image("LANDSAT/LC08/C01/T1_TOA/LC08_047027_20160819").clip(extent);
+  var scale = ee.List(reductionParameters).get(1);
+  var maxPixels = ee.List(reductionParameters).get(2);
 
-var vis = img.select(["B4", "B3", "B2"]);
-var pan = img.select(["B8"]);
+  // Get the previous GS as the last element
+  var previous = ee.Image(ee.List(gsList).get(-1));
 
-// Sharpen with Brovey using fixed band weights (optional)
-var brov = sharpening.brovey.sharpen(vis, pan, [0.52, 0.25, 0.23]);
-// Sharpen with simple mean
-var simpleMean = sharpening.simpleMean.sharpen(vis, pan);
-// Sharpen with additive high-pass filter
-var HPFA = sharpening.HPFA.sharpen(vis, pan);
-// Sharpen with IHS
-var ihs = sharpening.IHS.sharpen(vis, pan);
-// Sharpen with PCA. Note that the pan band may need to be inverted
-// based on the order of the input bands when using PCA.
-var pca = sharpening.PCA.sharpen(vis, pan.multiply(-1));
-// Sharpen with Gram-Schmidt
-var gs = sharpening.GS.sharpen(vis, pan);
+  // Calculate coefficient g between MS and previous GS
+  var g = calculateGsCoefficient(ms, previous, geometry, scale, maxPixels);
+  var gsNew = ms.subtract(g);
 
-// Add layers to the map
-Map.addLayer(vis, { min: 0, max: 0.4 }, "L8");
-Map.addLayer(brov, { min: 0, max: 0.4 }, "Brovey");
-Map.addLayer(simpleMean, { min: 0, max: 0.4 }, "SimpleMean");
-Map.addLayer(HPFA, { min: 0, max: 0.4 }, "HPFA");
-Map.addLayer(ihs, { min: 0, max: 0.4 }, "IHS");
-Map.addLayer(pca, { min: 0, max: 0.4 }, "PCA");
-Map.addLayer(gs, { min: 0, max: 0.4 }, "Gram-Schmidt");
+  // Return the list with the new GS image added
+  return ee.List(gsList).add(gsNew);
+}
 
-// Load the image quality functions
-var quality = require("users/aazuspan/geeSharpening:quality");
+/**
+ * Calculate the Gram-Schmidt coefficient g. See Equation 2 in Hallabia et al
+ * 2014.
+ * @param {ee.Image} ms A multispectral image.
+ * @param {ee.Image} gs A Gram-Schmidt transformed image.
+ * @param {ee.Geometry, default null} geometry The region to calculate image
+ *  statistics for. Sharpening will only be accurate within this region.
+ * @param {ee.Number, default null} scale The scale, in projection units, to
+ *  calculate image statistics at.
+ * @param {ee.Number} maxPixels The maximum number of pixels to sample when
+ *  calculating image statistics
+ * @return {ee.Image} A constant GS coefficient.
+ */
+function calculateGsCoefficient(ms, gs, geometry, scale, maxPixels) {
+  var imgArray = ee.Image.cat(ms, gs).toArray();
 
-// Calculate quality indexes to quantify distortion in the GS sharpened image
-var gsQ = quality.Q.calculate(vis, gs);
-var gsRASE = quality.RASE.calculate(vis, gs);
-var gsERGAS = quality.ERGAS.calculate(vis, gs);
+  geometry = ee.Geometry.BBox(90, 90, 90.1, 90.1).geometry;
 
-print(gsQ, gsRASE, gsERGAS);
+  var covarMatrix = imgArray.reduceRegion({
+    reducer: ee.Reducer.covariance(),
+    geometry: geometry,
+    scale: scale,
+    maxPixels: maxPixels,
+  });
 
-var gs2 = sharpening.GS.sharpen(vis, pan, geometry, 5000, null);
-Map.addLayer(gs2, { min: 0, max: 0.4 }, "GS2");
+  var covarArray = ee.Array(covarMatrix.get("array"));
 
-var gs2 = sharpening.GS.sharpen(vis, pan, null, 5000, null);
-Map.addLayer(gs2, { min: 0, max: 0.4 }, "GS2");
+  var covar = covarArray.get([0, 1]);
+  var variance = covarArray.get([1, 1]);
 
+  var g = covar.divide(variance);
+
+  return ee.Image.constant(g);
+}
+
+/**
+ * Sharpen all bands of an image using the Gram-Schmidt orthonormalization
+ * process, following Hallabia et al 2014.
+ * @param {ee.Image} img An image to sharpen.
+ * @param {ee.Image} pan An single-band panchromatic image.
+ * @param {ee.Geometry, default null} geometry The region to calculate image
+ *  statistics for. Sharpening will only be accurate within this region.
+ * @param {ee.Number, default null} scale The scale, in projection units, to
+ *  calculate image statistics at.
+ * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
+ *  pixels to sample when calculating image statistics
+ * @return {ee.Image} The input image with all bands sharpened to the spatial
+ *  resolution of the panchromatic band.
+ */
+exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
+  // Params passed through iterate need to be explicitly set to null or else
+  // GEE serialization will fail
+  if (utils.isMissing(geometry)) {
+    geometry = null;
+  }
+
+  if (utils.isMissing(scale)) {
+    scale = null;
+  }
+
+  if (utils.isMissing(maxPixels)) {
+    maxPixels = 1e12;
+  }
+
+  // Resample multispectral bands to pan resolution
+  img = img.resample("bilinear").reproject({
+    crs: pan.projection(),
+    scale: pan.projection().nominalScale(),
+  });
+
+  // Calculate panSim as a mean of the MS bands
+  var panSim = img.reduce(ee.Reducer.mean()).clip(img.geometry());
+
+  // The reduction parameters to be passed to calculateGs
+  var reductionParameters = [geometry, scale, maxPixels];
+
+  // GS1 image is the panSim. Including the reduction parameters here is awful,
+  // but the only way to pass them to calculateGs via iterate.
+  var gsList = ee.List([reductionParameters, panSim]);
+
+  // Convert the multispectral bands to an image collection so that it can be
+  // iterated over
+  var msCollection = utils.multibandToCollection(img);
+
+  // Iterate over the MS collection, calculating GS bands. Slice to remove the
+  // reduction parameters.
+  var gsCollection = ee.ImageCollection(
+    ee.List(msCollection.iterate(calculateGs, gsList)).slice(1)
+  );
+
+  // Convert the GS collection to a multiband image
+  var gsBands = gsCollection.toBands();
+
+  // Histogram match the pan band to the simulated pan band
+  var panMatch = utils.linearHistogramMatch(
+    pan,
+    panSim,
+    geometry,
+    scale,
+    maxPixels
+  );
+
+  // Swap the matched pan band for the first GS band
+  gsBands = ee.Image.cat(panMatch, gsBands.slice(1));
+
+  // Spatial detail is the difference between the matched pan band and the simulated pan band
+  var detail = panMatch.subtract(panSim);
+
+  // Convert GS bands to an image collection so that it can be mapped over
+  var gsBandImages = utils.multibandToCollection(gsBands);
+
+  // Calculate constant g coefficients for each gsBand
+  var gCoefficients = gsBandImages.map(function (x) {
+    return calculateGsCoefficient(x, panSim);
+  });
+
+  // Sharpen the multispectral bands using g coefficients and pan detail
+  var sharpBands = img.add(gCoefficients.toBands().slice(1).multiply(detail));
+
+  return sharpBands;
+};
