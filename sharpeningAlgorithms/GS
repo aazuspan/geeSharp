@@ -75,6 +75,10 @@ function calculateGsCoefficient(ms, gs, geometry, scale, maxPixels) {
  *  resolution of the panchromatic band.
  */
 exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
+  if (utils.isMissing(scale)) {
+    scale = null;
+  }
+
   if (utils.isMissing(maxPixels)) {
     maxPixels = 1e12;
   }
