@@ -33,6 +33,10 @@ exports.sharpen = function (
     substitutePC = 1;
   }
 
+  if (utils.isMissing(maxPixels)) {
+    maxPixels = 1e12;
+  }
+
   // Resample the image to the panchromatic resolution
   img = img.resample("bilinear");
   img = img.reproject(pan.projection());
