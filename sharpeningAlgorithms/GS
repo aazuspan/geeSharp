@@ -1,3 +1,17 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var testGeom = 
+    /* color: #d63000 */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[-123.36556009464945, 40.948055306926115],
+          [-123.36556009464945, 40.53185183843914],
+          [-122.86018900089945, 40.53185183843914],
+          [-122.86018900089945, 40.948055306926115]]], null, false);
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
 var utils = require("users/aazuspan/geeSharpening:utils");
 
 /**
@@ -12,7 +26,7 @@ function calculateGs(ms, gsList) {
 
   // // Unpack the parameters
   var geometry = ee.List(reductionParameters).get(0);
-  geometry = ee.Geometry.BBox(90, 90, 90.1, 90.1);
+  geometry = testGeom;
 
   var scale = ee.List(reductionParameters).get(1);
   var maxPixels = ee.List(reductionParameters).get(2);
