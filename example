@@ -7,10 +7,10 @@ var geom =
       }
     ] */
     ee.Geometry.Polygon(
-        [[[-122.4888844174585, 47.34018503350844],
-          [-122.4888844174585, 47.31051374566725],
-          [-122.43481108371826, 47.31051374566725],
-          [-122.43481108371826, 47.34018503350844]]], null, false);
+        [[[-122.47583815281006, 47.33332139396315],
+          [-122.47583815281006, 47.31121208508026],
+          [-122.44408079807373, 47.31121208508026],
+          [-122.44408079807373, 47.33332139396315]]], null, false);
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 // Load the sharpening functions
 var sharpening = require("users/aazuspan/geeSharpening:sharpening");
