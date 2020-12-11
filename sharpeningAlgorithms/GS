@@ -143,14 +143,5 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
   // Sharpen the multispectral bands using g coefficients and pan detail
   var sharpBands = img.add(gCoefficients.toBands().slice(1).multiply(detail));
 
-  panMatch = utils.linearHistogramMatch(
-    pan,
-    panSim,
-    geometry,
-    scale,
-    1e2
-  );
-  return panMatch;
-  
-  // return sharpBands;
+  return sharpBands;
 };
