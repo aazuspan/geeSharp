@@ -87,7 +87,7 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
   if (utils.isMissing(maxPixels)) {
     maxPixels = 1e12;
   }
-
+  raise("issue")
   // Resample multispectral bands to pan resolution
   img = img.resample("bilinear").reproject({
     crs: pan.projection(),
