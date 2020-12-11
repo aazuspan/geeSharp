@@ -8,12 +8,13 @@ var utils = require("users/aazuspan/geeSharpening:utils");
  */
 function calculateGs(ms, gsList) {
   // Get the reduction parameters which are passed through the gsList
-  var reductionParameters = ee.List(ee.List(gsList).get(0));
+  // var reductionParameters = ee.List(ee.List(gsList).get(0));
+  var reductionParameters = ee.List(gsList).get(0);
 
   // Unpack the parameters
-  var geometry = reductionParameters.get(0);
-  var scale = reductionParameters.get(1);
-  var maxPixels = reductionParameters.get(2);
+  var geometry = reductionParameters.geometry;
+  var scale = reductionParameters.scale;
+  var maxPixels = reductionParameters.maxPixels;
 
   // Get the previous GS as the last element
   var previous = ee.Image(ee.List(gsList).get(-1));
@@ -69,7 +70,7 @@ function calculateGsCoefficient(ms, gs, geometry, scale, maxPixels) {
  * @param {ee.Number, default null} scale The scale, in projection units, to
  *  calculate image statistics at.
  * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
- *  pixels to sample when calculating image statistics
+ *  pixels to sample when calculating image statistics.
  * @return {ee.Image} The input image with all bands sharpened to the spatial
  *  resolution of the panchromatic band.
  */
@@ -87,7 +88,7 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
   if (utils.isMissing(maxPixels)) {
     maxPixels = 1e12;
   }
-  
+
   // Resample multispectral bands to pan resolution
   img = img.resample("bilinear").reproject({
     crs: pan.projection(),
@@ -98,7 +99,12 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
   var panSim = img.reduce(ee.Reducer.mean()).clip(img.geometry());
 
   // The reduction parameters to be passed to calculateGs
-  var reductionParameters = [geometry, scale, maxPixels];
+  // var reductionParameters = [geometry, scale, maxPixels];
+  var reductionParamters = {
+    geometry: geometry,
+    scale: scale,
+    maxPixels: maxPixels,
+  };
 
   // GS1 image is the panSim. Including the reduction parameters here is awful,
   // but the only way to pass them to calculateGs via iterate.
@@ -134,7 +140,7 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
 
   // Convert GS bands to an image collection so that it can be mapped over
   var gsBandImages = utils.multibandToCollection(gsBands);
-  
+
   // Calculate constant g coefficients for each gsBand
   var gCoefficients = gsBandImages.map(function (x) {
     return calculateGsCoefficient(x, panSim);
