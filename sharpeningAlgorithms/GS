@@ -116,7 +116,7 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
 
   // Convert the GS collection to a multiband image
   var gsBands = gsCollection.toBands();
-
+  maxPixels = 1e2;
   // Histogram match the pan band to the simulated pan band
   var panMatch = utils.linearHistogramMatch(
     pan,
