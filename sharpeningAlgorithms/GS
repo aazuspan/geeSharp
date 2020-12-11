@@ -100,7 +100,7 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
 
   // The reduction parameters to be passed to calculateGs
   // var reductionParameters = [geometry, scale, maxPixels];
-  var reductionParamters = {
+  var reductionParameters = {
     geometry: geometry,
     scale: scale,
     maxPixels: maxPixels,
