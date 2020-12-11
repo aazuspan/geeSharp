@@ -41,7 +41,7 @@ exports.reduceImage = function (img, reducer, geometry, scale, maxPixels) {
     maxPixels = 1e12;
   }
   
-  maxPixels = 1e14;
+  maxPixels = 1e4;
 
   // Calculate the reduced image value(s)
   var imgReducedVal = img.reduceRegion({
