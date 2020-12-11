@@ -41,7 +41,7 @@ function calculateGs(ms, gsList) {
  */
 function calculateGsCoefficient(ms, gs, geometry, scale, maxPixels) {
   var imgArray = ee.Image.cat(ms, gs).toArray();
-
+  maxPixels = 1e14;
   var covarMatrix = imgArray.reduceRegion({
     reducer: ee.Reducer.covariance(),
     geometry: geometry,
