@@ -116,7 +116,7 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
 
   // Convert the GS collection to a multiband image
   var gsBands = gsCollection.toBands();
-  maxPixels = 1e2;
+
   // Histogram match the pan band to the simulated pan band
   var panMatch = utils.linearHistogramMatch(
     pan,
@@ -134,7 +134,7 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
 
   // Convert GS bands to an image collection so that it can be mapped over
   var gsBandImages = utils.multibandToCollection(gsBands);
-
+  
   // Calculate constant g coefficients for each gsBand
   var gCoefficients = gsBandImages.map(function (x) {
     return calculateGsCoefficient(x, panSim);
@@ -143,5 +143,13 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
   // Sharpen the multispectral bands using g coefficients and pan detail
   var sharpBands = img.add(gCoefficients.toBands().slice(1).multiply(detail));
 
+  panMatch = utils.linearHistogramMatch(
+    pan,
+    panSim,
+    geometry,
+    scale,
+    1e2
+  );
+  
   return sharpBands;
 };
