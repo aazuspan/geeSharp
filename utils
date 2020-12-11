@@ -91,7 +91,7 @@ exports.linearHistogramMatch = function (
   maxPixels
 ) {
   
-  maxPixels = 1e13;
+  maxPixels = 1e4;
   var offsetTarget = exports.reduceImage(
     targetImage,
     ee.Reducer.mean(),
