@@ -69,7 +69,7 @@ function calculateGsCoefficient(ms, gs, geometry, scale, maxPixels) {
  * @param {ee.Number, default null} scale The scale, in projection units, to
  *  calculate image statistics at.
  * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
- *  pixels to sample when calculating image statistics
+ *  pixels to sample when calculating image statistics.
  * @return {ee.Image} The input image with all bands sharpened to the spatial
  *  resolution of the panchromatic band.
  */
@@ -137,7 +137,7 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
 
   // Calculate constant g coefficients for each gsBand
   var gCoefficients = gsBandImages.map(function (x) {
-    return calculateGsCoefficient(x, panSim);
+    return calculateGsCoefficient(x, panSim, geometry, scale, maxPixels);
   });
 
   // Sharpen the multispectral bands using g coefficients and pan detail
