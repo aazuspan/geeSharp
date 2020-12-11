@@ -150,6 +150,7 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
     scale,
     1e2
   );
+  print(panMatch)
   
   return sharpBands;
 };
