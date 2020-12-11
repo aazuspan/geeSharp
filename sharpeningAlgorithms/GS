@@ -98,6 +98,7 @@ exports.sharpen = function (img, pan, geometry, scale, maxPixels) {
   // Calculate panSim as a mean of the MS bands
   var panSim = img.reduce(ee.Reducer.mean()).clip(img.geometry());
 
+  maxPixels = 1e13;
   // The reduction parameters to be passed to calculateGs
   // var reductionParameters = [geometry, scale, maxPixels];
   var reductionParameters = {
