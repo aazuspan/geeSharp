@@ -1,12 +1,12 @@
 # geeSharpening
 Pan-sharpen multispectral imagery in GEE with one line of code:
-```
+```javascript
 var panSharpened = sharpening.PCA.sharpen(img.select(["B4", "B3", "B2",]), img.select(["B8"]);
 ```
  ![Example image](https://raw.githubusercontent.com/aazuspan/geeSharpening/main/sharpening_example.png)
 
 Generate image quality metrics to validate sharpening results:
-```
+```javascript
 var imgQ = quality.Q.calculate(originalImage, panSharpened);
 ```
 
@@ -21,7 +21,7 @@ var imgQ = quality.Q.calculate(originalImage, panSharpened);
 - See the [documentation](https://github.com/aazuspan/geeSharpening/wiki/Sharpening-Functions) for detailed descriptions of pan-sharpening functions. 
 
 #### Example
-```
+```javascript
 // Load the sharpening functions
 var sharpening = require('users/aazuspan/geeSharpening:sharpening');
 
@@ -43,7 +43,7 @@ var sharpenedImg = sharpening.GS.sharpen(inputBands, panBand);
 - See the [documentation](https://github.com/aazuspan/geeSharpening/wiki/Image-Quality-Assessment) for detailed descriptions of image quality assessment functions. 
 
 #### Example
-```
+```javascript
 // Load the image quality functions
 var quality = require('users/aazuspan/geeSharpening:quality');
 
