@@ -11,7 +11,6 @@ var imgQ = quality.Q.calculate(originalImage, panSharpened);
 ```
 
 ## Installation
-- Visit https://code.earthengine.google.com/?accept_repo=users/aazuspan/geeSharpening. This will link the library to your GEE account, allowing you to import functions.
 - Import sharpening functions by including `var sharpening = require("users/aazuspan/geeSharpening:sharpening");` in your script.
 - Import image quality functions by including `var quality = require("users/aazuspan/geeSharpening:quality");` in your script.
 
