@@ -1,5 +1,5 @@
-var mse = require("users/aazuspan/geeSharp:qualityAlgorithms/MSE");
-var utils = require("users/aazuspan/geeSharp:utils");
+var mse = require("users/aazuspan/geeSharp:qualityAlgorithms/MSE.js");
+var utils = require("users/aazuspan/geeSharp:utils.js");
 
 /**
  * Calculate relative average spectral error (RASE) between a reference image

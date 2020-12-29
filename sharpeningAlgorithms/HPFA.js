@@ -1,4 +1,4 @@
-var utils = require("users/aazuspan/geeSharp:utils");
+var utils = require("users/aazuspan/geeSharp:utils.js");
 
 /**
  * Sharpen an image using an additive high-pass filter, where spatial detail is

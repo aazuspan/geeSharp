@@ -16,8 +16,8 @@ var imgQ = quality.Q.calculate(originalImage, panSharpened);
 
 ## Installation
 
-- Import sharpening functions by including `var sharpening = require("users/aazuspan/geeSharp:sharpening");` in your script.
-- Import image quality functions by including `var quality = require("users/aazuspan/geeSharp:quality");` in your script.
+- Import sharpening functions by including `var sharpening = require("users/aazuspan/geeSharp:sharpening.js");` in your script.
+- Import image quality functions by including `var quality = require("users/aazuspan/geeSharp:quality.js");` in your script.
 
 ## Usage
 
@@ -30,7 +30,7 @@ var imgQ = quality.Q.calculate(originalImage, panSharpened);
 
 ```javascript
 // Load the sharpening functions
-var sharpening = require("users/aazuspan/geeSharp:sharpening");
+var sharpening = require("users/aazuspan/geeSharp:sharpening.js");
 
 // Select an example Landsat 8 TOA image to sharpen
 var inputImg = ee.Image("LANDSAT/LC08/C01/T1_TOA/LC08_047027_20160819");
@@ -54,7 +54,7 @@ var sharpenedImg = sharpening.GS.sharpen(inputBands, panBand);
 
 ```javascript
 // Load the image quality functions
-var quality = require("users/aazuspan/geeSharp:quality");
+var quality = require("users/aazuspan/geeSharp:quality.js");
 
 // Calculate universal image quality index between an image and a pan-sharpened image.
 var pcaQ = quality.Q.calculate(originalImg, sharpenedImg);

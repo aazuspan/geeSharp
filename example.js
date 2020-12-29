@@ -1,5 +1,5 @@
 // Load the sharpening functions
-var sharpening = require("users/aazuspan/geeSharp:sharpening");
+var sharpening = require("users/aazuspan/geeSharp:sharpening.js");
 
 // Select an example area
 var extent = ee.Geometry.Polygon(

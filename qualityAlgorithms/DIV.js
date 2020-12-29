@@ -1,4 +1,4 @@
-var utils = require("users/aazuspan/geeSharp:utils");
+var utils = require("users/aazuspan/geeSharp:utils.js");
 
 /**
  * Calculate difference in variance (DIV) between a reference image and a

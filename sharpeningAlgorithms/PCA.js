@@ -1,4 +1,4 @@
-var utils = require("users/aazuspan/geeSharp:utils");
+var utils = require("users/aazuspan/geeSharp:utils.js");
 
 /**
  * Sharpen all bands of an image by converting it to principal components,

@@ -1,4 +1,4 @@
-var utils = require("users/aazuspan/geeSharp:utils");
+var utils = require("users/aazuspan/geeSharp:utils.js");
 
 /**
  * Calculate the next Gram-Schmidt transformed image given a list of previous

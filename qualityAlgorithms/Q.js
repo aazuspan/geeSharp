@@ -1,4 +1,4 @@
-var utils = require("users/aazuspan/geeSharp:utils");
+var utils = require("users/aazuspan/geeSharp:utils.js");
 
 // Calculate per-band Pearson's correlation between a reference image and a modified image.
 function calculateCorrelation(

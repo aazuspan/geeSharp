@@ -1,5 +1,5 @@
-var mse = require("users/aazuspan/geeSharp:qualityAlgorithms/MSE");
-var utils = require("users/aazuspan/geeSharp:utils");
+var mse = require("users/aazuspan/geeSharp:qualityAlgorithms/MSE.js");
+var utils = require("users/aazuspan/geeSharp:utils.js");
 
 /**
  * Calculate peak signal noise ratio (PSNR) between a reference image and a
