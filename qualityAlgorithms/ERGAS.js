@@ -1,5 +1,5 @@
-var mse = require("users/aazuspan/geeSharpening:qualityAlgorithms/MSE");
-var utils = require("users/aazuspan/geeSharpening:utils");
+var mse = require("users/aazuspan/geeSharp:qualityAlgorithms/MSE");
+var utils = require("users/aazuspan/geeSharp:utils");
 
 // Dimensionless Global Relative Error of Synthesis (ERGAS) measures spectral distortion
 // relative to the sharpening ratio. This compensates for the fact that larger increases in

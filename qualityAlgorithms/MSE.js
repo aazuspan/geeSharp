@@ -1,4 +1,4 @@
-var utils = require("users/aazuspan/geeSharpening:utils");
+var utils = require("users/aazuspan/geeSharp:utils");
 
 /**
  * Calculate mean square error (MSE) between a reference image and a modified

@@ -1,4 +1,4 @@
-var utils = require("users/aazuspan/geeSharpening:utils");
+var utils = require("users/aazuspan/geeSharp:utils");
 
 /**
  * Sharpen an image using Brovey sharpening, where each band is calculated

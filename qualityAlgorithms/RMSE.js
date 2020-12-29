@@ -1,5 +1,5 @@
-var mse = require("users/aazuspan/geeSharpening:qualityAlgorithms/MSE");
-var utils = require("users/aazuspan/geeSharpening:utils");
+var mse = require("users/aazuspan/geeSharp:qualityAlgorithms/MSE");
+var utils = require("users/aazuspan/geeSharp:utils");
 
 /**
  * Calculate root mean square error (RMSE) between a reference image and a

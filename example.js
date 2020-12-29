@@ -1,5 +1,5 @@
 // Load the sharpening functions
-var sharpening = require("users/aazuspan/geeSharpening:sharpening");
+var sharpening = require("users/aazuspan/geeSharp:sharpening");
 
 // Select an example area
 var extent = ee.Geometry.Polygon(
@@ -47,7 +47,7 @@ Map.addLayer(pca, { min: 0, max: 0.4 }, "PCA");
 Map.addLayer(gs, { min: 0, max: 0.4 }, "Gram-Schmidt");
 
 // Load the image quality functions
-var quality = require("users/aazuspan/geeSharpening:quality");
+var quality = require("users/aazuspan/geeSharp:quality");
 
 // Calculate quality indexes to quantify distortion in the GS sharpened image
 var gsQ = quality.Q.calculate(vis, gs);

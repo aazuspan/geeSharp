@@ -1,4 +1,4 @@
-var utils = require("users/aazuspan/geeSharpening:utils");
+var utils = require("users/aazuspan/geeSharp:utils");
 
 /**
  * Calculate bias between a reference image and a modified image. Values near 0
