@@ -20,6 +20,13 @@ Map.centerObject(extent);
 // Select an example Landsat 8 TOA image
 var img = ee.Image("LANDSAT/LC08/C01/T1_TOA/LC08_047027_20160819").clip(extent);
 
+Export.image.toDrive({
+  image: img,
+  description: "L8_sample",
+  scale: 30,
+  region: extent
+})
+
 var vis = img.select(["B4", "B3", "B2"]);
 var pan = img.select(["B8"]);
 
