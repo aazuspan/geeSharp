@@ -6,7 +6,7 @@ Pan-sharpen multispectral imagery in GEE with one line of code:
 var panSharpened = sharpening.PCA.sharpen(img.select(["B4", "B3", "B2",]), img.select(["B8"]);
 ```
 
-![Example image](https://raw.githubusercontent.com/aazuspan/geeSharp/main/sharpening_example.png)
+![Example image](https://raw.githubusercontent.com/aazuspan/geeSharp.js/main/sharpening_example.png)
 
 Generate image quality metrics to validate sharpening results:
 
