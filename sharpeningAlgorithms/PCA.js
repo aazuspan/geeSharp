@@ -94,13 +94,13 @@ exports.sharpen = function (
     .arrayFlatten([pcNames]);
 
   // Rescale the pan band to more closely match the substituted PC
-  pan = utils.linearHistogramMatch(
-    pan,
-    principalComponents.select(substitutePC - 1),
-    geometry,
-    scale,
-    maxPixels
-  );
+  // pan = utils.linearHistogramMatch(
+  //   pan,
+  //   principalComponents.select(substitutePC - 1),
+  //   geometry,
+  //   scale,
+  //   maxPixels
+  // );
 
   // Build the band list, swapping the pan band for the appropriate PC
   var sharpenBands = pcNames.set(substitutePC - 1, panBand);
