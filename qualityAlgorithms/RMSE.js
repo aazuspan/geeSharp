@@ -33,5 +33,5 @@ exports.calculate = function (
 
   var rmse = ee.Array(mseBands.values()).sqrt();
 
-  return ee.Dictionary.fomLists(referenceImage.bandNames(), rmse.toList());
+  return ee.Dictionary.fromLists(referenceImage.bandNames(), rmse.toList());
 };
