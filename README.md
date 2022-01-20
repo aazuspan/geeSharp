@@ -24,7 +24,7 @@ var imgQ = quality.Q.calculate(originalImage, panSharpened);
 ### Pan-sharpening
 
 - Pan-sharpening can be used to sharpen the spatial resolution of spectral bands using a higher resolution image.
-- See the [documentation](https://github.com/aazuspan/geeSharp/wiki/Sharpening-Functions) for detailed descriptions of pan-sharpening functions.
+- See the [documentation](https://github.com/aazuspan/geeSharp.js/wiki/Sharpening-Functions) for detailed descriptions of pan-sharpening functions.
 
 #### Example
 
@@ -53,7 +53,7 @@ Map.centerObject(ee.Geometry.Point([-122.40961256101373, 47.25412917913268]), 14
 ### Image quality assessment
 
 - Image quality metrics measure the distortion between a reference image and an image that has been modified, such as a pan-sharpened or compressed image.
-- See the [documentation](https://github.com/aazuspan/geeSharp/wiki/Image-Quality-Assessment) for detailed descriptions of image quality assessment functions.
+- See the [documentation](https://github.com/aazuspan/geeSharp.js/wiki/Image-Quality-Assessment) for detailed descriptions of image quality assessment functions.
 
 #### Example
 
