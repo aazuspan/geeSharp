@@ -14,17 +14,28 @@ Generate image quality metrics to validate sharpening results:
 var imgQ = quality.Q.calculate(originalImage, panSharpened);
 ```
 
-## Installation
+## Setup
 
-- Import sharpening functions by including `var sharpening = require("users/aazuspan/geeSharp:sharpening.js");` in your script.
-- Import image quality functions by including `var quality = require("users/aazuspan/geeSharp:quality.js");` in your script.
+- Import sharpening functions in your script.
+```javascript
+var sharpening = require("users/aazuspan/geeSharp:sharpening.js");
+```
+- Import image quality functions in your script.
+```javascript
+var quality = require("users/aazuspan/geeSharp:quality.js");
+```
 
 ## Usage
 
 ### Pan-sharpening
 
-- Pan-sharpening can be used to sharpen the spatial resolution of spectral bands using a higher resolution image.
-- See the [documentation](https://github.com/aazuspan/geeSharp.js/wiki/Sharpening-Functions) for detailed descriptions of pan-sharpening functions.
+There are a number of pan-sharpening functions in `geeSharp` that produce different results. Most can be called using the example pattern below.
+
+```javascript
+sharpening.Algorithm.sharpen(unsharpenedBands, panBand)
+```
+
+Most sharpening functions just require the unsharpened multispectral bands and the high-resolution panchromatic band as inputs, but some algorithms may require other parameters. See the [documentation](https://github.com/aazuspan/geeSharp.js/wiki/Sharpening-Functions) for detailed descriptions.
 
 #### Example
 
@@ -52,8 +63,13 @@ Map.centerObject(ee.Geometry.Point([-122.40961256101373, 47.25412917913268]), 14
 
 ### Image quality assessment
 
-- Image quality metrics measure the distortion between a reference image and an image that has been modified, such as a pan-sharpened or compressed image.
-- See the [documentation](https://github.com/aazuspan/geeSharp.js/wiki/Image-Quality-Assessment) for detailed descriptions of image quality assessment functions.
+Image quality metrics measure the distortion between a reference image and an image that has been modified, such as a pan-sharpened image. Quality metrics in `geeSharp` follow the pattern below.
+
+```javascript
+quality.Metric.calculate(originalImage, modifiedImage)
+```
+
+See the [documentation](https://github.com/aazuspan/geeSharp.js/wiki/Image-Quality-Assessment) for detailed descriptions of image quality assessment functions.
 
 #### Example
 
