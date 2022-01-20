@@ -10,11 +10,11 @@ var panSharpened = sharpening.PCA.sharpen(img.select(["B4", "B3", "B2",]), img.s
 
 ## Setup
 
-- Import sharpening functions in your script.
+Import sharpening functions in your script.
 ```javascript
 var sharpening = require("users/aazuspan/geeSharp:sharpening.js");
 ```
-- Import image quality functions in your script.
+Import image quality functions in your script.
 ```javascript
 var quality = require("users/aazuspan/geeSharp:quality.js");
 ```
