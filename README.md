@@ -33,16 +33,21 @@ var imgQ = quality.Q.calculate(originalImage, panSharpened);
 var sharpening = require("users/aazuspan/geeSharp:sharpening.js");
 
 // Select an example Landsat 8 TOA image to sharpen
-var inputImg = ee.Image("LANDSAT/LC08/C01/T1_TOA/LC08_047027_20160819");
+var img = ee.Image("LANDSAT/LC08/C01/T1_TOA/LC08_047027_20160819");
 
 // Select the 30 m spectral bands to sharpen
-var inputBands = inputImg.select(["B4", "B3", "B2"]);
+var unsharpened = img.select(["B4", "B3", "B2"]);
 
 // Select the 15 m panchromatic band
-var panBand = inputImg.select(["B8"]);
+var pan = img.select(["B8"]);
 
 // Pan-sharpen using Gram-Schmidt
-var sharpenedImg = sharpening.GS.sharpen(inputBands, panBand);
+var sharpened = sharpening.GS.sharpen(unsharpened, pan);
+
+// Add images to the map to visually compare
+Map.addLayer(unsharpened, {max: 0.3}, "Unsharpened")
+Map.addLayer(sharpened, {max: 0.3}, "Sharpened")
+Map.centerObject(ee.Geometry.Point([-122.40961256101373, 47.25412917913268]), 14)
 ```
 
 ### Image quality assessment
@@ -56,8 +61,8 @@ var sharpenedImg = sharpening.GS.sharpen(inputBands, panBand);
 // Load the image quality functions
 var quality = require("users/aazuspan/geeSharp:quality.js");
 
-// Calculate universal image quality index between an image and a pan-sharpened image.
-var pcaQ = quality.Q.calculate(originalImg, sharpenedImg);
+// Calculate the error introduced by sharpening
+print(quality.RMSE.calculate(unsharpened, sharpened));
 ```
 
 ## Accuracy
@@ -78,10 +83,6 @@ var pcaQ = quality.Q.calculate(originalImg, sharpenedImg);
 - There is no guarantee of accuracy in this library. I would strongly recommend validating results against an established tool such as GDAL or SAGA GIS.
 - Functions are designed for and tested with Landsat 8 TOA data. They should be usable with other data sources, but may require modification.
 - Most sharpening functions will accept input images with any number of bands. However, algorithm accuracy may depend on spectral overlap between input bands and the panchromatic band. Make sure that the sharpening algorithm you select is compatible with your input imagery.
-
-## Contributing
-
-- Pull requests and issues are welcome!
 
 ## References
 
