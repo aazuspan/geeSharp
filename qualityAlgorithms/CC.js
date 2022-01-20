@@ -1,3 +1,5 @@
+var utils = require("users/aazuspan/geeSharp:utils.js");
+
 /**
  * Calculate Pearson's correlation coefficient (CC) between a reference image 
  * and a modified image. A value of 1 represents perfect correlation.
