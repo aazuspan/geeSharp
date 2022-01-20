@@ -13,7 +13,7 @@
  *  pixels to sample.
  * @return {ee.Dictionary} Per-band CMC for the image.
  */
-exports.CMC = function (
+exports.calculate = function (
     referenceImage,
     assessmentImage,
     geometry,

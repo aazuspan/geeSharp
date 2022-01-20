@@ -13,7 +13,7 @@
  *  pixels to sample.
  * @return {ee.Dictionary} Per-band CML for the image.
  */
-exports.CML = function (
+exports.calculate = function (
     referenceImage,
     assessmentImage,
     geometry,

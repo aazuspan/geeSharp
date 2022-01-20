@@ -13,7 +13,7 @@
  *  pixels to sample.
  * @return {ee.Dictionary} Per-band CC for the image.
  */
-exports.CC = function (
+exports.calculate = function (
     referenceImage,
     assessmentImage,
     geometry,
