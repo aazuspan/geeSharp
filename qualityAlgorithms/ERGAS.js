@@ -42,8 +42,8 @@ exports.calculate = function (
       geometry,
       scale,
       maxPixels
-    )
-  ).values();
+    ).values()
+  );
 
   // Calculate the mean of each band
   var xbark = ee.Array(
@@ -53,8 +53,7 @@ exports.calculate = function (
         geometry: geometry,
         scale: scale,
         maxPixels: maxPixels,
-      })
-      .values()
+      }).values()
   );
 
   var bandError = ee.Number(msek.divide(xbark).toList().reduce(ee.Reducer.mean())).sqrt();
