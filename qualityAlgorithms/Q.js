@@ -33,11 +33,6 @@ exports.calculate = function (
     maxPixels = 1e12;
   }
 
-  // Resample the reference image to match the assessment image resolution and origin
-  referenceImage = referenceImage
-    .resample("bicubic")
-    .reproject(assessmentImage.projection());
-
   // Correlation (1st component)
   var cc = ee.Array(CC.calculate(
     referenceImage,
