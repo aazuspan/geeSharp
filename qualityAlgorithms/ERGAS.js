@@ -22,6 +22,8 @@ var utils = require("users/aazuspan/geeSharp:utils.js");
 exports.calculate = function (
   referenceImage,
   assessmentImage,
+  h,
+  l,
   geometry,
   scale,
   maxPixels
