@@ -20,6 +20,10 @@ exports.calculate = function (
     scale,
     maxPixels
 ) {
+    if (utils.isMissing(maxPixels)) {
+        maxPixels = 1e12;
+    }
+
     // List of mean band values
     var xbar = ee.Array(referenceImage
         .reduceRegion({

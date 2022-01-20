@@ -20,6 +20,10 @@ exports.calculate = function (
     scale,
     maxPixels
 ) {
+    if (utils.isMissing(maxPixels)) {
+        maxPixels = 1e12;
+    }
+
     var xvar = ee.Array(referenceImage
         .reduceRegion({
             reducer: ee.Reducer.variance(),
