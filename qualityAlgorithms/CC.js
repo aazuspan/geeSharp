@@ -48,7 +48,7 @@ exports.calculate = function (
     var x3 = ee.Array(b.pow(2).reduceRegion(
         { reducer: ee.Reducer.sum(), geometry: geometry, scale: scale, maxPixels: maxPixels }).values())
 
-    var cc = x1.divide(x2.multiply(x3).sqr())
+    var cc = x1.divide(x2.multiply(x3).sqrt())
 
     return ee.Dictionary.fromLists(referenceImage.bandNames(), cc.toList())
 }
