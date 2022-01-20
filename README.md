@@ -8,19 +8,13 @@ var panSharpened = sharpening.PCA.sharpen(img.select(["B4", "B3", "B2",]), img.s
 
 ![Example image](https://raw.githubusercontent.com/aazuspan/geeSharp.js/main/sharpening_example.png)
 
-Generate image quality metrics to validate sharpening results:
-
-```javascript
-var imgQ = quality.Q.calculate(originalImage, panSharpened);
-```
-
 ## Setup
 
-- Import sharpening functions in your script.
+Import sharpening functions in your script.
 ```javascript
 var sharpening = require("users/aazuspan/geeSharp:sharpening.js");
 ```
-- Import image quality functions in your script.
+Import image quality functions in your script.
 ```javascript
 var quality = require("users/aazuspan/geeSharp:quality.js");
 ```
@@ -69,7 +63,7 @@ Image quality metrics measure the distortion between a reference image and an im
 quality.Metric.calculate(originalImage, modifiedImage)
 ```
 
-See the [documentation](https://github.com/aazuspan/geeSharp.js/wiki/Image-Quality-Assessment) for detailed descriptions of image quality assessment functions.
+Most quality metrics just require an unmodified and a modified image and return a dictionary mapping band names to metric values, but some metrics require other parameters (e.g. `ERGAS` requires the high and low spectral resolution) and some return a single image-wise value (e.g. `RASE` and `ERGAS`). See the [documentation](https://github.com/aazuspan/geeSharp.js/wiki/Image-Quality-Assessment) for detailed descriptions of image quality assessment functions.
 
 #### Example
 
@@ -78,8 +72,10 @@ See the [documentation](https://github.com/aazuspan/geeSharp.js/wiki/Image-Quali
 var quality = require("users/aazuspan/geeSharp:quality.js");
 
 // Calculate the error introduced by sharpening
-print(quality.RMSE.calculate(unsharpened, sharpened));
+print(quality.RMSE.calculate(unsharpened.resample("bicubic").reproject(sharpened.projection()), sharpened));
 ```
+
+Note that quality metrics are affected by spatial resolution, so when comparing unsharpened and pan-sharpened images, always resample and reproject the unsharpened image to high resolution first to ensure an accurate comparison!
 
 ## Accuracy
 
