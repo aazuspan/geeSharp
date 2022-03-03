@@ -6,3 +6,4 @@ exports.PCA = require("users/aazuspan/geeSharp:sharpeningAlgorithms/PCA.js");
 exports.IHS = require("users/aazuspan/geeSharp:sharpeningAlgorithms/IHS.js");
 exports.HPFA = require("users/aazuspan/geeSharp:sharpeningAlgorithms/HPFA.js");
 exports.GS = require("users/aazuspan/geeSharp:sharpeningAlgorithms/GS.js");
+exports.SFIM = require("users/aazuspan/geeSharp:sharpeningAlgorithms/SFIM.js");
