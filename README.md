@@ -23,7 +23,7 @@ var quality = require("users/aazuspan/geeSharp:quality.js");
 
 ### Pan-sharpening
 
-There are a number of pan-sharpening functions in `geeSharp` that produce different results. Most can be called using the example pattern below.
+There are a number of pan-sharpening algorithms in `geeSharp` which can used with the example pattern below.
 
 ```javascript
 sharpening.Algorithm.sharpen(unsharpenedBands, panBand)
@@ -46,8 +46,8 @@ var unsharpened = img.select(["B4", "B3", "B2"]);
 // Select the 15 m panchromatic band
 var pan = img.select(["B8"]);
 
-// Pan-sharpen using Gram-Schmidt
-var sharpened = sharpening.GS.sharpen(unsharpened, pan);
+// Pan-sharpen using Smoothing Filter-based Intensity Modulation
+var sharpened = sharpening.SFIM.sharpen(unsharpened, pan);
 
 // Add images to the map to visually compare
 Map.addLayer(unsharpened, {max: 0.3}, "Unsharpened")
@@ -76,19 +76,6 @@ print(quality.RMSE.calculate(unsharpened.resample("bicubic").reproject(sharpened
 ```
 
 Note that quality metrics are affected by spatial resolution, so when comparing unsharpened and pan-sharpened images, always resample and reproject the unsharpened image to high resolution first to ensure an accurate comparison!
-
-## Accuracy
-
-| Function   | Algorithm                    |    MSE |    Q |  RASE | ERGAS |
-| :--------- | :--------------------------- | -----: | ---: | ----: | ----: |
-| GS         | Gram-Schmidt                 | 0.0001 | 0.96 | 11.69 |  6.02 |
-| PCA        | Principal Component Analysis | 0.0001 | 0.96 | 11.64 |  6.00 |
-| SimpleMean | Simple mean                  | 0.0001 | 0.95 |  9.79 |  4.82 |
-| brovey     | Brovey                       | 0.0003 | 0.94 | 18.01 | 11.50 |
-| HPFA       | High-Pass Filter (Additive)  | 0.0004 | 0.91 | 20.78 | 16.96 |
-| IHS        | Intensity-Hue-Saturation     | 0.0005 | 0.91 | 23.25 | 22.32 |
-
-\*Accuracies were calculated by sharpening the RGB bands of Landsat 8 TOA data, and represent the mean distortion for all bands. Accuracy will change based on scene and band selection.
 
 ## Disclaimer
 
