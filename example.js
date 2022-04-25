@@ -31,8 +31,9 @@ Map.addLayer(ms, { min: 0, max: 0.4 }, "Unsharpened");
 Map.addLayer(sharp, { min: 0, max: 0.4 }, "Sharpened");
 
 
-// Calculate the band-wise RMSE introduced by sharpening. First, be sure to reproject
-// the images to have equal resolution.
+// To calculate a quality metric after pan-sharpening, be sure to reproject
+// the original image to the sharpened resolution.
 var reproj = ms.resample("bilinear").reproject(pan.projection());
-var quality = geeSharp.quality(reproj, pan, "RMSE");
+// Then calculate band-wise RMSE to quantify error introduced by sharpening.
+var quality = geeSharp.quality(reproj, sharp, "RMSE");
 print(quality)
