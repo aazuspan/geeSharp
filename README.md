@@ -1,7 +1,7 @@
 # geeSharp
 
 [![Earth Engine Javascript](https://img.shields.io/badge/Earth%20Engine%20API-Javascript-red)](https://developers.google.com/earth-engine/tutorials/tutorial_api_01)
-[![Open in Code Editor](https://img.shields.io/badge/Open%20in-Code%20Editor-9cf)](https://code.earthengine.google.com/2d8bfc240ea7372c21377f511359d3c2)
+[![Open in Code Editor](https://img.shields.io/badge/Open%20in-Code%20Editor-9cf)](https://code.earthengine.google.com/8fb1023faea362e87adb08c5cf7c9cc1)
 
 Pan-sharpen multispectral imagery in the [Google Earth Engine](https://earthengine.google.com/) Code Editor with one line of code:
 
