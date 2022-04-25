@@ -17,7 +17,7 @@ exports.sharpen = function(sharpenable, pan, method, args) {
   var fn = methods[method || "SFIM"];
   
   if (fn == null)
-    throw new Error("Method must be one of " + Object.keys(methods) + ", not " + method + ".");
+    throw new Error("Method must be one of [" + Object.keys(methods) + "], not `" + method + "`.");
   
   // Remove the method name from the args so the rest can be passed to the
   // sharpening function.
