@@ -1,6 +1,9 @@
 # geeSharp
 
-Pan-sharpen multispectral imagery in GEE with one line of code:
+[![Earth Engine Javascript](https://img.shields.io/badge/Earth%20Engine%20API-Javascript-red)](https://developers.google.com/earth-engine/tutorials/tutorial_api_01)
+[![Open in Code Editor](https://img.shields.io/badge/Open%20in-Code%20Editor-9cf)](https://code.earthengine.google.com/2d8bfc240ea7372c21377f511359d3c2)
+
+Pan-sharpen multispectral imagery in the [Google Earth Engine](https://earthengine.google.com/) Code Editor with one line of code:
 
 ```javascript
 var panSharpened = sharpening.PCA.sharpen(img.select(["B4", "B3", "B2",]), img.select(["B8"]);
@@ -77,11 +80,6 @@ print(quality.RMSE.calculate(unsharpened.resample("bicubic").reproject(sharpened
 
 Note that quality metrics are affected by spatial resolution, so when comparing unsharpened and pan-sharpened images, always resample and reproject the unsharpened image to high resolution first to ensure an accurate comparison!
 
-## Disclaimer
-
-- There is no guarantee of accuracy in this library. I would strongly recommend validating results against an established tool such as GDAL or SAGA GIS.
-- Functions are designed for and tested with Landsat 8 TOA data. They should be usable with other data sources, but may require modification.
-- Most sharpening functions will accept input images with any number of bands. However, algorithm accuracy may depend on spectral overlap between input bands and the panchromatic band. Make sure that the sharpening algorithm you select is compatible with your input imagery.
 
 ## References
 
