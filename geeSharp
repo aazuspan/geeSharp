@@ -1,2 +1,24 @@
 exports.sharpening = require("users/aazuspan/geeSharp:sharpening.js");
 exports.quality = require("users/aazuspan/geeSharp:quality.js");
+
+
+var methods = {
+  "GS": exports.sharpening.GS.sharpen,
+  "HPFA": exports.sharpening.HPFA.sharpen,
+  "IHS": exports.sharpening.IHS.sharpen,
+  "PCA": exports.sharpening.PCA.sharpen,
+  "SFIM": exports.sharpening.SFIM.sharpen,
+  "brovey": exports.sharpening.brovey.sharpen,
+  "simpleMean": exports.sharpening.simpleMean.sharpen
+};
+
+
+exports.sharpen = function(sharpenable, pan, method, args) {
+  fn = methods[method || "SFIM"];
+  
+  if (fn == null)
+    throw new Error("Method must be one of " + Object.keys(methods) + ", not " + method + ".");
+    
+  // Call the sharpening function, passing all args except for the method name
+  fn.apply(null, arguments.splice(2));
+}
