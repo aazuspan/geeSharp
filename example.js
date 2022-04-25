@@ -8,7 +8,7 @@ var extent =
           [-122.28981228945268, 47.20011060767077],
           [-122.28912564394487, 47.33965367791073]]]);
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
-// Load the sharpening functions
+// Load the geeSharp module
 var geeSharp = require("users/aazuspan/geeSharp:geeSharp");
 
 // Zoom in on an example area
@@ -23,9 +23,16 @@ var ms = img.select(["B4", "B3", "B2"]);
 var pan = img.select(["B8"]);
 
 
-// Sharpen with Smoothing Filter-based Intensity Modulation
+// Sharpen the multispectral bands to the panchromatic resolution.
 var sharp = geeSharp.sharpen(ms, pan);
 
 // Add layers to the map
 Map.addLayer(ms, { min: 0, max: 0.4 }, "Unsharpened");
-Map.addLayer(sharp, { min: 0, max: 0.4 }, "Sharpened (SFIM)");
+Map.addLayer(sharp, { min: 0, max: 0.4 }, "Sharpened");
+
+
+// Calculate the band-wise RMSE introduced by sharpening. First, be sure to reproject
+// the images to have equal resolution.
+var reproj = ms.resample("bilinear").reproject(pan.projection());
+var quality = geeSharp.quality(reproj, pan, "RMSE");
+print(quality)
