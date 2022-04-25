@@ -10,3 +10,6 @@ exports.ERGAS = require("users/aazuspan/geeSharp:qualityAlgorithms/ERGAS.js");
 exports.CC = require("users/aazuspan/geeSharp:qualityAlgorithms/CC.js");
 exports.CML = require("users/aazuspan/geeSharp:qualityAlgorithms/CML.js");
 exports.CMC = require("users/aazuspan/geeSharp:qualityAlgorithms/CMC.js");
+
+
+print("WARNING: geeSharp:quality.js is deprecated and will be removed. Use geeSharp:geeSharp.quality(orig, mod, metric) instead.")

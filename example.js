@@ -9,7 +9,7 @@ var extent =
           [-122.28912564394487, 47.33965367791073]]]);
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 // Load the sharpening functions
-var sharpening = require("users/aazuspan/geeSharp:sharpening.js");
+var geeSharp = require("users/aazuspan/geeSharp:geeSharp");
 
 // Zoom in on an example area
 Map.centerObject(extent, 15);
@@ -18,14 +18,14 @@ Map.centerObject(extent, 15);
 var img = ee.Image("LANDSAT/LC08/C01/T1_TOA/LC08_047027_20160819").clip(extent);
 
 // Select the bands to sharpen--in this case, the visible bands.
-var vis = img.select(["B4", "B3", "B2"]);
+var ms = img.select(["B4", "B3", "B2"]);
 // Select the panchromatic band to use for sharpening.
 var pan = img.select(["B8"]);
 
 
 // Sharpen with Smoothing Filter-based Intensity Modulation
-var sfim = sharpening.SFIM.sharpen(vis, pan);
+var sharp = geeSharp.sharpen(ms, pan);
 
 // Add layers to the map
-Map.addLayer(vis, { min: 0, max: 0.4 }, "Unsharpened");
-Map.addLayer(sfim, { min: 0, max: 0.4 }, "Sharpened (SFIM)");
+Map.addLayer(ms, { min: 0, max: 0.4 }, "Unsharpened");
+Map.addLayer(sharp, { min: 0, max: 0.4 }, "Sharpened (SFIM)");

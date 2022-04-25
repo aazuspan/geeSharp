@@ -1,15 +1,27 @@
-exports.sharpening = require("users/aazuspan/geeSharp:sharpening.js");
 exports.quality = require("users/aazuspan/geeSharp:quality.js");
 
 
+/*
+Sharpening
+*/
+
+var simpleMean = require("users/aazuspan/geeSharp:sharpeningAlgorithms/simpleMean.js");
+var brovey = require("users/aazuspan/geeSharp:sharpeningAlgorithms/brovey.js");
+var PCA = require("users/aazuspan/geeSharp:sharpeningAlgorithms/PCA.js");
+var IHS = require("users/aazuspan/geeSharp:sharpeningAlgorithms/IHS.js");
+var HPFA = require("users/aazuspan/geeSharp:sharpeningAlgorithms/HPFA.js");
+var GS = require("users/aazuspan/geeSharp:sharpeningAlgorithms/GS.js");
+var SFIM = require("users/aazuspan/geeSharp:sharpeningAlgorithms/SFIM.js");
+
+
 var _methods = {
-  "GS": exports.sharpening.GS.sharpen,
-  "HPFA": exports.sharpening.HPFA.sharpen,
-  "IHS": exports.sharpening.IHS.sharpen,
-  "PCA": exports.sharpening.PCA.sharpen,
-  "SFIM": exports.sharpening.SFIM.sharpen,
-  "brovey": exports.sharpening.brovey.sharpen,
-  "simpleMean": exports.sharpening.simpleMean.sharpen
+  "GS": GS.sharpen,
+  "HPFA": HPFA.sharpen,
+  "IHS": IHS.sharpen,
+  "PCA": PCA.sharpen,
+  "SFIM": SFIM.sharpen,
+  "brovey": brovey.sharpen,
+  "simpleMean": simpleMean.sharpen
 };
 
 
@@ -20,10 +32,55 @@ exports.sharpen = function(sharpenable, pan, method, args) {
   var fn = _methods[method || "SFIM"];
   
   if (fn == null)
-    throw new Error("Method must be one of [" + exports.methodNames + "], not `" + method + "`.");
+    throw new Error("Method must be one of [" + exports.methods + "], not `" + method + "`.");
   
   // Remove the method name from the args so the rest can be passed to the
   // sharpening function.
+  arguments.splice(2);
+  
+  return fn.apply(null, arguments);
+}
+
+
+/*
+Quality metrics
+*/
+
+var MSE = require("users/aazuspan/geeSharp:qualityAlgorithms/MSE.js");
+var RMSE = require("users/aazuspan/geeSharp:qualityAlgorithms/RMSE.js");
+var Q = require("users/aazuspan/geeSharp:qualityAlgorithms/Q.js");
+var bias = require("users/aazuspan/geeSharp:qualityAlgorithms/bias.js");
+var DIV = require("users/aazuspan/geeSharp:qualityAlgorithms/DIV.js");
+var RASE = require("users/aazuspan/geeSharp:qualityAlgorithms/RASE.js");
+var ERGAS = require("users/aazuspan/geeSharp:qualityAlgorithms/ERGAS.js");
+var CC = require("users/aazuspan/geeSharp:qualityAlgorithms/CC.js");
+var CML = require("users/aazuspan/geeSharp:qualityAlgorithms/CML.js");
+var CMC = require("users/aazuspan/geeSharp:qualityAlgorithms/CMC.js");
+
+var _qualityMetrics = {
+  "MSE": MSE.calculate,
+  "RMSE": RMSE.calculate,
+  "Q": Q.calculate,
+  "bias": bias.calculate,
+  "DIV": DIV.calculate,
+  "RASE": RASE.calculate,
+  "ERGAS": ERGAS.calculate,
+  "CC": CC.calculate,
+  "CML": CML.calculate,
+  "CMC": CMC.calculate
+};
+
+exports.metrics = Object.keys(_qualityMetrics);
+
+
+exports.sharpen = function(original, modified, metric, args) {
+  var fn = _qualityMetrics[metric];
+  
+  if (fn == null)
+    throw new Error("Metric must be one of [" + exports.metrics + "], not `" + metric + "`.");
+  
+  // Remove the metric name from the args so the rest can be passed to the
+  // metric calculation function.
   arguments.splice(2);
   
   return fn.apply(null, arguments);

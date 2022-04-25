@@ -6,85 +6,67 @@
 Pan-sharpen multispectral imagery in the [Google Earth Engine](https://earthengine.google.com/) Code Editor with one line of code:
 
 ```javascript
-var panSharpened = sharpening.PCA.sharpen(img.select(["B4", "B3", "B2",]), img.select(["B8"]);
+var sharp = geeSharp.sharpen(ms, pan);
 ```
 
-![Example image](https://raw.githubusercontent.com/aazuspan/geeSharp.js/main/sharpening_example.png)
+<img src="assets/demo.gif" width="800px"/>
 
-## Setup
-
-Import sharpening functions in your script.
-```javascript
-var sharpening = require("users/aazuspan/geeSharp:sharpening.js");
-```
-Import image quality functions in your script.
-```javascript
-var quality = require("users/aazuspan/geeSharp:quality.js");
-```
 
 ## Usage
-
 ### Pan-sharpening
 
-There are a number of pan-sharpening algorithms in `geeSharp` which can used with the example pattern below.
+To pan-sharpen an image, separate the lower resolution multispectral bands and the higher resolution panchromatic band into two images and pass them to the `geeSharp.sharpen` function. For example:
 
 ```javascript
-sharpening.Algorithm.sharpen(unsharpenedBands, panBand)
-```
+// Import the geeSharp module
+var geeSharp = require("users/aazuspan/geeSharp:geeSharp");
 
-Most sharpening functions just require the unsharpened multispectral bands and the high-resolution panchromatic band as inputs, but some algorithms may require other parameters. See the [documentation](https://github.com/aazuspan/geeSharp.js/wiki/Sharpening-Functions) for detailed descriptions.
-
-#### Example
-
-```javascript
-// Load the sharpening functions
-var sharpening = require("users/aazuspan/geeSharp:sharpening.js");
-
-// Select an example Landsat 8 TOA image to sharpen
+// Load an example Landsat 8 TOA image to sharpen
 var img = ee.Image("LANDSAT/LC08/C01/T1_TOA/LC08_047027_20160819");
 
 // Select the 30 m spectral bands to sharpen
-var unsharpened = img.select(["B4", "B3", "B2"]);
-
+var ms = img.select(["B4", "B3", "B2"]);
 // Select the 15 m panchromatic band
 var pan = img.select(["B8"]);
 
-// Pan-sharpen using Smoothing Filter-based Intensity Modulation
-var sharpened = sharpening.SFIM.sharpen(unsharpened, pan);
-
-// Add images to the map to visually compare
-Map.addLayer(unsharpened, {max: 0.3}, "Unsharpened")
-Map.addLayer(sharpened, {max: 0.3}, "Sharpened")
-Map.centerObject(ee.Geometry.Point([-122.40961256101373, 47.25412917913268]), 14)
+// Pan-sharpen!
+var sharpened = geeSharp.sharpen(ms, pan);
 ```
+
+By default, pansharpening in `geeSharp` uses the Smoothing Filter-based Intensity Modulation (SFIM) algorithm because it is fast and produces consistent, high-quality results. However, you may want to experiment with other methods. You can do that by passing an algorithm name to the `sharpen` function.
+
+```javascript
+var method = "brovey";
+var sharpened = geeSharp.sharpen(ms, pan, method);
+```
+
+Most sharpening functions just require the unsharpened multispectral bands and the high-resolution panchromatic band as inputs, but some algorithms (like Gram-Schmidt) may accept other parameters. You can add those parameters after the method name when calling `sharpen`.
+
+```javascript
+// The Gram-Schmidt algorithm may require additional parameters depending on the size of your image.
+var method = "GS";
+var geom = ee.Geometry.Point([-122.41676185101713, 47.26851080476613]).buffer(1000);
+var scale = 30;
+var maxPixels = 1e13;
+
+var sharpened = geeSharp.sharpen(ms, pan, method, geom, scale, maxPixels);
+```
+
+Print `geeSharp.methods` for a full list of supported algorithms, and see the [documentation](https://github.com/aazuspan/geeSharp.js/wiki/Sharpening-Functions) for descriptions.
 
 ### Image quality assessment
 
-Image quality metrics measure the distortion between a reference image and an image that has been modified, such as a pan-sharpened image. Quality metrics in `geeSharp` follow the pattern below.
+Image quality metrics measure the distortion between a reference image and an image that has been modified, such as a pan-sharpened image. 
 
 ```javascript
-quality.Metric.calculate(originalImage, modifiedImage)
+// Choose a metric
+var metric = "RMSE";
+// Reproject the unsharpened image to the sharpened resolution
+var reproj = unsharpened.resample("bicubic").reproject(sharpened.projection());
+// Calculate the metric
+var quality = geeSharp.quality(reproj, sharpened, metric);
 ```
 
-Most quality metrics just require an unmodified and a modified image and return a dictionary mapping band names to metric values, but some metrics require other parameters (e.g. `ERGAS` requires the high and low spectral resolution) and some return a single image-wise value (e.g. `RASE` and `ERGAS`). See the [documentation](https://github.com/aazuspan/geeSharp.js/wiki/Image-Quality-Assessment) for detailed descriptions of image quality assessment functions.
+Note that quality metrics are affected by spatial resolution, so when comparing unsharpened and pan-sharpened images, **always resample and reproject** the unsharpened image to high resolution first to ensure an accurate comparison!
 
-#### Example
-
-```javascript
-// Load the image quality functions
-var quality = require("users/aazuspan/geeSharp:quality.js");
-
-// Calculate the error introduced by sharpening
-print(quality.RMSE.calculate(unsharpened.resample("bicubic").reproject(sharpened.projection()), sharpened));
-```
-
-Note that quality metrics are affected by spatial resolution, so when comparing unsharpened and pan-sharpened images, always resample and reproject the unsharpened image to high resolution first to ensure an accurate comparison!
-
-
-## References
-
-- Gangkofner, U. G., Pradhan, P. S., & Holcomb, D. W. (2007). Optimizing the High-Pass Filter Addition Technique for Image Fusion. Photogrammetric Engineering & Remote Sensing, 73(9), 1107–1118. doi:10.14358/pers.73.9.1107
-- Hagag, A., Amin, M., & Abd El-Samie, F. E. (2013). Multispectral image compression with band ordering and wavelet transforms. Signal, Image and Video Processing, 9(4), 769–778. doi:10.1007/s11760-013-0516-4
-- Hallabia, H., Kallel, A., & Ben Hamida, A. (2014). Image pansharpening: Comparison of methods based on multiresolution analysis and component substitution. 2014 1st International Conference on Advanced Technologies for Signal and Image Processing (ATSIP). doi:10.1109/atsip.2014.6834602
-- Vaiopoulos, A. D. (2011). Developing Matlab scripts for image analysis and quality assessment. Earth Resources and Environmental Remote Sensing/GIS Applications II. doi:10.1117/12.897806
-- Zhou Wang, & Bovik, A. C. (2002). A universal image quality index. IEEE Signal Processing Letters, 9(3), 81–84. doi:10.1109/97.995823
+Most quality metrics just require an unmodified and a modified image and return a dictionary mapping band names to metric values, but some metrics require other parameters (e.g. `ERGAS` requires the high and low spectral resolution) and some return a single image-wise value (e.g. `RASE` and `ERGAS`). Print `geeSharp.metrics` for a full list of supported metrics and see the [documentation](https://github.com/aazuspan/geeSharp.js/wiki/Image-Quality-Assessment) for descriptions.

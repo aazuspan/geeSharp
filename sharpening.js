@@ -7,3 +7,6 @@ exports.IHS = require("users/aazuspan/geeSharp:sharpeningAlgorithms/IHS.js");
 exports.HPFA = require("users/aazuspan/geeSharp:sharpeningAlgorithms/HPFA.js");
 exports.GS = require("users/aazuspan/geeSharp:sharpeningAlgorithms/GS.js");
 exports.SFIM = require("users/aazuspan/geeSharp:sharpeningAlgorithms/SFIM.js");
+
+
+print("WARNING: geeSharp:sharpening.js is deprecated and will be removed. Use geeSharp:geeSharp.sharpen(ms, pan, method) instead.")
