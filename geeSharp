@@ -1,0 +1,2 @@
+exports.sharpening = require("users/aazuspan/geeSharp:sharpening.js");
+exports.quality = require("users/aazuspan/geeSharp:quality.js");
