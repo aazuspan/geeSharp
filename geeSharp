@@ -32,7 +32,7 @@ exports.sharpen = function(sharpenable, pan, method, args) {
   
   // Remove the method name from the args so the rest can be passed to the
   // sharpening function.
-  arguments.splice(2);
+  arguments.splice(2, 1);
   
   return fn.apply(null, arguments);
 }
@@ -76,7 +76,7 @@ exports.quality = function(original, modified, metric, args) {
   
   // Remove the metric name from the args so the rest can be passed to the
   // metric calculation function.
-  arguments.splice(2);
+  arguments.splice(2, 1);
   
   return fn.apply(null, arguments);
 }
