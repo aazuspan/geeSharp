@@ -20,5 +20,5 @@ exports.sharpen = function(sharpenable, pan, method, args) {
     throw new Error("Method must be one of " + Object.keys(methods) + ", not " + method + ".");
     
   // Call the sharpening function, passing all args except for the method name
-  fn.apply(null, arguments.splice(2));
+  return fn.apply(null, arguments.splice(2));
 }
