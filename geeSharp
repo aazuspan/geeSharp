@@ -14,7 +14,7 @@ var methods = {
 
 
 exports.sharpen = function(sharpenable, pan, method, args) {
-  fn = methods[method || "SFIM"];
+  var fn = methods[method || "SFIM"];
   
   if (fn == null)
     throw new Error("Method must be one of " + Object.keys(methods) + ", not " + method + ".");
