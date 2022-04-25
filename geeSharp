@@ -1,6 +1,3 @@
-exports.quality = require("users/aazuspan/geeSharp:quality.js");
-
-
 /*
 Sharpening
 */
@@ -26,7 +23,6 @@ var _methods = {
 
 
 exports.methods = Object.keys(_methods);
-
 
 exports.sharpen = function(sharpenable, pan, method, args) {
   var fn = _methods[method || "SFIM"];
@@ -72,8 +68,7 @@ var _qualityMetrics = {
 
 exports.metrics = Object.keys(_qualityMetrics);
 
-
-exports.sharpen = function(original, modified, metric, args) {
+exports.quality = function(original, modified, metric, args) {
   var fn = _qualityMetrics[metric];
   
   if (fn == null)
