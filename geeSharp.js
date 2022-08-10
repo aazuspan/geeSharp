@@ -34,7 +34,7 @@ exports.metrics = Object.keys(_metrics);
  * 
  * @param {ee.Image} sharpenable The image with sharpenable bands selected.
  * @param {ee.Image} pan The image with only the panchromatic band selected.
- * @param {string} method The sharpening algorithm to use. Use `geeSharp.methods` to get a list of available methods.
+ * @param {string} [method="SFIM"] The sharpening algorithm to use. Use `geeSharp.methods` to get a list of available methods.
  * @param {object} [args={}] Additional arguments. Some algorithms, e.g. Gram-Schmidt require other args.
  * @returns {ee.Image} The sharpened image.
  */

@@ -269,7 +269,7 @@ function IHS(img, pan) {
  * multispectral image.
  * @param {ee.Image} img An image to sharpen.
  * @param {ee.Image} pan An single-band panchromatic image.
- * @param {number, default 1} substitutePC The number of the principal
+ * @param {_multibandToCollection 1} substitutePC The number of the principal
  * component to replace with the pan band. Must be in range 1 - n, where n is
  * the number of bands in the input image.
  * @param {ee.Geometry} [geometry] The region to calculate image
