@@ -327,8 +327,7 @@ function ERGAS(
   var l = ee.Number(l);
 
   var msek = ee.Array(
-    mse
-      .calculate(referenceImage, assessmentImage, geometry, scale, maxPixels)
+    mse(referenceImage, assessmentImage, geometry, scale, maxPixels)
       .values()
   );
 
@@ -408,7 +407,7 @@ function Q(referenceImage, assessmentImage, geometry, scale, maxPixels) {
 
   // Correlation (1st component)
   var cc = ee.Array(
-    CC.calculate(
+    CC(
       referenceImage,
       assessmentImage,
       geometry,
@@ -419,7 +418,7 @@ function Q(referenceImage, assessmentImage, geometry, scale, maxPixels) {
 
   // Luminance (2nd component)
   var l = ee.Array(
-    CML.calculate(
+    CML(
       referenceImage,
       assessmentImage,
       geometry,
@@ -430,7 +429,7 @@ function Q(referenceImage, assessmentImage, geometry, scale, maxPixels) {
 
   // Contrast (3rd component)
   var c = ee.Array(
-    CMC.calculate(
+    CMC(
       referenceImage,
       assessmentImage,
       geometry,
@@ -465,8 +464,7 @@ function RASE(referenceImage, assessmentImage, geometry, scale, maxPixels) {
   }
 
   var meanMSE = ee.Number(
-    mse
-      .calculate(referenceImage, assessmentImage, geometry, scale, maxPixels)
+    mse(referenceImage, assessmentImage, geometry, scale, maxPixels)
       .values()
       .reduce(ee.Reducer.mean())
   );
@@ -504,7 +502,7 @@ function RASE(referenceImage, assessmentImage, geometry, scale, maxPixels) {
  * @return {ee.Dictionary} Per-band RMSE for the image.
  */
 function RMSE(referenceImage, assessmentImage, geometry, scale, maxPixels) {
-  var mseBands = mse.calculate(
+  var mseBands = mse(
     referenceImage,
     assessmentImage,
     geometry,
