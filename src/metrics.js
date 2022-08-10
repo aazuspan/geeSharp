@@ -327,7 +327,7 @@ function ERGAS(
   var l = ee.Number(l);
 
   var msek = ee.Array(
-    mse(referenceImage, assessmentImage, geometry, scale, maxPixels)
+    MSE(referenceImage, assessmentImage, geometry, scale, maxPixels)
       .values()
   );
 
@@ -464,7 +464,7 @@ function RASE(referenceImage, assessmentImage, geometry, scale, maxPixels) {
   }
 
   var meanMSE = ee.Number(
-    mse(referenceImage, assessmentImage, geometry, scale, maxPixels)
+    MSE(referenceImage, assessmentImage, geometry, scale, maxPixels)
       .values()
       .reduce(ee.Reducer.mean())
   );
@@ -502,7 +502,7 @@ function RASE(referenceImage, assessmentImage, geometry, scale, maxPixels) {
  * @return {ee.Dictionary} Per-band RMSE for the image.
  */
 function RMSE(referenceImage, assessmentImage, geometry, scale, maxPixels) {
-  var mseBands = mse(
+  var mseBands = MSE(
     referenceImage,
     assessmentImage,
     geometry,
