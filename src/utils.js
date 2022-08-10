@@ -4,7 +4,7 @@
  * @return {ee.ImageCollection} A collection where each image is a band of the
  *  input image.
  */
-exports.multibandToCollection = function (img) {
+exports._multibandToCollection = function (img) {
   return ee.ImageCollection(
     img.bandNames().map(function (name) {
       return img.select([name]);
@@ -28,16 +28,16 @@ exports.multibandToCollection = function (img) {
  *  image, where each band is a constant value of the reduced value of the
  *  corresponding band of the input image.
  */
-exports.reduceImage = function (img, reducer, geometry, scale, maxPixels) {
-  if (exports.isMissing(geometry)) {
+exports._reduceImage = function (img, reducer, geometry, scale, maxPixels) {
+  if (exports._isMissing(geometry)) {
     geometry = img.geometry();
   }
 
-  if (exports.isMissing(scale)) {
+  if (exports._isMissing(scale)) {
     scale = img.projection().nominalScale();
   }
 
-  if (exports.isMissing(maxPixels)) {
+  if (exports._isMissing(maxPixels)) {
     maxPixels = 1e12;
   }
 
@@ -65,15 +65,15 @@ exports.reduceImage = function (img, reducer, geometry, scale, maxPixels) {
  *  image, where each band is a constant value of the range value of the
  *  corresponding band of the input image.
  */
-exports.getImageRange = function (img, geometry, scale, maxPixels) {
-  var imgMax = exports.reduceImage(
+exports._getImageRange = function (img, geometry, scale, maxPixels) {
+  var imgMax = exports._reduceImage(
     img,
     ee.Reducer.max(),
     geometry,
     scale,
     maxPixels
   );
-  var imgMin = exports.reduceImage(
+  var imgMin = exports._reduceImage(
     img,
     ee.Reducer.min(),
     geometry,
@@ -95,21 +95,21 @@ exports.getImageRange = function (img, geometry, scale, maxPixels) {
  *  statistics.
  * @return {ee.Image} A rescaled version of targetImage.
  */
-exports.linearHistogramMatch = function (
+exports._linearHistogramMatch = function (
   targetImage,
   referenceImage,
   geometry,
   scale,
   maxPixels
 ) {
-  var offsetTarget = exports.reduceImage(
+  var offsetTarget = exports._reduceImage(
     targetImage,
     ee.Reducer.mean(),
     geometry,
     scale,
     maxPixels
   );
-  var offset = exports.reduceImage(
+  var offset = exports._reduceImage(
     referenceImage,
     ee.Reducer.mean(),
     geometry,
@@ -117,7 +117,7 @@ exports.linearHistogramMatch = function (
     maxPixels
   );
   var rescale = exports
-    .reduceImage(
+    ._reduceImage(
       referenceImage,
       ee.Reducer.stdDev(),
       geometry,
@@ -125,7 +125,7 @@ exports.linearHistogramMatch = function (
       maxPixels
     )
     .divide(
-      exports.reduceImage(
+      exports._reduceImage(
         targetImage,
         ee.Reducer.stdDev(),
         geometry,
@@ -146,7 +146,7 @@ exports.linearHistogramMatch = function (
  * @param {object} x Any object
  * @return {boolean} True if the object is missing, false if it is not.
  */
-exports.isMissing = function (x) {
+exports._isMissing = function (x) {
   if (x === undefined || x === null) {
     return true;
   }
@@ -161,7 +161,7 @@ exports.isMissing = function (x) {
  * @return {ee.Image} A single band image representing the weighted intensity of
  *  the original image.
  */
-exports.calculateWeightedIntensity = function (img, weights) {
+exports._calculateWeightedIntensity = function (img, weights) {
   // Convert the weights to a multiband constant image. This will allow weights
   // to work whether it is an array or an ee.List
   var weigthImg = ee.Image.constant(weights);

@@ -35,7 +35,7 @@ exports.metrics = Object.keys(_metrics);
  * @param {ee.Image} sharpenable The image with sharpenable bands selected.
  * @param {ee.Image} pan The image with only the panchromatic band selected.
  * @param {string} method The sharpening algorithm to use. Use `geeSharp.methods` to get a list of available methods.
- * @param {object} args Additional arguments. Some algorithms, e.g. Gram-Schmidt require other args.
+ * @param {object} [args={}] Additional arguments. Some algorithms, e.g. Gram-Schmidt require other args.
  * @returns {ee.Image} The sharpened image.
  */
 exports.sharpen = function(sharpenable, pan, method, args) {
@@ -59,7 +59,7 @@ exports.sharpen = function(sharpenable, pan, method, args) {
  * @param {ee.Image} original The original image to compare against.
  * @param {ee.Image} modified The modified image to assess.
  * @param {string} metric The quality metric to calculate. Use `geesharp.metrics` to get a list of available metrics.
- * @param {object} args Additional optional arguments, such as `geometry`, `scale`, and `maxPixels.
+ * @param {object} [args={}] Additional optional arguments, such as `geometry`, `scale`, and `maxPixels.
  * @returns {ee.Dictionary | ee.Number} A dictionary with band-wise metrics or a number with the image-wise metric.
  */
 exports.quality = function(original, modified, metric, args) {

@@ -6,7 +6,7 @@ var utils = require("users/aazuspan/geeSharp:src/utils.js");
  * @param {ee.Image} img An image to sharpen. All bands should spectrally
  *  overlap the panchromatic band to avoid spectral distortion.
  * @param {ee.Image} pan An single-band panchromatic image.
- * @param {ee.List} weights A list of weights to apply to each band. If
+ * @param {ee.List} [weights] A list of weights to apply to each band. If
  *  missing, equal weights will be used.
  * @return {ee.Image} The input image with all bands sharpened to the spatial
  *  resolution of the panchromatic band.
@@ -15,14 +15,14 @@ function brovey(img, pan, weights) {
   var panProj = pan.projection();
 
   // If any weights are missing, use equal weights
-  if (utils.isMissing(weights)) {
+  if (utils._isMissing(weights)) {
     var bandNum = img.bandNames().length();
     var bandWeight = ee.Number(1).divide(bandNum);
     weights = ee.List.repeat(bandWeight, bandNum);
   }
 
   // Calculate intensity band as sum of the weighted visible bands
-  var intensity = utils.calculateWeightedIntensity(img, weights);
+  var intensity = utils._calculateWeightedIntensity(img, weights);
   // Resample the intensity band
   var intensitySharp = intensity.resample().reproject(panProj);
 
@@ -63,11 +63,11 @@ function calculateGs(ms, gsList) {
  * 2014.
  * @param {ee.Image} ms A multispectral image.
  * @param {ee.Image} gs A Gram-Schmidt transformed image.
- * @param {ee.Geometry} geometry The region to calculate image
+ * @param {ee.Geometry} [geometry] The region to calculate image
  *  statistics for. Sharpening will only be accurate within this region.
- * @param {ee.Number} scale The scale, in projection units, to
+ * @param {ee.Number} [scale] The scale, in projection units, to
  *  calculate image statistics at.
- * @param {ee.Number} maxPixels The maximum number of pixels to sample when
+ * @param {ee.Number} [maxPixels=1e12] The maximum number of pixels to sample when
  *  calculating image statistics
  * @return {ee.Image} A constant GS coefficient.
  */
@@ -96,11 +96,11 @@ function calculateGsCoefficient(ms, gs, geometry, scale, maxPixels) {
  * process, following Hallabia et al 2014.
  * @param {ee.Image} img An image to sharpen.
  * @param {ee.Image} pan An single-band panchromatic image.
- * @param {ee.Geometry, default null} geometry The region to calculate image
+ * @param {ee.Geometry} [geometry] The region to calculate image
  *  statistics for. Sharpening will only be accurate within this region.
- * @param {ee.Number, default null} scale The scale, in projection units, to
+ * @param {ee.Number} [scale] The scale, in projection units, to
  *  calculate image statistics at.
- * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
+ * @param {ee.Number} [maxPixels=1e12] The maximum number of
  *  pixels to sample when calculating image statistics.
  * @return {ee.Image} The input image with all bands sharpened to the spatial
  *  resolution of the panchromatic band.
@@ -108,15 +108,15 @@ function calculateGsCoefficient(ms, gs, geometry, scale, maxPixels) {
 function GS(img, pan, geometry, scale, maxPixels) {
   // Params passed through iterate need to be explicitly set to null or else
   // GEE serialization will fail
-  if (utils.isMissing(geometry)) {
+  if (utils._isMissing(geometry)) {
     geometry = null;
   }
 
-  if (utils.isMissing(scale)) {
+  if (utils._isMissing(scale)) {
     scale = null;
   }
 
-  if (utils.isMissing(maxPixels)) {
+  if (utils._isMissing(maxPixels)) {
     maxPixels = 1e12;
   }
 
@@ -138,7 +138,7 @@ function GS(img, pan, geometry, scale, maxPixels) {
 
   // Convert the multispectral bands to an image collection so that it can be
   // iterated over
-  var msCollection = utils.multibandToCollection(img);
+  var msCollection = utils._multibandToCollection(img);
 
   // Iterate over the MS collection, calculating GS bands. Slice to remove the
   // reduction parameters.
@@ -150,7 +150,7 @@ function GS(img, pan, geometry, scale, maxPixels) {
   var gsBands = gsCollection.toBands();
 
   // Histogram match the pan band to the simulated pan band
-  var panMatch = utils.linearHistogramMatch(
+  var panMatch = utils._linearHistogramMatch(
     pan,
     panSim,
     geometry,
@@ -165,7 +165,7 @@ function GS(img, pan, geometry, scale, maxPixels) {
   var detail = panMatch.subtract(panSim);
 
   // Convert GS bands to an image collection so that it can be mapped over
-  var gsBandImages = utils.multibandToCollection(gsBands);
+  var gsBandImages = utils._multibandToCollection(gsBands);
 
   // Calculate constant g coefficients for each gsBand
   var gCoefficients = gsBandImages.map(function (x) {
@@ -185,7 +185,7 @@ function GS(img, pan, geometry, scale, maxPixels) {
  * @param {ee.Image} img An image to sharpen. All bands should spectrally
  *  overlap the panchromatic band to avoid spectral distortion.
  * @param {ee.Image} pan An single-band panchromatic image.
- * @param {number} kernelWidth The width of the high-pass filter kernel. This
+ * @param {number} [kernelWidth] The width of the high-pass filter kernel. This
  *  defaults to 2 * (msRes / panRes) + 1, where msRes is the multispectral
  *  pixel width and panRes is the panchromatic pixel width. For example,
  *  Landsat 8 has msRes of 30 and panRes of 15, so (2 * (30 / 15) + 1) = 5.
@@ -194,7 +194,7 @@ function GS(img, pan, geometry, scale, maxPixels) {
  */
 function HPFA(img, pan, kernelWidth) {
   // Calculate default kernel width following Gangofner et al 2008
-  if (utils.isMissing(kernelWidth)) {
+  if (utils._isMissing(kernelWidth)) {
     var panRes = pan.projection().nominalScale();
     var msRes = img.projection().nominalScale();
 
@@ -272,22 +272,22 @@ function IHS(img, pan) {
  * @param {number, default 1} substitutePC The number of the principal
  * component to replace with the pan band. Must be in range 1 - n, where n is
  * the number of bands in the input image.
- * @param {ee.Geometry, default null} geometry The region to calculate image
+ * @param {ee.Geometry} [geometry] The region to calculate image
  *  statistics for. Sharpening will only be accurate within this region.
- * @param {ee.Number, default null} scale The scale, in projection units, to
+ * @param {ee.Number} [scale] The scale, in projection units, to
  *  calculate image statistics at.
- * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
+ * @param {ee.Number} [maxPixels=1e12] The maximum number of
  *  pixels to sample when calculating image statistics
  * @return {ee.Image} The input image with all bands sharpened to the spatial
  *  resolution of the panchromatic band.
  */
 function PCA(img, pan, substitutePC, geometry, scale, maxPixels) {
   // Default to substituting the first PC
-  if (utils.isMissing(substitutePC)) {
+  if (utils._isMissing(substitutePC)) {
     substitutePC = 1;
   }
 
-  if (utils.isMissing(maxPixels)) {
+  if (utils._isMissing(maxPixels)) {
     maxPixels = 1e12;
   }
 
@@ -300,7 +300,7 @@ function PCA(img, pan, substitutePC, geometry, scale, maxPixels) {
   var panBand = pan.bandNames().get(0);
 
   // Mean-center the images to allow efficient covariance calculation
-  var imgMean = utils.reduceImage(
+  var imgMean = utils._reduceImage(
     img,
     ee.Reducer.mean(),
     geometry,
@@ -348,7 +348,7 @@ function PCA(img, pan, substitutePC, geometry, scale, maxPixels) {
     .arrayFlatten([pcNames]);
 
   // Rescale the pan band to more closely match the substituted PC
-  pan = utils.linearHistogramMatch(
+  pan = utils._linearHistogramMatch(
     pan,
     principalComponents.select(substitutePC - 1),
     geometry,

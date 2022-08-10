@@ -7,16 +7,16 @@ var utils = require("users/aazuspan/geeSharp:src/utils.js");
  * @param {ee.Image} assessmentImage A version of the reference image that has
  *  been modified, such as through compression or pan-sharpening. Bias will be
  *  calculated between this image and the reference image.
- * @param {ee.Geometry, default null} geometry The region to calculate bias
+ * @param {ee.Geometry} [geometry] The region to calculate bias
  *  for.
- * @param {ee.Number, default null} scale The scale, in projection units, to
+ * @param {ee.Number} [scale] The scale, in projection units, to
  *  calculate bias at.
- * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
+ * @param {ee.Number} [maxPixels=1e12] The maximum number of
  *  pixels to sample.
  * @return {ee.Dictionary} Per-band bias for the image.
  */
 function bias(referenceImage, assessmentImage, geometry, scale, maxPixels) {
-  if (utils.isMissing(maxPixels)) {
+  if (utils._isMissing(maxPixels)) {
     maxPixels = 1e12;
   }
 
@@ -53,16 +53,16 @@ function bias(referenceImage, assessmentImage, geometry, scale, maxPixels) {
  * @param {ee.Image} assessmentImage A version of the reference image that has
  *  been modified, such as through compression or pan-sharpening. ERGAS will be
  *  calculated between this image and the reference image.
- * @param {ee.Geometry, default null} geometry The region to calculate ERGAS
+ * @param {ee.Geometry} [geometry] The region to calculate ERGAS
  *  for.
- * @param {ee.Number, default null} scale The scale, in projection units, to
+ * @param {ee.Number} [scale] The scale, in projection units, to
  *  calculate ERGAS at.
- * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
+ * @param {ee.Number} [maxPixels=1e12] The maximum number of
  *  pixels to sample.
  * @return {ee.Dictionary} Per-band CC for the image.
  */
 function CC(referenceImage, assessmentImage, geometry, scale, maxPixels) {
-  if (utils.isMissing(maxPixels)) {
+  if (utils._isMissing(maxPixels)) {
     maxPixels = 1e12;
   }
 
@@ -137,16 +137,16 @@ function CC(referenceImage, assessmentImage, geometry, scale, maxPixels) {
  * @param {ee.Image} assessmentImage A version of the reference image that has
  *  been modified, such as through compression or pan-sharpening. ERGAS will be
  *  calculated between this image and the reference image.
- * @param {ee.Geometry, default null} geometry The region to calculate ERGAS
+ * @param {ee.Geometry} [geometry] The region to calculate ERGAS
  *  for.
- * @param {ee.Number, default null} scale The scale, in projection units, to
+ * @param {ee.Number} [scale] The scale, in projection units, to
  *  calculate ERGAS at.
- * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
+ * @param {ee.Number} [maxPixels=1e12] The maximum number of
  *  pixels to sample.
  * @return {ee.Dictionary} Per-band CMC for the image.
  */
 function CMC(referenceImage, assessmentImage, geometry, scale, maxPixels) {
-  if (utils.isMissing(maxPixels)) {
+  if (utils._isMissing(maxPixels)) {
     maxPixels = 1e12;
   }
 
@@ -203,16 +203,16 @@ function CMC(referenceImage, assessmentImage, geometry, scale, maxPixels) {
  * @param {ee.Image} assessmentImage A version of the reference image that has
  *  been modified, such as through compression or pan-sharpening. ERGAS will be
  *  calculated between this image and the reference image.
- * @param {ee.Geometry, default null} geometry The region to calculate ERGAS
+ * @param {ee.Geometry} [geometry] The region to calculate ERGAS
  *  for.
- * @param {ee.Number, default null} scale The scale, in projection units, to
+ * @param {ee.Number} [scale] The scale, in projection units, to
  *  calculate ERGAS at.
- * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
+ * @param {ee.Number} [maxPixels=1e12] The maximum number of
  *  pixels to sample.
  * @return {ee.Dictionary} Per-band CML for the image.
  */
 function CML(referenceImage, assessmentImage, geometry, scale, maxPixels) {
-  if (utils.isMissing(maxPixels)) {
+  if (utils._isMissing(maxPixels)) {
     maxPixels = 1e12;
   }
 
@@ -253,16 +253,16 @@ function CML(referenceImage, assessmentImage, geometry, scale, maxPixels) {
  * @param {ee.Image} assessmentImage A version of the reference image that has
  *  been modified, such as through compression or pan-sharpening. DIV will be
  *  calculated between this image and the reference image.
- * @param {ee.Geometry, default null} geometry The region to calculate DIV
+ * @param {ee.Geometry} [geometry] The region to calculate DIV
  *  for.
- * @param {ee.Number, default null} scale The scale, in projection units, to
+ * @param {ee.Number} [scale] The scale, in projection units, to
  *  calculate DIV at.
- * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
+ * @param {ee.Number} [maxPixels=1e12] The maximum number of
  *  pixels to sample.
  * @return {ee.Dictionary} Per-band DIV for the image
  */
 function DIV(referenceImage, assessmentImage, geometry, scale, maxPixels) {
-  if (utils.isMissing(maxPixels)) {
+  if (utils._isMissing(maxPixels)) {
     maxPixels = 1e12;
   }
 
@@ -302,11 +302,11 @@ function DIV(referenceImage, assessmentImage, geometry, scale, maxPixels) {
  *  calculated between this image and the reference image.
  * @param {ee.Number} h Spatial resolution of the sharpened image.
  * @param {ee.Number} l Spatial resolution of the unsharpened image.
- * @param {ee.Geometry, default null} geometry The region to calculate ERGAS
+ * @param {ee.Geometry} [geometry] The region to calculate ERGAS
  *  for.
- * @param {ee.Number, default null} scale The scale, in projection units, to
+ * @param {ee.Number} [scale] The scale, in projection units, to
  *  calculate ERGAS at.
- * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
+ * @param {ee.Number} [maxPixels=1e12] The maximum number of
  *  pixels to sample.
  * @return {ee.Number} Image-wise ERGAS value.
  */
@@ -319,7 +319,7 @@ function ERGAS(
   scale,
   maxPixels
 ) {
-  if (utils.isMissing(maxPixels)) {
+  if (utils._isMissing(maxPixels)) {
     maxPixels = 1e12;
   }
 
@@ -361,16 +361,16 @@ function ERGAS(
  * @param {ee.Image} assessmentImage A version of the reference image that has
  *  been modified, such as through compression or pan-sharpening. MSE will be
  *  calculated between this image and the reference image.
- * @param {ee.Geometry, default null} geometry The region to calculate MSE
+ * @param {ee.Geometry} [geometry] The region to calculate MSE
  *  for.
- * @param {ee.Number, default null} scale The scale, in projection units, to
+ * @param {ee.Number} [scale] The scale, in projection units, to
  *  calculate MSE at.
- * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
+ * @param {ee.Number} [maxPixels=1e12] The maximum number of
  *  pixels to sample.
  * @return {ee.Dictionary} Per-band MSE for the image.
  */
 function MSE(referenceImage, assessmentImage, geometry, scale, maxPixels) {
-  if (utils.isMissing(maxPixels)) {
+  if (utils._isMissing(maxPixels)) {
     maxPixels = 1e12;
   }
 
@@ -393,16 +393,16 @@ function MSE(referenceImage, assessmentImage, geometry, scale, maxPixels) {
  * @param {ee.Image} assessmentImage A version of the reference image that has
  *  been modified, such as through compression or pan-sharpening. Q will be
  *  calculated between this image and the reference image.
- * @param {ee.Geometry, default null} geometry The region to calculate Q
+ * @param {ee.Geometry} [geometry] The region to calculate Q
  *  for.
- * @param {ee.Number, default null} scale The scale, in projection units, to
+ * @param {ee.Number} [scale] The scale, in projection units, to
  *  calculate Q at.
- * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
+ * @param {ee.Number} [maxPixels=1e12] The maximum number of
  *  pixels to sample.
  * @return {ee.Dictionary} Per-band Q for the image.
  */
 function Q(referenceImage, assessmentImage, geometry, scale, maxPixels) {
-  if (utils.isMissing(maxPixels)) {
+  if (utils._isMissing(maxPixels)) {
     maxPixels = 1e12;
   }
 
@@ -451,16 +451,16 @@ function Q(referenceImage, assessmentImage, geometry, scale, maxPixels) {
  * @param {ee.Image} assessmentImage A version of the reference image that has
  *  been modified, such as through compression or pan-sharpening. RASE will be
  *  calculated between this image and the reference image.
- * @param {ee.Geometry, default null} geometry The region to calculate RASE
+ * @param {ee.Geometry} [geometry] The region to calculate RASE
  *  for.
- * @param {ee.Number, default null} scale The scale, in projection units, to
+ * @param {ee.Number} [scale] The scale, in projection units, to
  *  calculate RASE at.
- * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
+ * @param {ee.Number} [maxPixels=1e12] The maximum number of
  *  pixels to sample.
  * @return {ee.Number} Image-wise RASE value.
  */
 function RASE(referenceImage, assessmentImage, geometry, scale, maxPixels) {
-  if (utils.isMissing(maxPixels)) {
+  if (utils._isMissing(maxPixels)) {
     maxPixels = 1e12;
   }
 
@@ -495,11 +495,11 @@ function RASE(referenceImage, assessmentImage, geometry, scale, maxPixels) {
  * @param {ee.Image} assessmentImage A version of the reference image that has
  *  been modified, such as through compression or pan-sharpening. RMSE will be
  *  calculated between this image and the reference image.
- * @param {ee.Geometry, default null} geometry The region to calculate RMSE
+ * @param {ee.Geometry} [geometry] The region to calculate RMSE
  *  for.
- * @param {ee.Number, default null} scale The scale, in projection units, to
+ * @param {ee.Number} [scale] The scale, in projection units, to
  *  calculate RMSE at.
- * @param {ee.Number, default 1000000000000} maxPixels The maximum number of
+ * @param {ee.Number} [maxPixels=1e12] The maximum number of
  *  pixels to sample.
  * @return {ee.Dictionary} Per-band RMSE for the image.
  */
