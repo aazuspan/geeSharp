@@ -6,7 +6,7 @@
 Pan-sharpen multispectral imagery in the [Google Earth Engine](https://earthengine.google.com/) Code Editor with one line of code:
 
 ```javascript
-var sharp = geeSharp.sharpen(ms, pan);
+var sharp = geeSharp.sharpen(img.select(["B4", "B3", "B2"]), img.select("B8");
 ```
 
 <img src="assets/demo.gif" width="800px"/>
@@ -67,6 +67,7 @@ var reproj = unsharpened.resample("bicubic").reproject(sharpened.projection());
 var quality = geeSharp.quality(reproj, sharpened, metric);
 ```
 
-Note that quality metrics are affected by spatial resolution, so when comparing unsharpened and pan-sharpened images, **always resample and reproject** the unsharpened image to high resolution first to ensure an accurate comparison!
+> **Warning**  
+> Metrics are affected by spatial resolution, so when comparing unsharpened and pan-sharpened images, **always resample and reproject** the unsharpened image to high resolution first to ensure an accurate comparison!
 
 Most quality metrics just require an unmodified and a modified image and return a dictionary mapping band names to metric values, but some metrics require other parameters (e.g. `ERGAS` requires the high and low spectral resolution) and some return a single image-wise value (e.g. `RASE` and `ERGAS`). Print `geeSharp.metrics` for a full list of supported metrics and see the [documentation](https://github.com/aazuspan/geeSharp.js/wiki/Image-Quality-Metrics) for descriptions.
